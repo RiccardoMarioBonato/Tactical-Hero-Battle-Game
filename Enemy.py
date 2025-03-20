@@ -9,10 +9,10 @@ class EnemyLogic:
         self.enemy_spawn_timer = 0
 
     def spawn_pattern(self, tower):
-        print(self.enemy_spawn_timer)
         if self.enemy_spawn_timer > 90:  # Every 1.5 seconds
             # tower.block.append(Block(tower.rect.left - Dimensions.BLOCK_SIZE1, Resolution.HEIGHT - 200 - Dimensions.BLOCK_SIZE1 // 2, -5))
-            tower.block.append(Centipede(tower.rect.left - Dimensions.BLOCK_SIZE1, Resolution.HEIGHT - 200 - Dimensions.BLOCK_SIZE1 // 2))
+            # tower.block.append(Centipede(200, 200))
+            cen = Centipede(500, 500)
             self.enemy_spawn_timer = 0
 
     def enemy_spawn_timer_setter(self, add_value):
