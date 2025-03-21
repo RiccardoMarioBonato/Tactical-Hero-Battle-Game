@@ -4,6 +4,7 @@ from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
 from Enemy import EnemyLogic
 from Unit import SmallViking
+from Player import Controller
 # Initialize pygame
 pygame.init()
 
@@ -29,13 +30,7 @@ Enemy = EnemyLogic()
 while running:
     clock.tick(Resolution.FPS)
     screen.blit(background, (0, 0))
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                player_tower.block.append(SmallViking(player_tower.rect.right, Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
+    Controller.keyboard(player_tower)
 
     # Move blocks
     player_tower.take_dmg(enemy_tower)
@@ -51,11 +46,13 @@ while running:
     for char in player_tower.block:
         char.move()
         char.update()
+        char.attack(enemy_tower.block)
         char.draw(screen)
         pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)
     for unit in enemy_tower.block:
         unit.move()
         unit.update()
+        unit.attack(player_tower.block)
         unit.draw(screen)
         pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)
 

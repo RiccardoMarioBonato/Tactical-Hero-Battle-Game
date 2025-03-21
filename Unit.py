@@ -1,3 +1,5 @@
+from ipykernel.pickleutil import istype
+
 from Customize import *
 
 
@@ -19,6 +21,7 @@ class Unit:
         self.image = self.animation_list[self.action][self.frame_index]
         self.flip = False
         self.update_time = pygame.time.get_ticks()
+        self.attacking = False
 
     def load_images(self, sprite_sheet, animation_steps):
         animation_list = []
@@ -47,13 +50,14 @@ class Unit:
         img = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(img, (self.rect.x, self.rect.y))  # Draw image at rect position
         # Draw hit box for debugging (optional)
-        pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  # Red rectangle for hitbox
+        # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  # Red rectangle for hitbox
 
     def update(self):
         animation_cooldown = 100  # ⬆ Increase cooldown to slow down animation
 
         # Update image
         self.image = self.animation_list[self.action][self.frame_index]
+        print(len(self.animation_list))
 
         # Check if enough time has passed since last update
         if pygame.time.get_ticks() - self.update_time > animation_cooldown:
@@ -74,12 +78,21 @@ class Unit:
         if self.rect.right + dx > screen_width:
             self.rect.right = screen_width
 
+    def attack(self, opposite_units):
+        for units in opposite_units:
+            if self.rect.colliderect(units):
+                self.speed = 0
+                if isinstance(self, SmallViking):
+                    self.action = 3
+                else:
+                    self.action = 1
+
 
 class Centipede(Unit):
     def __init__(self, x, y):
         super().__init__(x, y)  # Initialize Unit class
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
-        self.speed = -10
+        self.speed = -5
         self.animation_steps = [4, 6, 6, 4, 4, 2, 4, 6, 4]  # Confirmed steps
         self.sprite_sheet = pygame.image.load("img/swamp enemy/1 Centipede/Centipede_spritesheet.png")  # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
@@ -99,12 +112,12 @@ class BigBloated(Unit):
         super().__init__(x, y)  # Now Unit.__init__() will use the correct sprite_sheet
         self.x = x
         self.y = y
-        self.speed = -10
+        self.speed = -5
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
         self.sprite_sheet = pygame.image.load("img/swamp enemy/3 Big bloated/Big_bloated_spritesheet.png")  # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
-        self.rect = pygame.Rect(self.x, self.y, 80, 120)
+        self.rect = pygame.Rect(self.x+20, self.y, 80, 150)
         self.action = 8
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
         self.image = self.animation_list[self.action][self.frame_index]
@@ -132,3 +145,4 @@ class SmallViking(Unit):
     def draw(self, screen):
         img = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(img, (self.rect.x-50, self.rect.y-50))  # Draw image at rect position
+
