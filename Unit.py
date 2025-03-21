@@ -1,4 +1,3 @@
-import pygame
 from Customize import *
 
 
@@ -6,15 +5,12 @@ class Unit:
     def __init__(self, x, y):
         self.health = 100
         self.attack_power = 10
-        self.speed = 1
+        self.speed = -1  # Horizontal speed
         self.cost = 20
         self.measurement = [72, 1, [100, 200]]  # Updated frame size
         self.rect = pygame.Rect(x, y, Dimensions.BLOCK_SIZE1, Dimensions.BLOCK_SIZE1)
-        self.sprite_sheet = pygame.image.load("img/swamp enemy/1 Centipede/Centipede_fullsheet.png")
-        print(f"Sprite Sheet Dimensions: {self.sprite_sheet.get_size()}")
-        print(f"Frame Size: {self.measurement[0]}x{self.measurement[0]}")
+        self.sprite_sheet = pygame.image.load("img/swamp enemy/1 Centipede/Centipede_fullsheet.png")  # Default sprite sheet
         self.animation_steps = [4, 6, 6, 4, 4, 2, 4, 6, 4]
-        print(f"Animation Steps: {self.animation_steps}")
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
         self.action = 0
         self.frame_index = 0
@@ -66,24 +62,51 @@ class Unit:
             if self.frame_index >= len(self.animation_list[self.action]):
                 self.frame_index = 0  # Loop animation smoothly
 
-        print(f"Action: {self.action}, Frame: {self.frame_index}")  # Debugging
+    def move(self, screen_width=Resolution.WIDTH, screen_height=Resolution.HEIGHT):
+        # Move horizontally
+        dx = self.speed
+        # Update position
+        self.rect.x += dx
+        # Check screen boundaries
+        if self.rect.left + dx < 0:
+            self.rect.left = 0
+        if self.rect.right + dx > screen_width:
+            self.rect.right = screen_width
 
-
-# Player1_spawn = Player(1, 200, 1120, False, Player1_data,
-#                        Player1_spritesheet, Player1_step,
-#                        Player1_attack, attack_style_p1)
 
 class Centipede(Unit):
     def __init__(self, x, y):
+        super().__init__(x, y)  # Now Unit.__init__() will use the correct sprite_sheet
         self.x = x
         self.y = y
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
-        self.sprite_sheet = pygame.image.load("img/swamp enemy/1 Centipede/Centipede_fullsheet.png")
         self.animation_steps = [4, 6, 6, 4, 4, 2, 4, 6, 4]  # Confirmed steps
-        super().__init__(x, y)
+        self.sprite_sheet = pygame.image.load("img/swamp enemy/1 Centipede/Centipede_spritesheet.png")  # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
         self.rect = pygame.Rect(self.x, self.y, self.measurement[0], 72)
+        self.action = 8
+        self.animation_steps = [4, 6, 6, 4, 4, 2, 4, 6, 4]
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
+        self.frame_index = 0
+        self.image = self.animation_list[self.action][self.frame_index]
+        self.flip = False
+        self.update_time = pygame.time.get_ticks()
+        self.vel_y = 0  # Vertical velocity for jumping/falling
 
-    def move(self):
-        self.x -= self.speed
-        print("drawn")
+
+class BigBloated(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y)  # Now Unit.__init__() will use the correct sprite_sheet
+        self.x = x
+        self.y = y
+        self.measurement = [72, 2, [100, 200]]  # Updated frame size
+        self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
+        self.sprite_sheet = pygame.image.load("img/swamp enemy/3 Big bloated/Big_bloated_spritesheet.png")  # Centipede sprite sheet
+        self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
+        self.rect = pygame.Rect(self.x, self.y, self.measurement[0], 72)
+        self.action = 8
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
+        self.image = self.animation_list[self.action][self.frame_index]
+        self.update_time = pygame.time.get_ticks()
+
+
