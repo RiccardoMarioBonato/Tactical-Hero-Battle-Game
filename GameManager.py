@@ -1,4 +1,3 @@
-import pygame
 from Customize import *  # Import constants
 
 
@@ -17,6 +16,3 @@ class Block:
 
     def draw(self, screen):
         pygame.draw.rect(screen, Color.WHITE, self.rect)
-
-    def load(self):
-        pass

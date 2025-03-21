@@ -1,9 +1,9 @@
 import pygame
 import random
-from Customize import *
-from GameManager import Block
+from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
 from Enemy import EnemyLogic
+from Unit import SmallViking
 # Initialize pygame
 pygame.init()
 
@@ -35,7 +35,7 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                player_tower.block.append(Block(player_tower.rect.right, Resolution.HEIGHT - 200 - Dimensions.BLOCK_SIZE1 // 2, 5))
+                player_tower.block.append(SmallViking(player_tower.rect.right, Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
 
     # Move blocks
     player_tower.take_dmg(enemy_tower)
@@ -48,13 +48,16 @@ while running:
     # Draw everything
     player_tower.draw(screen)
     enemy_tower.draw(screen)
-    for block in player_tower.block:
-        block.load()
-        block.draw(screen)
+    for char in player_tower.block:
+        char.move()
+        char.update()
+        char.draw(screen)
+        pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)
     for unit in enemy_tower.block:
         unit.move()
         unit.update()
         unit.draw(screen)
+        pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)
 
     # Check win condition
     running = player_tower.dead_tower(enemy_tower)
