@@ -10,7 +10,7 @@ class EnemyLogic:
         self.enemy_spawn_timer = 0
 
     def spawn_pattern(self, tower):
-        if self.enemy_spawn_timer > 20:  # 10 = 1/6 sec
+        if self.enemy_spawn_timer > 200:  # 10 = 1/6 sec
             # tower.block.append(Block(tower.rect.left - Dimensions.BLOCK_SIZE1, Resolution.HEIGHT - 200 - Dimensions.BLOCK_SIZE1 // 2, -5))
             mobs = [Centipede(tower.rect.left - Dimensions.BLOCK_SIZE1,
                     Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2),

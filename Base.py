@@ -36,3 +36,4 @@ class Tower:
             if block.rect.colliderect(enemy_tower.rect):
                 enemy_tower.hp -= 10
                 self.block.remove(block)
+

@@ -10,7 +10,6 @@ pygame.init()
 
 # Load images
 background = pygame.transform.scale(Images.bg, (Resolution.WIDTH, Resolution.HEIGHT))
-
 # Tower positions
 PLAYER_TOWER_X = 0
 ENEMY_TOWER_X = Resolution.WIDTH - 200
@@ -44,20 +43,23 @@ while running:
     player_tower.draw(screen)
     enemy_tower.draw(screen)
     for char in player_tower.block:
+        if char.health <= 0:
+            player_tower.block.remove(char)
         char.move()
-        char.update()
-        char.attack(enemy_tower.block)
+        char.update(player_tower.block)
+        char.attack(enemy_tower.block, screen)
         char.draw(screen)
-        pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)
+        pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)  # Draw hitbox for debugging
     for unit in enemy_tower.block:
+        if unit.health <= 0:
+            enemy_tower.block.remove(unit)
         unit.move()
-        unit.update()
-        unit.attack(player_tower.block)
+        unit.update(enemy_tower.block)
+        unit.attack(player_tower.block, screen)
         unit.draw(screen)
-        pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)
+        pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)  # Draw hitbox for debugging
 
     # Check win condition
     running = player_tower.dead_tower(enemy_tower)
     pygame.display.flip()
 pygame.quit()
-
