@@ -1,10 +1,8 @@
 import pygame
-import random
 from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
 from Enemy import EnemyLogic
-from Unit import SmallViking
-from Player import Controller
+from Player import Controller, Resources
 # Initialize pygame
 pygame.init()
 
@@ -25,38 +23,36 @@ clock = pygame.time.Clock()
 running = True
 enemy_spawn_timer = 0
 Enemy = EnemyLogic()
-
+player_resources = Resources()
+player_resources.add_start()
 while running:
     clock.tick(Resolution.FPS)
     screen.blit(background, (0, 0))
     Controller.keyboard(player_tower)
-
     # Move blocks
     player_tower.take_dmg(enemy_tower)
     enemy_tower.take_dmg(player_tower)
-
     # Enemy spawns blocks periodically
     Enemy.enemy_spawn_timer_setter(1)
     Enemy.spawn_pattern(enemy_tower)
-
     # Draw everything
     player_tower.draw(screen)
     enemy_tower.draw(screen)
-    for char in player_tower.block:
-        if char.health <= 0:
+    Resources.add_solar_energy(player_resources)
+    player_resources.draw(screen)
+    # Update and draw player blocks
+    for char in player_tower.block[:]:  # Iterate over a copy of the list
+        char.update(screen,player_tower.block, enemy_tower.block)
+        if char.dead:  # Check if the unit is ready to be removed
             player_tower.block.remove(char)
-        char.move()
-        char.update(player_tower.block)
-        char.attack(enemy_tower.block, screen)
-        char.draw(screen)
+            # Remove the unit from the list
         pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)  # Draw hitbox for debugging
-    for unit in enemy_tower.block:
-        if unit.health <= 0:
-            enemy_tower.block.remove(unit)
-        unit.move()
-        unit.update(enemy_tower.block)
-        unit.attack(player_tower.block, screen)
-        unit.draw(screen)
+
+    # Update and draw enemy blocks
+    for unit in enemy_tower.block[:]:  # Iterate over a copy of the list
+        unit.update(screen, enemy_tower.block, player_tower.block)
+        if unit.dead:
+            enemy_tower.block.remove(unit)  # Remove the unit from the list
         pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)  # Draw hitbox for debugging
 
     # Check win condition
