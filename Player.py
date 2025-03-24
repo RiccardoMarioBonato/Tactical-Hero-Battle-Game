@@ -1,19 +1,22 @@
 import pygame
-from Unit import SmallViking, Pantheon
+from Unit import LumberJack, Pantheon
 from Customize import Color, Images, Resolution, Dimensions
 import time
 
 
 class Controller:
     @staticmethod
-    def keyboard(player_tower):
+    def keyboard(player_tower, resources):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                SystemExit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    player_tower.block.append(SmallViking(player_tower.rect.right,
-                                                          Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
+                    print(resources.solar_energy)
+                    if resources.solar_energy >= 5:
+                        player_tower.block.append(LumberJack(player_tower.rect.right,
+                                                             Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
+                        resources.remove_solar_energy()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_c:
                     player_tower.block.append(Pantheon(player_tower.rect.right,
@@ -35,17 +38,38 @@ class Resources:
         self.clock = 0  # Store a timestamp (float) here
         self.font1 = pygame.font.Font(None, 36)  # Smaller font for resource display
         self.rect = pygame.Rect(10, 10, 300, 50)  # Position and size of the resource bar
-
+        self.current_time = time.time()
     def add_solar_energy(self):
         # Calculate the time difference since the last update
-        current_time = time.time()
-        time_elapsed = current_time - self.clock
+
+        time_elapsed = self.current_time - self.clock
         self.solar_energy += time_elapsed
-        self.clock = current_time  # Update the timestamp
+        self.clock = self.current_time  # Update the timestamp
+
+    def remove_solar_energy(self):
+        self.solar_energy -= 5
+
+    def add_lunar_energy(self):
+        # Calculate the time difference since the last update
+        time_elapsed = self.current_time - self.clock
+        self.lunar_energy += time_elapsed/2
+        self.clock = self.current_time  # Update the timestamp
+
+    def remove_lunar_energy(self, cost):
+        self.lunar_energy -= cost
+
+    def add_eclipse_energy(self):
+        # Calculate the time difference since the last update
+        time_elapsed = self.current_time - self.clock
+        self.eclipse_energy += time_elapsed/10
+        self.clock = self.current_time  # Update the timestamp
+
+    def remove_eclipse_energy(self, cost):
+        self.eclipse_energy -= cost
 
     def add_start(self):
         # Initialize the clock with the current time
-        self.clock = time.time()
+        self.current_time = time.time()
 
     def draw(self, screen):
         # Create a background rectangle for the resource bar
@@ -59,3 +83,8 @@ class Resources:
         screen.blit(solar_text, (self.rect.x + 770, self.rect.y + 10))
         screen.blit(lunar_text, (self.rect.x + 890, self.rect.y + 10))
         screen.blit(eclipse_text, (self.rect.x + 1010, self.rect.y + 10))
+
+    def all_add(self):
+        self.add_lunar_energy()
+        self.add_solar_energy()
+        self.add_eclipse_energy()

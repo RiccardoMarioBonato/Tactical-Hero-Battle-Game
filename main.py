@@ -1,4 +1,6 @@
 import pygame
+
+import Customize
 from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
 from Enemy import EnemyLogic
@@ -25,10 +27,12 @@ enemy_spawn_timer = 0
 Enemy = EnemyLogic()
 player_resources = Resources()
 player_resources.add_start()
+
+
 while running:
     clock.tick(Resolution.FPS)
     screen.blit(background, (0, 0))
-    Controller.keyboard(player_tower)
+    Controller.keyboard(player_tower, player_resources)
     # Move blocks
     player_tower.take_dmg(enemy_tower)
     enemy_tower.take_dmg(player_tower)
@@ -38,7 +42,7 @@ while running:
     # Draw everything
     player_tower.draw(screen)
     enemy_tower.draw(screen)
-    Resources.add_solar_energy(player_resources)
+    player_resources.all_add()
     player_resources.draw(screen)
     # Update and draw player blocks
     for char in player_tower.block[:]:  # Iterate over a copy of the list

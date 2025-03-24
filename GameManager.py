@@ -16,3 +16,11 @@ class Block:
 
     def draw(self, screen):
         pygame.draw.rect(screen, Color.WHITE, self.rect)
+
+
+class Menu:
+    def __init__(self):
+        pass
+
+    def selector(self):
+        pass

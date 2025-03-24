@@ -1,6 +1,8 @@
 from ipykernel.pickleutil import istype
 
 from Customize import *
+hero = Hero()
+enemy = Enemies()
 
 
 class Unit:
@@ -139,7 +141,7 @@ class Centipede(Unit):
         self.health = 150
         self.attack_power = 1
         self.animation_steps = [4, 6, 4, 4, 4, 2, 4, 6, 4]  # Confirmed steps
-        self.sprite_sheet = pygame.image.load("Enemies/Centipede/Centipede_SpriteSheet.png")  # Centipede sprite sheet
+        self.sprite_sheet = Enemies.Centipede # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
         self.rect = pygame.Rect(x, y, 80, 120)  # Initialize rect
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
@@ -161,7 +163,7 @@ class BigBloated(Unit):
         self.attack_power = 0.4
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
-        self.sprite_sheet = pygame.image.load("img/swamp enemy/3 Big bloated/Big_bloated_spritesheet.png")  # Centipede sprite sheet
+        self.sprite_sheet = Enemies.Big_bloated  # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
         self.rect = pygame.Rect(self.x+20, self.y, 80, 150)
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
@@ -172,7 +174,7 @@ class BigBloated(Unit):
         screen.blit(img, (self.rect.x-50, self.rect.y))  # Draw image at rect position
 
 
-class SmallViking(Unit):
+class LumberJack(Unit):
     def __init__(self, x, y):
         super().__init__(x, y)  # Initialize Unit class
         self.speed = 5
@@ -180,7 +182,7 @@ class SmallViking(Unit):
         self.attack_power = 0.8
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
-        self.sprite_sheet = pygame.image.load("Heros/LumberJack/LumberJack/LumberJack_final.png")  # Viking sprite sheet
+        self.sprite_sheet = Hero.Lumberjack # Viking sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 96))
         self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
@@ -199,7 +201,7 @@ class Pantheon(Unit):
         self.attack_power = 1.6
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
-        self.sprite_sheet = pygame.image.load("Heros/Pantheon/Pantheon/Pantheon_spritesheet.png")  # Viking sprite sheet
+        self.sprite_sheet = Hero.Pantheon  # Viking sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 96))
         self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
