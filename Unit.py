@@ -83,7 +83,6 @@ class Unit:
         self.attack(other_units)
         self.draw(screen)
 
-
     def move(self, screen_width=Resolution.WIDTH, screen_height=Resolution.HEIGHT):
         # Move horizontally
         dx = self.speed
@@ -185,6 +184,8 @@ class LumberJack(Unit):
         self.sprite_sheet = Hero.Lumberjack # Viking sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 96))
         self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
+        self.rect.x = int(self.rect.x)
+        self.rect.y = int(self.rect.y)
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
         self.image = self.animation_list[self.action][self.frame_index]
 
@@ -204,6 +205,8 @@ class Pantheon(Unit):
         self.sprite_sheet = Hero.Pantheon  # Viking sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 96))
         self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
+        self.rect.x = int(self.rect.x)
+        self.rect.y = int(self.rect.y)
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
         self.image = self.animation_list[self.action][self.frame_index]
 

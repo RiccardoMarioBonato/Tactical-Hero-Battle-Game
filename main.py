@@ -39,10 +39,10 @@ while running:
     # Enemy spawns blocks periodically
     Enemy.enemy_spawn_timer_setter(1)
     Enemy.spawn_pattern(enemy_tower)
-    # Draw everything
+    # Draw everythingc
     player_tower.draw(screen)
     enemy_tower.draw(screen)
-    player_resources.all_add()
+    player_resources.add_solar_energy()
     player_resources.draw(screen)
     # Update and draw player blocks
     for char in player_tower.block[:]:  # Iterate over a copy of the list
@@ -50,14 +50,14 @@ while running:
         if char.dead:  # Check if the unit is ready to be removed
             player_tower.block.remove(char)
             # Remove the unit from the list
-        pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)  # Draw hitbox for debugging
+        # pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)  # Draw hitbox for debugging
 
     # Update and draw enemy blocks
     for unit in enemy_tower.block[:]:  # Iterate over a copy of the list
         unit.update(screen, enemy_tower.block, player_tower.block)
         if unit.dead:
             enemy_tower.block.remove(unit)  # Remove the unit from the list
-        pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)  # Draw hitbox for debugging
+        # pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)  # Draw hitbox for debugging
 
     # Check win condition
     running = player_tower.dead_tower(enemy_tower)

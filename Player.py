@@ -85,6 +85,7 @@ class Resources:
         screen.blit(eclipse_text, (self.rect.x + 1010, self.rect.y + 10))
 
     def all_add(self):
-        self.add_lunar_energy()
-        self.add_solar_energy()
-        self.add_eclipse_energy()
+        pass
+        # self.add_lunar_energy()
+        # self.add_solar_energy()
+        # self.add_eclipse_energy()
