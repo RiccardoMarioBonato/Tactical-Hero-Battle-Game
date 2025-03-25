@@ -12,7 +12,6 @@ class Controller:
                 SystemExit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    print(resources.solar_energy)
                     if resources.solar_energy >= 3:
                         player_tower.block.append(LumberJack(player_tower.rect.right,
                                                              Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
@@ -65,6 +64,8 @@ class Resources:
     def remove_lunar_energy(self, cost):
         self.lunar_energy -= cost
 
+    def get_solar_energy(self):
+        return self.solar_energy
     def add_eclipse_energy(self):
         # Calculate the time difference since the last update
         time_elapsed = self.current_time - self.clock

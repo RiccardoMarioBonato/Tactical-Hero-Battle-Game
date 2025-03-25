@@ -36,28 +36,29 @@ while running:
     # Move blocks
     player_tower.take_dmg(enemy_tower)
     enemy_tower.take_dmg(player_tower)
-    # Enemy spawns blocks periodically
     Enemy.enemy_spawn_timer_setter(1)
-    Enemy.spawn_pattern(enemy_tower)
     Resources.add_solar_energy(player_resources)
+    Enemy.spawn_pattern(enemy_tower, player_resources)
     # Draw everythingc
     player_tower.draw(screen)
     enemy_tower.draw(screen)
     player_resources.draw(screen)
+    pygame.draw.rect(screen, (255, 0, 0), player_tower.rect, 2)
+    pygame.draw.rect(screen, (255, 0, 0), enemy_tower.rect, 2)
     # Update and draw player blocks
     for char in player_tower.block[:]:  # Iterate over a copy of the list
-        char.update(screen,player_tower.block, enemy_tower.block)
+        char.update(screen, player_tower, player_tower.block, enemy_tower.block)
         if char.dead:  # Check if the unit is ready to be removed
             player_tower.block.remove(char)
             # Remove the unit from the list
-        pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)  # Draw hitbox for debugging
+        # pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)  # Draw hitbox for debugging
 
     # Update and draw enemy blocks
     for unit in enemy_tower.block[:]:  # Iterate over a copy of   ccz                                                                                                                                                                                                                          the list
-        unit.update(screen, enemy_tower.block, player_tower.block)
+        unit.update(screen, enemy_tower, enemy_tower.block, player_tower.block)
         if unit.dead:
             enemy_tower.block.remove(unit)  # Remove the unit from the list
-        pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)  # Draw hitbox for debugging
+        # pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)  # Draw hitbox for debugging
 
     # Check win condition
     running = player_tower.dead_tower(enemy_tower)
