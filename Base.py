@@ -1,5 +1,6 @@
 import pygame
 from Customize import Color, Resolution
+import Unit
 
 
 class Tower:
@@ -34,6 +35,8 @@ class Tower:
         for block in self.block[:]:
             block.move()
             if block.rect.colliderect(enemy_tower.rect):
+                if isinstance(block, Unit.BigBloated_Boss):
+                    enemy_tower.hp -= 40
                 enemy_tower.hp -= 10
                 self.block.remove(block)
 

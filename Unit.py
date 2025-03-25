@@ -137,8 +137,8 @@ class Centipede(Unit):
         super().__init__(x, y)  # Initialize Unit class
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.speed = -5
-        self.health = 150
-        self.attack_power = 1
+        self.health = 50
+        self.attack_power = 0.5
         self.animation_steps = [4, 6, 4, 4, 4, 2, 4, 6, 4]  # Confirmed steps
         self.sprite_sheet = Enemies.Centipede # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
@@ -158,8 +158,8 @@ class BigBloated(Unit):
         self.y = y
         self.speed = -1
         self.original_speed = -1
-        self.health = 250
-        self.attack_power = 0.4
+        self.health = 100
+        self.attack_power = 0.3
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
         self.sprite_sheet = Enemies.Big_bloated  # Centipede sprite sheet
@@ -173,12 +173,58 @@ class BigBloated(Unit):
         screen.blit(img, (self.rect.x-50, self.rect.y))  # Draw image at rect position
 
 
+class BigBloated_Boss(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y)  # Now Unit.__init__() will use the correct sprite_sheet
+        self.x = x
+        self.y = y
+        self.speed = -1
+        self.original_speed = -1
+        self.health = 1000
+        self.attack_power = 2
+        self.measurement = [72, 2, [100, 200]]  # Updated frame size
+        self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
+        self.sprite_sheet = Enemies.Big_bloated  # Centipede sprite sheet
+        self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
+        self.rect = pygame.Rect(self.x+20, self.y, 80, 150)
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+    def draw(self, screen):
+        img = pygame.transform.flip(self.image, self.flip, False)
+        screen.blit(img, (self.rect.x-50, self.rect.y -150))  # Draw image at rect position
+
+    def load_images(self, sprite_sheet, animation_steps):
+        animation_list = []
+        sheet_width, sheet_height = sprite_sheet.get_size()
+        frame_width = self.measurement[0]
+        frame_height = self.measurement[0]  # Assuming square frames
+
+        for y, animation in enumerate(animation_steps):
+            temp_img_list = []
+            for x in range(animation):
+                # Check if the subsurface is within the bounds of the sprite sheet
+                if (x * frame_width + frame_width <= sheet_width and
+                        y * frame_height + frame_height <= sheet_height):
+                    temp_img = sprite_sheet.subsurface(x * frame_width, y * frame_height,
+                                                       frame_width, frame_height)
+                    temp_img_list.append(
+                        pygame.transform.scale(temp_img, (frame_width * 4, frame_height * 4)))
+                else:
+                    print(f"Warning: Skipping frame at x={x}, y={y} (outside sprite sheet bounds)")
+                    continue  # Skip this frame
+
+            animation_list.append(temp_img_list)
+        return animation_list
+
+
 class LumberJack(Unit):
     def __init__(self, x, y):
         super().__init__(x, y)  # Initialize Unit class
         self.speed = 5
         self.original_speed = 5
-        self.attack_power = 0.8
+        self.attack_power = 0.4
+        self.health = 100
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
         self.sprite_sheet = Hero.Lumberjack # Viking sprite sheet
@@ -199,7 +245,8 @@ class Pantheon(Unit):
         super().__init__(x, y)  # Initialize Unit class
         self.speed = 3
         self.original_speed = 3
-        self.attack_power = 1.6
+        self.attack_power = 0.8
+        self.health = 300
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
         self.sprite_sheet = Hero.Pantheon  # Viking sprite sheet
@@ -219,7 +266,7 @@ class BrownBeard(Unit):
     def __init__(self, x, y):
         super().__init__(x, y)  # Initialize Unit class
         self.speed = 3
-        self.original_speed = 3
+        self.original_speed = 30
         self.attack_power = 1.6
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
