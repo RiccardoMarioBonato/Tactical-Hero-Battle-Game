@@ -161,7 +161,7 @@ class Centipede(Unit):
         screen.blit(img, (self.rect.x-50, self.rect.y))  # Draw image at rect position
 
 
-class Centipede_Boss(Unit):
+class CentipedeBoss(Unit):
     def __init__(self, x, y):
         super().__init__(x, y)  # Initialize Unit class
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
@@ -226,14 +226,14 @@ class BigBloated(Unit):
         screen.blit(img, (self.rect.x-50, self.rect.y))  # Draw image at rect position
 
 
-class BigBloated_Boss(Unit):
+class BigBloatedBoss(Unit):
     def __init__(self, x, y):
         super().__init__(x, y)  # Now Unit.__init__() will use the correct sprite_sheet
         self.x = x
         self.y = y
         self.speed = -1
         self.original_speed = -1
-        self.health = 800
+        self.health = 750
         self.attack_power = 1.4
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
@@ -319,8 +319,10 @@ class BrownBeard(Unit):
     def __init__(self, x, y):
         super().__init__(x, y)  # Initialize Unit class
         self.speed = 3
-        self.original_speed = 30
-        self.attack_power = 1.6
+        self.original_speed = 3
+        self.attack_power = 0.6
+        self.health = 150
+        self.cost = 5
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
         self.sprite_sheet = Hero.BrownBeard  # Viking sprite sheet

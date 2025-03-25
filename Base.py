@@ -35,11 +35,11 @@ class Tower:
         for block in self.block[:]:
             block.move()
             if block.rect.colliderect(enemy_tower.rect):
-                if isinstance(block, Unit.BigBloated_Boss) :
+                if isinstance(block, Unit.BigBloatedBoss):
                     enemy_tower.hp -= 40
                 elif isinstance(block, Unit.Pantheon):
                     enemy_tower.hp -= 15
-                if isinstance(block, Unit.Centipede_Boss) :
+                if isinstance(block, Unit.CentipedeBoss):
                     enemy_tower.hp -= 30
                 else:
                     enemy_tower.hp -= 10

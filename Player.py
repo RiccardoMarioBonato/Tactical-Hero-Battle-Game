@@ -23,9 +23,11 @@ class Controller:
                         player_tower.block.append(Pantheon(player_tower.rect.right,
                                                               Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
                         resources.remove_solar_energy(8)
-                # if event.key == pygame.K_v:
-                #     player_tower.block.append(BrownBeard(player_tower.rect.right,
-                #                                           Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
+                if event.key == pygame.K_v:
+                    if resources.solar_energy >= 5:
+                        player_tower.block.append(BrownBeard(player_tower.rect.right,
+                                                          Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
+                        resources.remove_solar_energy(5)
 
 
 class Resources:

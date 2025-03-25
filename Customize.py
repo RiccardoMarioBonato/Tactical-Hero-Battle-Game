@@ -25,9 +25,9 @@ class Dimensions:
 class Hero:
     Lumberjack = pygame.image.load("Heros/LumberJack/LumberJack/LumberJack_final.png")
     Pantheon = pygame.image.load("Heros/Pantheon/Pantheon/Pantheon_spritesheet.png")
-    # BrownBeard = pygame.image.load("Heros/BrownBeard/BrownBeard_Spritelist.png")
+    BrownBeard = pygame.image.load("Heros/BrownBeard/BrownBeard_Spritelist.png")
 
 
 class Enemies:
     Centipede = pygame.image.load("Enemies/Centipede/Centipede_SpriteSheet.png")
-    Big_bloated = pygame.image.load("img/swamp enemy/3 Big bloated/Big_bloated_spritesheet.png")
+    Big_bloated = pygame.image.load("Enemies/Big_bloated/Big_bloated_spritesheet.png")
