@@ -1,4 +1,6 @@
 from Customize import *  # Import constants
+import pygame
+import sys
 
 
 class GameManager:
@@ -18,9 +20,3 @@ class Block:
         pygame.draw.rect(screen, Color.WHITE, self.rect)
 
 
-class Menu:
-    def __init__(self):
-        pass
-
-    def selector(self):
-        pass

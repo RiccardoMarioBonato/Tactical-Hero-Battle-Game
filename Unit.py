@@ -167,7 +167,7 @@ class CentipedeBoss(Unit):
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.speed = -3
         self.original_speed = -3
-        self.health = 450
+        self.health = 400
         self.attack_power = 1
         self.animation_steps = [4, 6, 4, 4, 4, 2, 4, 6, 4]  # Confirmed steps
         self.sprite_sheet = Enemies.Centipede # Centipede sprite sheet
