@@ -1,5 +1,5 @@
 import pygame
-from Unit import LumberJack, Pantheon
+from Unit import LumberJack, Pantheon, BrownBeard
 from Customize import Color, Images, Resolution, Dimensions
 import time
 
@@ -20,6 +20,9 @@ class Controller:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_c:
                     player_tower.block.append(Pantheon(player_tower.rect.right,
+                                                          Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
+                if event.key == pygame.K_v:
+                    player_tower.block.append(BrownBeard(player_tower.rect.right,
                                                           Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
 
 

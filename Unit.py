@@ -213,3 +213,24 @@ class Pantheon(Unit):
     def draw(self, screen):
         img = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(img, (self.rect.x-50, self.rect.y-50))  # Draw image at rect position
+
+
+class BrownBeard(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y)  # Initialize Unit class
+        self.speed = 3
+        self.original_speed = 3
+        self.attack_power = 1.6
+        self.measurement = [96, 2, [100, 200]]  # Updated frame size
+        self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
+        self.sprite_sheet = Hero.BrownBeard  # Viking sprite sheet
+        self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 96))
+        self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
+        self.rect.x = int(self.rect.x)
+        self.rect.y = int(self.rect.y)
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+    def draw(self, screen):
+        img = pygame.transform.flip(self.image, self.flip, False)
+        screen.blit(img, (self.rect.x-50, self.rect.y-50))  # Draw image at rect position
