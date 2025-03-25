@@ -1,34 +1,62 @@
 import pygame
-from Unit import LumberJack, Pantheon, BrownBeard
+from Unit import *
 from Customize import Color, Images, Resolution, Dimensions
 import time
+import sys
+all_hero_dict = {"Lumberjack": LumberJack, "Pantheon": Pantheon, "BrownBeard": BrownBeard}
+
+
+# Correct mapping that matches your units tuple order
+key_unit_mapping = {
+    pygame.K_c: 0,  # LumberJack (index 0)
+    pygame.K_v: 1,   # Pantheon (index 1)
+    pygame.K_b: 2,   # BrownBeard (index 2)
+    pygame.K_n: 3,   # Kitsune (index 3)
+    pygame.K_m: 4    # YamabushiTengu (index 4)
+}
+
+# Make sure this matches exactly with the mapping above
+units = (
+    LumberJack(0,0),   # index 0 (C)
+    Pantheon(0,0),     # index 1 (V)
+    BrownBeard(0,0),    # index 2 (B)
+    Kitsune(0,0),      # index 3 (N)
+    YamabushiTengu(0,0) # index 4 (M)
+)
 
 
 class Controller:
     @staticmethod
     def keyboard(player_tower, resources):
+        global key_unit_mapping, units
+
+        # Process events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                SystemExit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    if resources.solar_energy >= 3:
-                        player_tower.block.append(LumberJack(player_tower.rect.right,
-                                                             Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
-                        resources.remove_solar_energy(3)
+                pygame.quit()
+                sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
-                    if resources.solar_energy >= 8:
-                        player_tower.block.append(Pantheon(player_tower.rect.right,
-                                                              Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
-                        resources.remove_solar_energy(8)
-                if event.key == pygame.K_v:
-                    if resources.solar_energy >= 5:
-                        player_tower.block.append(BrownBeard(player_tower.rect.right,
-                                                          Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2))
-                        resources.remove_solar_energy(5)
+                if event.key in key_unit_mapping:
+                    unit_index = key_unit_mapping[event.key]
+                    if unit_index is not None and unit_index < len(units):
+                        unit = units[unit_index]
 
+                        # Create new instance at correct position
+                        spawn_x = player_tower.rect.right
+                        spawn_y = Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2
+
+                        if resources.solar_energy >= unit.cost:
+                            new_unit = type(unit)(spawn_x, spawn_y)
+                            player_tower.block.append(new_unit)
+                            resources.remove_solar_energy(unit.cost)
+
+
+class selected_hero:
+    def __init__(self):
+        self.hero1 = LumberJack
+        self.hero2 = Pantheon
+        self.hero3 = BrownBeard
 
 class Resources:
     __instance = None

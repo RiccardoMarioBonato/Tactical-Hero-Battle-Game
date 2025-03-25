@@ -6,8 +6,10 @@ hero = Hero()
 enemy = Enemies()
 
 
+
+
 class Unit:
-    def __init__(self, x, y):
+    def __init__(self, x=0, y=0):
         self.health = 100
         self.attack_power = 1
         self.speed = -1  # Horizontal speed
@@ -30,7 +32,11 @@ class Unit:
         self.attacking = False
         self.dead = False
 
-    def load_images(self, sprite_sheet, animation_steps):
+    def add_x_y(self, x, y):
+        self.x = x
+        self.y = y
+
+    def load_images(self, sprite_sheet, animation_steps, scale=2):
         animation_list = []
         sheet_width, sheet_height = sprite_sheet.get_size()
         frame_width = self.measurement[0]
@@ -45,7 +51,7 @@ class Unit:
                     temp_img = sprite_sheet.subsurface(x * frame_width, y * frame_height,
                                                        frame_width, frame_height)
                     temp_img_list.append(
-                        pygame.transform.scale(temp_img, (frame_width * 2, frame_height * 2)))
+                        pygame.transform.scale(temp_img, (frame_width * scale, frame_height * scale)))
                 else:
                     print(f"Warning: Skipping frame at x={x}, y={y} (outside sprite sheet bounds)")
                     continue  # Skip this frame
@@ -173,35 +179,12 @@ class CentipedeBoss(Unit):
         self.sprite_sheet = Enemies.Centipede # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
         self.rect = pygame.Rect(x, y, 80, 120)  # Initialize rect
-        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, 4)
         self.image = self.animation_list[self.action][self.frame_index]
 
     def draw(self, screen):
         img = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(img, (self.rect.x-50, self.rect.y-150))  # Draw image at rect position
-
-    def load_images(self, sprite_sheet, animation_steps):
-        animation_list = []
-        sheet_width, sheet_height = sprite_sheet.get_size()
-        frame_width = self.measurement[0]
-        frame_height = self.measurement[0]  # Assuming square frames
-
-        for y, animation in enumerate(animation_steps):
-            temp_img_list = []
-            for x in range(animation):
-                # Check if the subsurface is within the bounds of the sprite sheet
-                if (x * frame_width + frame_width <= sheet_width and
-                        y * frame_height + frame_height <= sheet_height):
-                    temp_img = sprite_sheet.subsurface(x * frame_width, y * frame_height,
-                                                       frame_width, frame_height)
-                    temp_img_list.append(
-                        pygame.transform.scale(temp_img, (frame_width * 4, frame_height * 4)))
-                else:
-                    print(f"Warning: Skipping frame at x={x}, y={y} (outside sprite sheet bounds)")
-                    continue  # Skip this frame
-
-            animation_list.append(temp_img_list)
-        return animation_list
 
 
 class BigBloated(Unit):
@@ -233,42 +216,19 @@ class BigBloatedBoss(Unit):
         self.y = y
         self.speed = -1
         self.original_speed = -1
-        self.health = 750
+        self.health = 600
         self.attack_power = 1.4
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
         self.sprite_sheet = Enemies.Big_bloated  # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
         self.rect = pygame.Rect(self.x+20, self.y, 80, 150)
-        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps)
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, 4)
         self.image = self.animation_list[self.action][self.frame_index]
 
     def draw(self, screen):
         img = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(img, (self.rect.x-50, self.rect.y -150))  # Draw image at rect position
-
-    def load_images(self, sprite_sheet, animation_steps):
-        animation_list = []
-        sheet_width, sheet_height = sprite_sheet.get_size()
-        frame_width = self.measurement[0]
-        frame_height = self.measurement[0]  # Assuming square frames
-
-        for y, animation in enumerate(animation_steps):
-            temp_img_list = []
-            for x in range(animation):
-                # Check if the subsurface is within the bounds of the sprite sheet
-                if (x * frame_width + frame_width <= sheet_width and
-                        y * frame_height + frame_height <= sheet_height):
-                    temp_img = sprite_sheet.subsurface(x * frame_width, y * frame_height,
-                                                       frame_width, frame_height)
-                    temp_img_list.append(
-                        pygame.transform.scale(temp_img, (frame_width * 4, frame_height * 4)))
-                else:
-                    print(f"Warning: Skipping frame at x={x}, y={y} (outside sprite sheet bounds)")
-                    continue  # Skip this frame
-
-            animation_list.append(temp_img_list)
-        return animation_list
 
 
 class LumberJack(Unit):
@@ -277,6 +237,7 @@ class LumberJack(Unit):
         self.speed = 5
         self.original_speed = 5
         self.attack_power = 0.45
+        self.cost = 1
         self.health = 100
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
@@ -299,6 +260,7 @@ class Pantheon(Unit):
         self.speed = 1.5
         self.original_speed = 1.5
         self.attack_power = 0.8
+        self.cost = 8
         self.health = 325
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
@@ -336,3 +298,72 @@ class BrownBeard(Unit):
     def draw(self, screen):
         img = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(img, (self.rect.x-50, self.rect.y-50))  # Draw image at rect position
+
+
+class Kitsune(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y)  # Initialize Unit class
+        self.speed = 4
+        self.original_speed = 4
+        self.attack_power = 2
+        self.health = 200
+        self.cost = 1
+        self.measurement = [128, 1.5, [100, 200]]  # Updated frame size
+        self.animation_steps = [8, 10, 9, 10, 10, 10, 7, 6, 2, 9]  # Confirmed steps
+        self.sprite_sheet = Hero.Kitsune  # Viking sprite sheet
+        self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 128))
+        self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
+        self.rect.x = int(self.rect.x)
+        self.rect.y = int(self.rect.y)
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, 1.75)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+    def draw(self, screen):
+        img = pygame.transform.flip(self.image, self.flip, False)
+        screen.blit(img, (self.rect.x-50, self.rect.y-80))  # Draw image at rect position
+
+
+class YamabushiTengu(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y)  # Initialize Unit class
+        self.speed = 3
+        self.original_speed = 3
+        self.attack_power = 0.6
+        self.health = 150
+        self.cost = 5
+        self.measurement = [128, 2, [100, 200]]  # Updated frame size
+        self.animation_steps = [8, 6, 6, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
+        self.sprite_sheet = Hero.Yamabushi_tengu  # Viking sprite sheet
+        self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 128))
+        self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
+        self.rect.x = int(self.rect.x)
+        self.rect.y = int(self.rect.y)
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, 1.5)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+    def draw(self, screen):
+        img = pygame.transform.flip(self.image, self.flip, False)
+        screen.blit(img, (self.rect.x-50, self.rect.y-50))  # Draw image at rect position
+
+
+class KarasuTengu(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y)  # Initialize Unit class
+        self.speed = 3
+        self.original_speed = 3
+        self.attack_power = 0.6
+        self.health = 150
+        self.cost = 5
+        self.measurement = [128, 2, [100, 200]]  # Updated frame size
+        self.animation_steps = [8, 6, 6, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
+        self.sprite_sheet = Hero.Karasu_tengu
+        self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 128))
+        self.rect = pygame.Rect(x, y+50, 60, 136)  # Initialize rect
+        self.rect.x = int(self.rect.x)
+        self.rect.y = int(self.rect.y)
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, 1.5)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+    def draw(self, screen):
+        img = pygame.transform.flip(self.image, self.flip, False)
+        screen.blit(img, (self.rect.x-50, self.rect.y-50))

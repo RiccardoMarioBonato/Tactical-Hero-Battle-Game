@@ -25,8 +25,12 @@ class Dimensions:
 
 class Hero:
     Lumberjack = pygame.image.load("Heros/LumberJack/LumberJack/LumberJack_final.png")
+    lumberjack_photo = pygame.image.load("Heros/LumberJack/lumberjack_select_photo.webp")
     Pantheon = pygame.image.load("Heros/Pantheon/Pantheon/Pantheon_spritesheet.png")
     BrownBeard = pygame.image.load("Heros/BrownBeard/BrownBeard_Spritelist.png")
+    Kitsune = pygame.image.load("Heros/Kitsune/Kitsune_spritesheet.png")
+    Yamabushi_tengu = pygame.image.load("Heros/YamabushiTengu/Yamabushi_tengu_spritesheet.png")
+    Karasu_tengu = pygame.image.load("Heros/KarasuTengu/Karasu_tengu_Spritesheet.png")
 
 
 class Enemies:

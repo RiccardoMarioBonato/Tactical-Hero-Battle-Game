@@ -1,10 +1,13 @@
+from tkinter.constants import UNITS
+
 import pygame
-import Level_select
+from Level_select import LevelSelect, SelectGame
 import Customize
 from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
 from Enemy import EnemyLogic
 from Player import Controller, Resources
+from Unit import BigBloatedBoss
 # Initialize pygame
 pygame.init()
 
@@ -21,47 +24,123 @@ pygame.display.set_caption("Block Battle Game")
 # Game loop setup
 player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
 enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
-clock = pygame.time.Clock()
 running = True
 enemy_spawn_timer = 0
 Enemy = EnemyLogic()
-
+font_large = pygame.font.SysFont('Arial', 48)
+font_medium = pygame.font.SysFont('Arial', 32)
+font_small = pygame.font.SysFont('Arial', 24)
+font_tiny = pygame.font.SysFont('Arial', 16)
 player_resources = Resources()
 player_resources.add_start()
+clock = pygame.time.Clock()
 
-# Level_select.main()
+
+# Game states
+class GameState:
+    CHARACTER_SELECT = 0
+    MAIN_GAME = 1
+    LEVEL_COMPLETE = 2
+
+
+# Initialize game state
+current_state = GameState.CHARACTER_SELECT
+selected_characters = []
+cr_select = SelectGame()  # This should be your SelectGame instance, not LevelSelect
+
+# Main game loop
+running = True
 while running:
     clock.tick(Resolution.FPS)
-    screen.blit(background, (0, 0))
-    Controller.keyboard(player_tower, player_resources)
-    # Move blocks
-    player_tower.take_dmg(enemy_tower)
-    enemy_tower.take_dmg(player_tower)
-    Enemy.enemy_spawn_timer_setter(1)
-    Resources.add_solar_energy(player_resources)
-    Enemy.spawn_pattern(enemy_tower, player_resources)
-    # Draw everythingc
-    player_tower.draw(screen)
-    enemy_tower.draw(screen)
-    player_resources.draw(screen)
-    pygame.draw.rect(screen, (255, 0, 0), player_tower.rect, 2)
-    pygame.draw.rect(screen, (255, 0, 0), enemy_tower.rect, 2)
-    # Update and draw player blocks
-    for char in player_tower.block[:]:  # Iterate over a copy of the list
-        char.update(screen, player_tower, player_tower.block, enemy_tower.block)
-        if char.dead:  # Check if the unit is ready to be removed
-            player_tower.block.remove(char)
-            # Remove the unit from the list
-        # pygame.draw.rect(screen, (255, 0, 0), char.rect, 2)  # Draw hitbox for debugging
 
-    # Update and draw enemy blocks
-    for unit in enemy_tower.block[:]:  # Iterate over a copy of   ccz                                                                                                                                                                                                                          the list
-        unit.update(screen, enemy_tower, enemy_tower.block, player_tower.block)
-        if unit.dead:
-            enemy_tower.block.remove(unit)  # Remove the unit from the list
-        # pygame.draw.rect(screen, (255, 0, 0), unit.rect, 2)  # Draw hitbox for debugging
+    if current_state == GameState.CHARACTER_SELECT:
+        # Run character and level selection
+        selection_result = cr_select.selecting()
+        print(selection_result)
+        if selection_result:  # Returns [level_num, selected_characters]
+            level_num, selected_hero_classes = selection_result
+            current_state = GameState.MAIN_GAME
 
-    # Check win condition
-    running = player_tower.dead_tower(enemy_tower)
+            # Update the available units based on selection
+            global units
+            units = tuple(hero_class(0, 0) for hero_class in selected_hero_classes)
+
+            # Update key mappings to match new units
+            global key_unit_mapping
+            key_unit_mapping = {
+                pygame.K_c: 0,
+                pygame.K_v: 1,
+                pygame.K_b: 2,
+                pygame.K_n: 3 if len(selected_hero_classes) > 3 else None,
+                pygame.K_m: 4 if len(selected_hero_classes) > 4 else None
+            }
+
+            # Initialize with selected characters
+            player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
+            enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
+            player_resources = Resources()
+            player_resources.add_start()
+
+            # for char_class in selected_characters:
+            #     player_tower.block.append(char_class)
+
+    elif current_state == GameState.MAIN_GAME:
+        # Your existing game loop
+        screen.blit(background, (0, 0))
+        Controller.keyboard(player_tower, player_resources)
+
+        # Move blocks
+        player_tower.take_dmg(enemy_tower)
+        enemy_tower.take_dmg(player_tower)
+        Enemy.enemy_spawn_timer_setter(1)
+        Resources.add_solar_energy(player_resources)
+        Enemy.spawn_pattern(enemy_tower, player_resources)
+
+        # Draw everything
+        player_tower.draw(screen)
+        enemy_tower.draw(screen)
+        player_resources.draw(screen)
+
+        # Update and draw player blocks
+        for char in player_tower.block[:]:
+            char.update(screen, player_tower, player_tower.block, enemy_tower.block)
+            if char.dead:
+                player_tower.block.remove(char)
+
+        # Update and draw enemy blocks
+        for unit in enemy_tower.block[:]:
+            unit.update(screen, enemy_tower, enemy_tower.block, player_tower.block)
+            if unit.dead:
+                enemy_tower.block.remove(unit)
+
+        # Check win/lose condition
+        if not player_tower.dead_tower(enemy_tower):
+            current_state = GameState.LEVEL_COMPLETE
+        elif enemy_tower.dead_tower(player_tower) <= 0:
+            current_state = GameState.LEVEL_COMPLETE
+
+    elif current_state == GameState.LEVEL_COMPLETE:
+        # Level complete screen
+        screen.fill((0, 0, 0))
+        victory_text = font_large.render("Level Complete!", True, (255, 255, 255))
+        continue_text = font_medium.render("Press SPACE to continue", True, (255, 255, 255))
+
+        screen.blit(victory_text,
+                    (Resolution.WIDTH // 2 - victory_text.get_width() // 2, Resolution.HEIGHT // 2 - 50))
+        screen.blit(continue_text,
+                    (Resolution.WIDTH // 2 - continue_text.get_width() // 2, Resolution.HEIGHT // 2 + 50))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                current_state = GameState.CHARACTER_SELECT  # Return to character select
+                cr_select = SelectGame()  # Reset the selection screen
+
     pygame.display.flip()
+
 pygame.quit()
+
+if __name__ == "__main__":
+    game = SelectGame()
+    game.selecting()

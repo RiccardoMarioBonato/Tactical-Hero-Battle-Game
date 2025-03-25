@@ -15,6 +15,10 @@ class Tower:
         self.block = []
         self.image = pygame.image.load(tower)  # Replace with actual file name
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.available_units = []
+
+    def add_available_units(self, units):
+        self.available_units.append(units)
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))
@@ -39,8 +43,12 @@ class Tower:
                     enemy_tower.hp -= 40
                 elif isinstance(block, Unit.Pantheon):
                     enemy_tower.hp -= 15
-                if isinstance(block, Unit.CentipedeBoss):
+                elif isinstance(block, Unit.CentipedeBoss):
                     enemy_tower.hp -= 30
+                elif isinstance(block, Unit.Pantheon):
+                    enemy_tower.hp -= 15
+                elif isinstance(block, Unit.BrownBeard):
+                    enemy_tower.hp -= 10
                 else:
                     enemy_tower.hp -= 10
                 # block.attack(self)

@@ -1,7 +1,7 @@
 import pygame
 from Customize import *
 from GameManager import Block
-from Unit import Unit, Centipede, BigBloated, BigBloatedBoss, CentipedeBoss
+from Unit import Centipede, BigBloated, BigBloatedBoss, CentipedeBoss
 import random
 import Player
 
@@ -29,7 +29,7 @@ class EnemyLogic:
         if self.boss_timer > 2800:
             tower.block.append(BigBloatedBoss(tower.rect.left - Dimensions.BLOCK_SIZE1,
                        Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2))
-            self.boss_timer = random.randint(750, 1300)
+            self.boss_timer = random.randint(500, 1000)
 
     def enemy_spawn_timer_setter(self, add_value):
         self.enemy_spawn_timer += add_value
