@@ -3,7 +3,6 @@ from Unit import *
 from Customize import Color, Images, Resolution, Dimensions
 import time
 import sys
-all_hero_dict = {"Lumberjack": LumberJack, "Pantheon": Pantheon, "BrownBeard": BrownBeard}
 
 
 # Correct mapping that matches your units tuple order
@@ -27,9 +26,7 @@ units = (
 
 class Controller:
     @staticmethod
-    def keyboard(player_tower, resources):
-        global key_unit_mapping, units
-
+    def keyboard(player_tower, resources, selected_units):
         # Process events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -37,19 +34,27 @@ class Controller:
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key in key_unit_mapping:
-                    unit_index = key_unit_mapping[event.key]
-                    if unit_index is not None and unit_index < len(units):
-                        unit = units[unit_index]
+                # Only handle C, V, B keys
+                if event.key == pygame.K_c and len(selected_units) > 0:
+                    unit_instance = selected_units[0](0, 0)  # Create temporary instance
+                    if resources.solar_energy >= unit_instance.cost:
+                        Controller.spawn_unit(selected_units[0], player_tower, resources)
+                elif event.key == pygame.K_v and len(selected_units) > 1:
+                    unit_instance = selected_units[1](0, 0)  # Create temporary instance
+                    if resources.solar_energy >= unit_instance.cost:
+                        Controller.spawn_unit(selected_units[1], player_tower, resources)
+                elif event.key == pygame.K_b and len(selected_units) > 2:
+                    unit_instance = selected_units[2](0, 0)  # Create temporary instance
+                    if resources.solar_energy >= unit_instance.cost:
+                        Controller.spawn_unit(selected_units[2], player_tower, resources)
 
-                        # Create new instance at correct position
-                        spawn_x = player_tower.rect.right
-                        spawn_y = Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2
-
-                        if resources.solar_energy >= unit.cost:
-                            new_unit = type(unit)(spawn_x, spawn_y)
-                            player_tower.block.append(new_unit)
-                            resources.remove_solar_energy(unit.cost)
+    @staticmethod
+    def spawn_unit(unit_class, player_tower, resources):
+        spawn_x = player_tower.rect.right
+        spawn_y = Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2
+        new_unit = unit_class(spawn_x, spawn_y)
+        player_tower.block.append(new_unit)
+        resources.remove_solar_energy(new_unit.cost)
 
 
 class selected_hero:

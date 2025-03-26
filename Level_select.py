@@ -126,7 +126,8 @@ class LevelSelect:
 
 class CharacterSelect:
     all_hero_dict = {"Lumberjack": LumberJack, "Pantheon": Pantheon,
-                      "BrownBeard": BrownBeard}
+                     "BrownBeard": BrownBeard, "Kitsune": Kitsune,
+                     "KarasuTengu": KarasuTengu, "YamabushiTengu": YamabushiTengu}
 
     def __init__(self, game_state):
         self.game_state = game_state
@@ -153,12 +154,15 @@ class CharacterSelect:
             "Lumberjack": "Heros/LumberJack/lumberjack_select_photo.webp",
             "Pantheon": "Heros/LumberJack/lumberjack_select_photo.webp",
             "BrownBeard": "Heros/LumberJack/lumberjack_select_photo.webp",
+            "Kitsune": "Heros/LumberJack/lumberjack_select_photo.webp",
+            "KarasuTengu": "Heros/LumberJack/lumberjack_select_photo.webp",
+            "YamabushiTengu": "Heros/LumberJack/lumberjack_select_photo.webp"
             # Add all other characters with their corresponding image paths
         }
 
         class_data = [
             ("Pantheon", "Warrior"), ("Lumberjack", "Warrior"), ("BrownBeard", "Warrior"),
-            ("Mage", "Wizard"), ("Rogue", "Assassin"), ("Cleric", "Healer"),
+            ("Kitsune", "Wizard"), ("KarasuTengu", "Assassin"), ("YamabushiTengu", "Healer"),
             ("Knight", "Paladin"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
             ("Berserker", "Brawler"), ("Druid", "Shapeshifter"), ("Engineer", "Builder"),
             ("Samurai", "Duelist"), ("Necromancer", "Summoner"), ("Monk", "Martial Artist"),
@@ -258,10 +262,6 @@ class CharacterSelect:
 
     def handle_events(self):
         for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-
             if event.type == MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
 
@@ -280,26 +280,18 @@ class CharacterSelect:
                             else:
                                 # Show max selection feedback
                                 feedback = font_medium.render("Max 3 heroes selected!", True, RED)
-                                screen.blit(feedback,
-                                            (SCREEN_WIDTH // 2 - feedback.get_width() // 2, 170))
+                                screen.blit(feedback, (SCREEN_WIDTH//2 - feedback.get_width()//2, 170))
                                 pygame.display.flip()
                                 pygame.time.delay(1000)
 
-                # Check back button
-                if self.back_button.collidepoint(mouse_pos):
-                    return "back"
-
-                # Check start button
-                if self.start_button.collidepoint(mouse_pos) and self.selected_characters:
-                    self.game_state.selected_team = self.selected_characters
-                    nl = []
-                    for i in self.game_state.selected_team:
-                        nl.append(CharacterSelect.all_hero_dict[i])
-                    self.game_state.selected_team = nl
-                    return "level_select"  # Proceed to level select
-                # all_hero_dict = {"Lumberjack": LumberJack, "Pantheon": Pantheon,
-                #                  "BrownBeard": BrownBeard}
-
+                # Check start button - only enabled when exactly 3 heroes selected
+                if (self.start_button.collidepoint(mouse_pos) and
+                    len(self.selected_characters) == self.max_selection):
+                    self.game_state.selected_team = [
+                        CharacterSelect.all_hero_dict[name]
+                        for name in self.selected_characters
+                    ]
+                    return "level_select"
         return None
 
 

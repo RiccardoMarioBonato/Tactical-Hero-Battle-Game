@@ -54,40 +54,24 @@ while running:
     clock.tick(Resolution.FPS)
 
     if current_state == GameState.CHARACTER_SELECT:
-        # Run character and level selection
         selection_result = cr_select.selecting()
-        print(selection_result)
         if selection_result:  # Returns [level_num, selected_characters]
             level_num, selected_hero_classes = selection_result
             current_state = GameState.MAIN_GAME
 
-            # Update the available units based on selection
-            global units
-            units = tuple(hero_class(0, 0) for hero_class in selected_hero_classes)
+            # Store selected units for the controller
+            selected_units = selected_hero_classes[:3]  # Only take first 3 selected
 
-            # Update key mappings to match new units
-            global key_unit_mapping
-            key_unit_mapping = {
-                pygame.K_c: 0,
-                pygame.K_v: 1,
-                pygame.K_b: 2,
-                pygame.K_n: 3 if len(selected_hero_classes) > 3 else None,
-                pygame.K_m: 4 if len(selected_hero_classes) > 4 else None
-            }
-
-            # Initialize with selected characters
+            # Initialize game state
             player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
             enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
             player_resources = Resources()
             player_resources.add_start()
 
-            # for char_class in selected_characters:
-            #     player_tower.block.append(char_class)
-
     elif current_state == GameState.MAIN_GAME:
-        # Your existing game loop
         screen.blit(background, (0, 0))
-        Controller.keyboard(player_tower, player_resources)
+        Controller.keyboard(player_tower, player_resources, selected_units)
+        # Rest of your game loop...
 
         # Move blocks
         player_tower.take_dmg(enemy_tower)
