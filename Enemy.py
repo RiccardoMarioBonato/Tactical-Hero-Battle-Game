@@ -18,8 +18,7 @@ class EnemyLogic:
                 tower.block.append(CentipedeBoss(tower.rect.left - Dimensions.BLOCK_SIZE1,
                     Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2))
                 self.stall_timer = 0
-        if self.enemy_spawn_timer > 150:  # 10 = 1/6 sec
-            # tower.block.append(Block(tower.rect.left - Dimensions.BLOCK_SIZE1, Resolution.HEIGHT - 200 - Dimensions.BLOCK_SIZE1 // 2, -5))
+        if self.enemy_spawn_timer > 150:
             mobs = [Centipede(tower.rect.left - Dimensions.BLOCK_SIZE1,
                     Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2),
                     BigBloated(tower.rect.left - Dimensions.BLOCK_SIZE1,

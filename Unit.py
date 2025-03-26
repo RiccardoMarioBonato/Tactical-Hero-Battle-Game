@@ -15,6 +15,7 @@ class Unit:
         self.speed = -1  # Horizontal speed
         self.cost = 20
         self.original_speed = -1
+        self.tower_dmg = 10
         self.measurement = [72, 1, [100, 200]]  # Updated frame size
         self.x = x
         self.y = y
@@ -175,6 +176,7 @@ class CentipedeBoss(Unit):
         self.original_speed = -3
         self.health = 400
         self.attack_power = 1
+        self.tower_dmg = 30
         self.animation_steps = [4, 6, 4, 4, 4, 2, 4, 6, 4]  # Confirmed steps
         self.sprite_sheet = Enemies.Centipede # Centipede sprite sheet
         self.body = pygame.transform.scale(self.sprite_sheet, (self.measurement[0], 72))
@@ -217,6 +219,7 @@ class BigBloatedBoss(Unit):
         self.speed = -1
         self.original_speed = -1
         self.health = 600
+        self.tower_dmg = 40
         self.attack_power = 1.4
         self.measurement = [72, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 6, 5, 6, 4, 2, 4, 4, 6]  # Confirmed steps
@@ -260,8 +263,9 @@ class Pantheon(Unit):
         self.speed = 1.5
         self.original_speed = 1.5
         self.attack_power = 0.8
-        self.cost = 8
+        self.cost = 1
         self.health = 325
+        self.tower_dmg = 15
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
         self.sprite_sheet = Hero.Pantheon  # Viking sprite sheet

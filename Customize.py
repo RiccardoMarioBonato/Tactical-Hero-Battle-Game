@@ -1,5 +1,5 @@
 import pygame
-
+from pygame.locals import *
 
 class Color:
     WHITE = (255, 255, 255)
@@ -8,6 +8,10 @@ class Color:
     BLUE = (0, 0, 255)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
+    YELLOW = (255, 255, 0)
+    DARK_GRAY = (100, 100, 100)
+    ORANGE = (255, 95, 31)
+    LOCKED_COLOR = (150, 150, 150)
 
 
 class Images:
