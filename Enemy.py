@@ -13,19 +13,19 @@ class EnemyLogic:
         self.stall_timer = 0
 
     def spawn_pattern(self, tower, player_resources):
-        if player_resources.solar_energy >= 19:
-            if self.stall_timer > 350:
+        if player_resources.solar_energy >= 18:
+            if self.stall_timer > 370:
                 tower.block.append(CentipedeBoss(tower.rect.left - Dimensions.BLOCK_SIZE1,
                     Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2))
                 self.stall_timer = 0
-        if self.enemy_spawn_timer > 150:
+        if self.enemy_spawn_timer > 180:
             mobs = [Centipede(tower.rect.left - Dimensions.BLOCK_SIZE1,
                     Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2),
                     BigBloated(tower.rect.left - Dimensions.BLOCK_SIZE1,
                     Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2)]
             tower.block.append(random.choice(mobs))
-            self.enemy_spawn_timer = 0
-        if self.boss_timer > 2800:
+            self.enemy_spawn_timer = random.randint(0, 30)
+        if self.boss_timer > 3500:
             tower.block.append(BigBloatedBoss(tower.rect.left - Dimensions.BLOCK_SIZE1,
                        Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2))
             self.boss_timer = random.randint(500, 1000)

@@ -149,8 +149,8 @@ class CharacterSelect:
         }
 
         class_data = [
-            ("Pantheon", "Tank"), ("Lumberjack", "Warrior"), ("BrownBeard", "Spearmen"),
-            ("Kitsune", "Mage"), ("KarasuTengu", "Assassin"), ("YamabushiTengu", "Assassin"),
+            ("Pantheon", "Tank cost 8"), ("Lumberjack", "Warrior cost 2"), ("BrownBeard", "Spearmen cost 4"),
+            ("Kitsune", "Mage cost 18"), ("KarasuTengu", "Assassin cost 2"), ("YamabushiTengu", "Assassin cost 12"),
             ("Knight", "Paladin"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
             ("Berserker", "Brawler"), ("Druid", "Shapeshifter"), ("Engineer", "Builder"),
             ("Samurai", "Duelist"), ("Necromancer", "Summoner"), ("Monk", "Martial Artist"),
