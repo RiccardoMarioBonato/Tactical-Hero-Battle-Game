@@ -34,19 +34,30 @@ class Controller:
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                # Only handle C, V, B keys
+                # Use the first 3 selected units
                 if event.key == pygame.K_c and len(selected_units) > 0:
-                    unit_instance = selected_units[0](0, 0)  # Create temporary instance
-                    if resources.solar_energy >= unit_instance.cost:
-                        Controller.spawn_unit(selected_units[0], player_tower, resources)
-                elif event.key == pygame.K_v and len(selected_units) > 1:
-                    unit_instance = selected_units[1](0, 0)  # Create temporary instance
-                    if resources.solar_energy >= unit_instance.cost:
-                        Controller.spawn_unit(selected_units[1], player_tower, resources)
-                elif event.key == pygame.K_b and len(selected_units) > 2:
-                    unit_instance = selected_units[2](0, 0)  # Create temporary instance
-                    if resources.solar_energy >= unit_instance.cost:
-                        Controller.spawn_unit(selected_units[2], player_tower, resources)
+                    unit_class = selected_units[0]
+                    unit_instance = unit_class(0, 0)  # Create temporary instance
+                    if (resources.solar_energy >= unit_instance.cost[0] and
+                            resources.lunar_energy >= unit_instance.cost[1] and
+                            resources.eclipse_energy >= unit_instance.cost[2]):
+                        Controller.spawn_unit(unit_class, player_tower, resources)
+
+                if event.key == pygame.K_v and len(selected_units) > 1:
+                    unit_class = selected_units[1]
+                    unit_instance = unit_class(0, 0)
+                    if (resources.solar_energy >= unit_instance.cost[0] and
+                            resources.lunar_energy >= unit_instance.cost[1] and
+                            resources.eclipse_energy >= unit_instance.cost[2]):
+                        Controller.spawn_unit(unit_class, player_tower, resources)
+
+                if event.key == pygame.K_b and len(selected_units) > 2:
+                    unit_class = selected_units[2]
+                    unit_instance = unit_class(0, 0)
+                    if (resources.solar_energy >= unit_instance.cost[0] and
+                            resources.lunar_energy >= unit_instance.cost[1] and
+                            resources.eclipse_energy >= unit_instance.cost[2]):
+                        Controller.spawn_unit(unit_class, player_tower, resources)
 
     @staticmethod
     def spawn_unit(unit_class, player_tower, resources):
@@ -54,7 +65,9 @@ class Controller:
         spawn_y = Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2
         new_unit = unit_class(spawn_x, spawn_y)
         player_tower.block.append(new_unit)
-        resources.remove_solar_energy(new_unit.cost)
+        resources.remove_solar_energy(new_unit.cost[0])
+        resources.remove_lunar_energy(new_unit.cost[1])
+        resources.remove_eclipse_energy(new_unit.cost[2])
 
 
 class selected_hero:
@@ -80,32 +93,22 @@ class Resources:
         self.rect = pygame.Rect(10, 10, 300, 50)  # Position and size of the resource bar
         self.current_time = 0
 
-    def add_solar_energy(self):
-         # Calculate the time difference since the last update
-         current_time = time.time()
-         time_elapsed = current_time - self.clock
-         self.solar_energy += time_elapsed
-         self.clock = current_time  # Update the timestamp
+    def add_energy(self, multiplier):
+        current_time = time.time()
+        time_elapsed = current_time - self.clock
+        self.solar_energy += time_elapsed * multiplier[0]
+        self.lunar_energy += time_elapsed * multiplier[1]
+        self.eclipse_energy += time_elapsed * multiplier[2]
+        self.clock = current_time  # Update the timestamp
 
     def remove_solar_energy(self, cost):
         self.solar_energy -= cost
-
-    def add_lunar_energy(self):
-        # Calculate the time difference since the last update
-        time_elapsed = self.current_time - self.clock
-        self.lunar_energy += time_elapsed/2
-        self.clock = self.current_time  # Update the timestamp
 
     def remove_lunar_energy(self, cost):
         self.lunar_energy -= cost
 
     def get_solar_energy(self):
         return self.solar_energy
-    def add_eclipse_energy(self):
-        # Calculate the time difference since the last update
-        time_elapsed = self.current_time - self.clock
-        self.eclipse_energy += time_elapsed/10
-        self.clock = self.current_time  # Update the timestamp
 
     def remove_eclipse_energy(self, cost):
         self.eclipse_energy -= cost

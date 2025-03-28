@@ -17,9 +17,21 @@ font_tiny = pygame.font.SysFont('Arial', 16)
 Exit_to_menu_surface = font_large.render("Exit", True, "black")
 Exit_to_menu_surface_rect = Exit_to_menu_surface.get_rect(midbottom=(1840, 80))
 
-class GameState:
+
+class GameProgress:
     def __init__(self):
         self.unlocked_levels = 1  # Start with level 1 unlocked
+        self.selected_team = []  # This will store the actual hero classes, not just names
+
+    def complete_level(self, level_num):
+        """Call this when a level is completed"""
+        if level_num >= self.unlocked_levels:
+            self.unlocked_levels = level_num + 1
+
+
+class GameState:
+    def __init__(self):
+        self.unlocked_levels = 1  # Start with level 2 unlocked
         self.selected_team = []
         self.player_progress = {
             "level1_completed": False,
@@ -27,14 +39,20 @@ class GameState:
             "level3_completed": False,
         }
 
+    def complete_level(self, level_num):
+        """Call this when a level is completed"""
+        if level_num == self.unlocked_levels:
+            self.unlocked_levels += 1
+            self.player_progress[f"level{level_num}_completed"] = True
+
 
 class LevelSelect:
-    def __init__(self, game_state):
-        self.game_state = game_state
+    def __init__(self, game_progress):
+        self.game_progress = game_progress
         self.levels = [
             {"name": "Forest", "number": 1, "rect": pygame.Rect(400, 300, 300, 200),
              "locked": False},
-            {"name": "Dungeon", "number": 2, "rect": pygame.Rect(800, 300, 300, 200),
+            {"name": "Dark Forest", "number": 2, "rect": pygame.Rect(800, 300, 300, 200),
              "locked": True},
             {"name": "Castle", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
              "locked": True},
@@ -50,7 +68,7 @@ class LevelSelect:
 
     def update_locked_status(self):
         for level in self.levels:
-            level["locked"] = level["number"] > self.game_state.unlocked_levels
+            level["locked"] = level["number"] > self.game_progress.unlocked_levels
 
     def draw(self, game_screen):
         screen.fill(Color.WHITE)
@@ -105,7 +123,6 @@ class LevelSelect:
                 # Check back button
                 if self.back_button.collidepoint(mouse_pos):
                     return "back"
-
         return None
 
 
@@ -114,14 +131,13 @@ class CharacterSelect:
                      "BrownBeard": BrownBeard, "Kitsune": Kitsune,
                      "KarasuTengu": KarasuTengu, "YamabushiTengu": YamabushiTengu}
 
-    def __init__(self, game_state):
-        self.game_state = game_state
+    def __init__(self, game_progress):
+        self.game_progress = game_progress
         self.characters = self.create_character_list()
         self.back_button = pygame.Rect(50, 950, 200, 80)
         self.start_button = pygame.Rect(1670, 950, 200, 80)
         self.selected_characters = []
         self.max_selection = 3
-
 
     def create_character_list(self):
         characters = []
@@ -149,8 +165,8 @@ class CharacterSelect:
         }
 
         class_data = [
-            ("Pantheon", "Tank cost 8"), ("Lumberjack", "Warrior cost 2"), ("BrownBeard", "Spearmen cost 4"),
-            ("Kitsune", "Mage cost 18"), ("KarasuTengu", "Assassin cost 2"), ("YamabushiTengu", "Assassin cost 12"),
+            ("Pantheon", "8 lunar"), ("Lumberjack", "2 solar"), ("BrownBeard", "4 solar"),
+            ("Kitsune", "8 sonar 8 lunar 1 eclipse"), ("KarasuTengu", "2 lunar"), ("YamabushiTengu", "12 lunar 1 eclipse"),
             ("Knight", "Paladin"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
             ("Berserker", "Brawler"), ("Druid", "Shapeshifter"), ("Engineer", "Builder"),
             ("Samurai", "Duelist"), ("Necromancer", "Summoner"), ("Monk", "Martial Artist"),
@@ -177,7 +193,7 @@ class CharacterSelect:
                 "image": image,  # Now using actual image instead of colored surface
                 "selected": False,
                 "rect": pygame.Rect(x, y, 200, 250),
-                "locked": i >= 6 and self.game_state.unlocked_levels < 2
+                "locked": i >= 6 and self.game_progress.unlocked_levels < 2
             })
 
         return characters
@@ -254,32 +270,24 @@ class CharacterSelect:
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
-                if Exit_to_menu_surface_rect.collidepoint(
-                        pygame.mouse.get_pos()):
+                if Exit_to_menu_surface_rect.collidepoint(pygame.mouse.get_pos()):
                     sys.exit()
+
                 # Check character selection
                 for char in self.characters:
                     if char["rect"].collidepoint(mouse_pos) and not char["locked"]:
                         if char["selected"]:
-                            # Deselect
                             char["selected"] = False
                             self.selected_characters.remove(char["name"])
                         else:
-                            # Select if under max limit
                             if len(self.selected_characters) < self.max_selection:
                                 char["selected"] = True
                                 self.selected_characters.append(char["name"])
-                            else:
-                                # Show max selection feedback
-                                feedback = font_medium.render("Max 3 heroes selected!", True, Color.RED)
-                                screen.blit(feedback, (Resolution.WIDTH//2 - feedback.get_width()//2, 170))
-                                pygame.display.flip()
-                                pygame.time.delay(1000)
 
                 # Check start button - only enabled when exactly 3 heroes selected
                 if (self.start_button.collidepoint(mouse_pos) and
                     len(self.selected_characters) == self.max_selection):
-                    self.game_state.selected_team = [
+                    self.game_progress.selected_team = [
                         CharacterSelect.all_hero_dict[name]
                         for name in self.selected_characters
                     ]
@@ -288,11 +296,11 @@ class CharacterSelect:
 
 
 class SelectGame:
-    def __init__(self):
-        self.state = GameState()
+    def __init__(self, game_progress):  # Only need game_progress now
+        self.game_progress = game_progress
         self.current_screen = "character_select"
-        self.character_select = CharacterSelect(self.state)
-        self.level_select = LevelSelect(self.state)
+        self.character_select = CharacterSelect(self.game_progress)
+        self.level_select = LevelSelect(self.game_progress)
 
     def selecting(self):
         running_chr = True
@@ -302,29 +310,18 @@ class SelectGame:
             if self.current_screen == "character_select":
                 result = self.character_select.handle_events()
                 self.character_select.draw(screen)
-
                 if result == "level_select":
                     self.current_screen = "level_select"
 
             elif self.current_screen == "level_select":
                 result = self.level_select.handle_events()
                 self.level_select.draw(screen)
-
                 if result == "back":
                     self.current_screen = "character_select"
                 elif result and result.startswith("level"):
                     level_num = int(result[5:])
-                    print(f"Starting Level {level_num} with team: {self.state.selected_team}")
-                    # Here you would actually start the level
-                    # For demo, we'll just unlock next level when completing
-                    if level_num == self.state.unlocked_levels:
-                        self.state.unlocked_levels += 1
-                        self.level_select.update_locked_status()
-                        # Unlock more characters when reaching level 2
-                        if level_num == 2:
-                            for char in self.character_select.characters:
-                                char["locked"] = False
-                    return [level_num, self.state.selected_team]
+                    # Return both level number AND the selected team from game_progress
+                    return [level_num, self.game_progress.selected_team]
 
             pygame.display.flip()
             clock.tick(60)

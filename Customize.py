@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+
 class Color:
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
@@ -15,7 +16,8 @@ class Color:
 
 
 class Images:
-    bg = pygame.image.load("img/backgrounds/w6BZFE.jpg")
+    day_default = pygame.image.load("img/backgrounds/w6BZFE.jpg")
+    night_default = pygame.image.load("img/backgrounds/night.png")
 
 
 class Resolution:

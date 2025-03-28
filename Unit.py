@@ -238,7 +238,7 @@ class LumberJack(Unit):
         self.speed = 2.5
         self.original_speed = 2.5
         self.attack_power = 0.3
-        self.cost = 2
+        self.cost = [2, 0, 0]
         self.health = 90
         self.tower_dmg = 10
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
@@ -262,7 +262,7 @@ class Pantheon(Unit):
         self.speed = 1.5
         self.original_speed = 1.5
         self.attack_power = 0.75
-        self.cost = 8
+        self.cost = [0, 8, 0]
         self.health = 325
         self.tower_dmg = 15
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
@@ -287,7 +287,7 @@ class BrownBeard(Unit):
         self.original_speed = 2
         self.attack_power = 0.5
         self.health = 150
-        self.cost = 4
+        self.cost = [4, 0, 0]
         self.tower_dmg = 10
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [6, 4, 4, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
@@ -311,7 +311,7 @@ class Kitsune(Unit):
         self.original_speed = 1
         self.attack_power = 1.175
         self.health = 450
-        self.cost = 18
+        self.cost = [8, 8, 1]
         self.tower_dmg = 30
         self.measurement = [128, 1.5, [100, 200]]  # Updated frame size
         self.animation_steps = [8, 10, 9, 10, 10, 10, 7, 6, 2, 9]  # Confirmed steps
@@ -335,7 +335,7 @@ class YamabushiTengu(Unit):
         self.original_speed = 5
         self.attack_power = 0.9
         self.health = 300
-        self.cost = 12
+        self.cost = [0, 10, 1]
         self.tower_dmg = 20
         self.measurement = [128, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [8, 6, 6, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps
@@ -359,7 +359,7 @@ class KarasuTengu(Unit):
         self.original_speed = 6
         self.attack_power = 0.25
         self.health = 100
-        self.cost = 2
+        self.cost = [0, 2, 0]
         self.tower_dmg = 5
         self.measurement = [128, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [8, 6, 6, 4, 4, 4, 4, 5, 2, 4]  # Confirmed steps

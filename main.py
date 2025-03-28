@@ -1,7 +1,7 @@
 from tkinter.constants import UNITS
 
 import pygame
-from Level_select import LevelSelect, SelectGame
+from Level_select import LevelSelect, SelectGame, GameProgress
 import Customize
 from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
@@ -12,7 +12,7 @@ from Unit import BigBloatedBoss
 pygame.init()
 
 # Load images
-background = pygame.transform.scale(Images.bg, (Resolution.WIDTH, Resolution.HEIGHT))
+background = pygame.transform.scale(Images.day_default, (Resolution.WIDTH, Resolution.HEIGHT))
 # Tower positions
 PLAYER_TOWER_X = 0
 ENEMY_TOWER_X = Resolution.WIDTH - 200
@@ -34,6 +34,9 @@ font_tiny = pygame.font.SysFont('Arial', 16)
 player_resources = Resources()
 player_resources.add_start()
 clock = pygame.time.Clock()
+level_num = 1
+selected_hero_classes = []
+game_progress = GameProgress()
 
 
 # Game states
@@ -46,7 +49,7 @@ class GameState:
 # Initialize game state
 current_state = GameState.CHARACTER_SELECT
 selected_characters = []
-cr_select = SelectGame()  # This should be your SelectGame instance, not LevelSelect
+cr_select = SelectGame(game_progress)  # This should be your SelectGame instance, not LevelSelect
 
 # Main game loop
 running = True
@@ -55,31 +58,25 @@ while running:
 
     if current_state == GameState.CHARACTER_SELECT:
         selection_result = cr_select.selecting()
-        if selection_result:  # Returns [level_num, selected_characters]
+        if selection_result:  # Returns [level_num, selected_hero_classes]
             level_num, selected_hero_classes = selection_result
             current_state = GameState.MAIN_GAME
-
-            # Store selected units for the controller
-            selected_units = selected_hero_classes[:3]  # Only take first 3 selected
-
-            # Initialize game state
+            # Initialize game with selected team
             player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
             enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
             player_resources = Resources()
             player_resources.add_start()
 
     elif current_state == GameState.MAIN_GAME:
-        screen.blit(background, (0, 0))
-        Controller.keyboard(player_tower, player_resources, selected_units)
+        Controller.keyboard(player_tower, player_resources, selected_hero_classes[:3])
         # Rest of your game loop...
+
+        spawn, background = Enemy.pick_level(level_num, enemy_tower, player_resources)
+        screen.blit(background, (0, 0))
 
         # Move blocks
         player_tower.take_dmg(enemy_tower)
         enemy_tower.take_dmg(player_tower)
-        Enemy.enemy_spawn_timer_setter(1)
-        Resources.add_solar_energy(player_resources)
-        Enemy.spawn_pattern(enemy_tower, player_resources)
-
         # Draw everything
         player_tower.draw(screen)
         enemy_tower.draw(screen)
@@ -117,9 +114,14 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif current_state == GameState.LEVEL_COMPLETE:
+                # Check if player won
+                if enemy_tower.dead_tower(player_tower) <= 0:
+                    # Unlock next level
+                    game_progress.complete_level(level_num)
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 current_state = GameState.CHARACTER_SELECT  # Return to character select
-                cr_select = SelectGame()  # Reset the selection screen
+                cr_select = SelectGame(game_progress)  # Reset the selection screen
 
     pygame.display.flip()
 
