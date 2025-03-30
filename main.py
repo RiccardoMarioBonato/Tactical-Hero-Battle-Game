@@ -1,7 +1,7 @@
 from tkinter.constants import UNITS
 
 import pygame
-from Level_select import LevelSelect, SelectGame, GameProgress
+from Level_select import SelectGame, GameProgress
 import Customize
 from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
@@ -23,8 +23,6 @@ pygame.display.set_caption("Block Battle Game")
 
 # Game loop setup
 player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
-enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
-running = True
 enemy_spawn_timer = 0
 Enemy = EnemyLogic()
 font_large = pygame.font.SysFont('Arial', 48)
@@ -32,11 +30,12 @@ font_medium = pygame.font.SysFont('Arial', 32)
 font_small = pygame.font.SysFont('Arial', 24)
 font_tiny = pygame.font.SysFont('Arial', 16)
 player_resources = Resources()
-player_resources.add_start()
+
 clock = pygame.time.Clock()
 level_num = 1
 selected_hero_classes = []
 game_progress = GameProgress()
+game_progress.unlock_all() # for testing
 
 
 # Game states
@@ -51,6 +50,8 @@ current_state = GameState.CHARACTER_SELECT
 selected_characters = []
 cr_select = SelectGame(game_progress)  # This should be your SelectGame instance, not LevelSelect
 
+cr_select.
+
 # Main game loop
 running = True
 while running:
@@ -64,16 +65,14 @@ while running:
             # Initialize game with selected team
             player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
             enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
-            player_resources = Resources()
-            player_resources.add_start()
 
     elif current_state == GameState.MAIN_GAME:
+        player_resources.add_start()
+
         Controller.keyboard(player_tower, player_resources, selected_hero_classes[:3])
         # Rest of your game loop...
-
         spawn, background = Enemy.pick_level(level_num, enemy_tower, player_resources)
         screen.blit(background, (0, 0))
-
         # Move blocks
         player_tower.take_dmg(enemy_tower)
         enemy_tower.take_dmg(player_tower)
@@ -103,6 +102,7 @@ while running:
     elif current_state == GameState.LEVEL_COMPLETE:
         # Level complete screen
         screen.fill((0, 0, 0))
+        player_resources.resources_reset()
         victory_text = font_large.render("Level Complete!", True, (255, 255, 255))
         continue_text = font_medium.render("Press SPACE to continue", True, (255, 255, 255))
 

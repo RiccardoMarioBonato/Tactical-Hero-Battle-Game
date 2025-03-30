@@ -14,14 +14,14 @@ key_unit_mapping = {
     pygame.K_m: 4    # YamabushiTengu (index 4)
 }
 
-# Make sure this matches exactly with the mapping above
-units = (
-    LumberJack(0,0),   # index 0 (C)
-    Pantheon(0,0),     # index 1 (V)
-    BrownBeard(0,0),    # index 2 (B)
-    Kitsune(0,0),      # index 3 (N)
-    YamabushiTengu(0,0) # index 4 (M)
-)
+# # Make sure this matches exactly with the mapping above
+# units = (
+#     LumberJack(0,0),   # index 0 (C)
+#     Pantheon(0,0),     # index 1 (V)
+#     BrownBeard(0,0),    # index 2 (B)
+#     Kitsune(0,0),      # index 3 (N)
+#     YamabushiTengu(0,0) # index 4 (M)
+# )
 
 
 class Controller:
@@ -88,8 +88,10 @@ class Resources:
         self.solar_energy = 0
         self.lunar_energy = 0
         self.eclipse_energy = 0
-        self.clock = 0  # Store a timestamp (float) here
+        self.game_clock = 0
+        self.clock = None  # Store a timestamp (float) here
         self.font1 = pygame.font.Font(None, 36)  # Smaller font for resource display
+        self.font2 = pygame.font.Font(None, 72)
         self.rect = pygame.Rect(10, 10, 300, 50)  # Position and size of the resource bar
         self.current_time = 0
 
@@ -99,7 +101,8 @@ class Resources:
         self.solar_energy += time_elapsed * multiplier[0]
         self.lunar_energy += time_elapsed * multiplier[1]
         self.eclipse_energy += time_elapsed * multiplier[2]
-        self.clock = current_time  # Update the timestamp
+        self.game_clock += time_elapsed
+        self.clock = current_time
 
     def remove_solar_energy(self, cost):
         self.solar_energy -= cost
@@ -115,7 +118,15 @@ class Resources:
 
     def add_start(self):
         # Initialize the clock with the current time
-        self.clock = time.time()
+        if self.clock is None:
+            self.clock = time.time()
+
+    def resources_reset(self):
+        self.clock = None
+        self.game_clock = 0
+        self.solar_energy = 0
+        self.lunar_energy = 0
+        self.eclipse_energy = 0
 
     def draw(self, screen):
         # Create a background rectangle for the resource bar
@@ -124,14 +135,10 @@ class Resources:
         solar_text = self.font1.render(f"Solar: {int(self.solar_energy)}", True, (255, 255, 0))  # Yellow
         lunar_text = self.font1.render(f"Lunar: {int(self.lunar_energy)}", True, (0, 255, 255))  # Cyan
         eclipse_text = self.font1.render(f"Eclipse: {int(self.eclipse_energy)}", True, (255, 0, 255))  # Magenta
+        timer_text = self.font1.render(f"TIME: {int(self.game_clock)}", True, (0, 0, 0))
 
         # Position the text within the resource bar
-        screen.blit(solar_text, (self.rect.x + 770, self.rect.y + 10))
-        screen.blit(lunar_text, (self.rect.x + 890, self.rect.y + 10))
-        screen.blit(eclipse_text, (self.rect.x + 1010, self.rect.y + 10))
-
-    def all_add(self):
-        pass
-        # self.add_lunar_energy()
-        # self.add_solar_energy()
-        # self.add_eclipse_energy()
+        screen.blit(timer_text, (self.rect.x + 890, self.rect.y + 10))
+        screen.blit(solar_text, (self.rect.x + 770, self.rect.y + 60))
+        screen.blit(lunar_text, (self.rect.x + 890, self.rect.y + 60))
+        screen.blit(eclipse_text, (self.rect.x + 1010, self.rect.y + 60))

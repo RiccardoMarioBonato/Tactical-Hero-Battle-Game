@@ -18,6 +18,7 @@ class Color:
 class Images:
     day_default = pygame.image.load("img/backgrounds/w6BZFE.jpg")
     night_default = pygame.image.load("img/backgrounds/night.png")
+    swamp_default = pygame.image.load("img/backgrounds/Swamp_map.png")
 
 
 class Resolution:
@@ -37,8 +38,15 @@ class Hero:
     Kitsune = pygame.image.load("Heros/Kitsune/Kitsune_spritesheet.png")
     Yamabushi_tengu = pygame.image.load("Heros/YamabushiTengu/Yamabushi_tengu_spritesheet.png")
     Karasu_tengu = pygame.image.load("Heros/KarasuTengu/Karasu_tengu_Spritesheet.png")
+    SwordMaster = pygame.image.load("Heros/SwordMaster/Sword_Master_spritesheet.png")
 
 
 class Enemies:
     Centipede = pygame.image.load("Enemies/Centipede/Centipede_SpriteSheet.png")
     Big_bloated = pygame.image.load("Enemies/Big_bloated/Big_bloated_spritesheet.png")
+    Battle_turtle = pygame.image.load("Enemies/Battle_turtle/Battle_turtle_spritesheet.png")
+
+
+class Projectile:
+    bullet1 = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")
+    bullet2 = pygame.image.load("Enemies/Battle_turtle/Bullet2.png")

@@ -28,22 +28,8 @@ class GameProgress:
         if level_num >= self.unlocked_levels:
             self.unlocked_levels = level_num + 1
 
-
-class GameState:
-    def __init__(self):
-        self.unlocked_levels = 1  # Start with level 2 unlocked
-        self.selected_team = []
-        self.player_progress = {
-            "level1_completed": False,
-            "level2_completed": False,
-            "level3_completed": False,
-        }
-
-    def complete_level(self, level_num):
-        """Call this when a level is completed"""
-        if level_num == self.unlocked_levels:
-            self.unlocked_levels += 1
-            self.player_progress[f"level{level_num}_completed"] = True
+    def unlock_all(self):
+        self.unlocked_levels = 6
 
 
 class LevelSelect:
@@ -54,7 +40,7 @@ class LevelSelect:
              "locked": False},
             {"name": "Dark Forest", "number": 2, "rect": pygame.Rect(800, 300, 300, 200),
              "locked": True},
-            {"name": "Castle", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
+            {"name": "Swamp", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
              "locked": True},
             {"name": "Volcano", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
              "locked": True},
@@ -129,7 +115,8 @@ class LevelSelect:
 class CharacterSelect:
     all_hero_dict = {"Lumberjack": LumberJack, "Pantheon": Pantheon,
                      "BrownBeard": BrownBeard, "Kitsune": Kitsune,
-                     "KarasuTengu": KarasuTengu, "YamabushiTengu": YamabushiTengu}
+                     "KarasuTengu": KarasuTengu, "YamabushiTengu": YamabushiTengu,
+                     "SwordMaster": SwordMaster}
 
     def __init__(self, game_progress):
         self.game_progress = game_progress
@@ -160,14 +147,15 @@ class CharacterSelect:
             "BrownBeard": "Heros/BrownBeard/Brownbeard_profile.jpg",
             "Kitsune": "Heros/Kitsune/Kitsune_profile_cute.jpg",
             "KarasuTengu": "Heros/KarasuTengu/Karasu_tengu_profile.jpg",
-            "YamabushiTengu": "Heros/YamabushiTengu/Yamabushi_tengu_profile.jpg"
+            "YamabushiTengu": "Heros/YamabushiTengu/Yamabushi_tengu_profile.jpg",
+            "SwordMaster": "Heros/SwordMaster/sword_profile.jpg"
             # Add all other characters with their corresponding image paths
         }
 
         class_data = [
-            ("Pantheon", "8 lunar"), ("Lumberjack", "2 solar"), ("BrownBeard", "4 solar"),
-            ("Kitsune", "8 sonar 8 lunar 1 eclipse"), ("KarasuTengu", "2 lunar"), ("YamabushiTengu", "12 lunar 1 eclipse"),
-            ("Knight", "Paladin"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
+            ("Pantheon", "4 lunar 1 eclipse"), ("Lumberjack", "2 solar"), ("BrownBeard", "4 solar"),
+            ("Kitsune", "8 sonar 8 lunar 2 eclipse"), ("KarasuTengu", "2 lunar"), ("YamabushiTengu", "12 lunar 1 eclipse"),
+            ("SwordMaster", "20 sonar 5 lunar 2 eclipse"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
             ("Berserker", "Brawler"), ("Druid", "Shapeshifter"), ("Engineer", "Builder"),
             ("Samurai", "Duelist"), ("Necromancer", "Summoner"), ("Monk", "Martial Artist"),
             ("Bard", "Buffer"), ("Gunslinger", "Marksman"), ("Witch", "Debuffer")
@@ -193,7 +181,7 @@ class CharacterSelect:
                 "image": image,  # Now using actual image instead of colored surface
                 "selected": False,
                 "rect": pygame.Rect(x, y, 200, 250),
-                "locked": i >= 6 and self.game_progress.unlocked_levels < 2
+                "locked": i >= 7 and self.game_progress.unlocked_levels < 2
             })
 
         return characters
@@ -294,6 +282,22 @@ class CharacterSelect:
                     return "level_select"
         return None
 
+    def unlock_all(self):
+        self.levels = [
+            {"name": "Forest", "number": 1, "rect": pygame.Rect(400, 300, 300, 200),
+             "locked": False},
+            {"name": "Dark Forest", "number": 2, "rect": pygame.Rect(800, 300, 300, 200),
+             "locked": False},
+            {"name": "Swamp", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
+             "locked": False},
+            {"name": "Volcano", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
+             "locked": False},
+            {"name": "Sky Temple", "number": 5, "rect": pygame.Rect(800, 600, 300, 200),
+             "locked": False},
+            {"name": "Final Battle", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
+             "locked": False}
+        ]
+
 
 class SelectGame:
     def __init__(self, game_progress):  # Only need game_progress now
@@ -306,7 +310,7 @@ class SelectGame:
         running_chr = True
         while running_chr:
             result = None
-
+            self.character_select.unlock_all() #for testing
             if self.current_screen == "character_select":
                 result = self.character_select.handle_events()
                 self.character_select.draw(screen)
