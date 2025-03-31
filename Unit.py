@@ -526,8 +526,8 @@ class SwordMaster(Unit):
         self.original_speed = 7
         self.attack_power = 1
         self.health = 500
-        # self.cost = [20, 5, 2]
-        self.cost = [0, 0, 0]
+        self.cost = [20, 5, 2]
+        # self.cost = [0, 0, 0]
         self.tower_dmg = 30
         self.measurement = [96, 2, [100, 200]]  # Updated frame size
         self.animation_steps = [16, 7, 4]  # Confirmed steps

@@ -20,8 +20,7 @@ ENEMY_TOWER_X = Resolution.WIDTH - 200
 # Initialize screen
 screen = pygame.display.set_mode((Resolution.WIDTH, Resolution.HEIGHT))
 pygame.display.set_caption("Block Battle Game")
-
-# Game loop setup
+current_mob_list = []
 player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
 enemy_spawn_timer = 0
 Enemy = EnemyLogic()
@@ -35,7 +34,7 @@ clock = pygame.time.Clock()
 level_num = 1
 selected_hero_classes = []
 game_progress = GameProgress()
-game_progress.unlock_all() # for testing
+# game_progress.unlock_all() # for testing
 
 
 # Game states
@@ -50,7 +49,6 @@ current_state = GameState.CHARACTER_SELECT
 selected_characters = []
 cr_select = SelectGame(game_progress)  # This should be your SelectGame instance, not LevelSelect
 
-cr_select.
 
 # Main game loop
 running = True

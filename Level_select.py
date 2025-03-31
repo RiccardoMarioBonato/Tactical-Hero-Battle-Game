@@ -310,7 +310,7 @@ class SelectGame:
         running_chr = True
         while running_chr:
             result = None
-            self.character_select.unlock_all() #for testing
+            # self.character_select.unlock_all() #for testing
             if self.current_screen == "character_select":
                 result = self.character_select.handle_events()
                 self.character_select.draw(screen)
