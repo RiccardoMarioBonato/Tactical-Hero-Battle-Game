@@ -13,7 +13,7 @@ key_unit_mapping = {
     pygame.K_n: 3,   # Kitsune (index 3)
     pygame.K_m: 4    # YamabushiTengu (index 4)
 }
-
+game_stats = GameStats()
 # # Make sure this matches exactly with the mapping above
 # units = (
 #     LumberJack(0,0),   # index 0 (C)
@@ -43,6 +43,7 @@ class Controller:
                             resources.eclipse_energy >= unit_instance.cost[2]):
                         Controller.spawn_unit(unit_class, player_tower, resources)
 
+
                 if event.key == pygame.K_v and len(selected_units) > 1:
                     unit_class = selected_units[1]
                     unit_instance = unit_class(0, 0)
@@ -68,6 +69,10 @@ class Controller:
         resources.remove_solar_energy(new_unit.cost[0])
         resources.remove_lunar_energy(new_unit.cost[1])
         resources.remove_eclipse_energy(new_unit.cost[2])
+        game_stats.record_resource_used("solar", new_unit.cost[0])
+        game_stats.record_resource_used("lunar", new_unit.cost[1])
+        game_stats.record_resource_used("eclipse", new_unit.cost[2])
+
 
 
 class selected_hero:
@@ -98,9 +103,9 @@ class Resources:
     def add_energy(self, multiplier):
         current_time = time.time()
         time_elapsed = current_time - self.clock
-        self.solar_energy += time_elapsed * multiplier[0]
-        self.lunar_energy += time_elapsed * multiplier[1]
-        self.eclipse_energy += time_elapsed * multiplier[2]
+        self.solar_energy += time_elapsed * multiplier[0] * 100
+        self.lunar_energy += time_elapsed * multiplier[1]* 100
+        self.eclipse_energy += time_elapsed * multiplier[2]* 100
         self.game_clock += time_elapsed
         self.clock = current_time
 

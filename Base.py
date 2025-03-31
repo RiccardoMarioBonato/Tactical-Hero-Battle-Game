@@ -29,10 +29,8 @@ class Tower:
 
     def dead_tower(self, enemy_tower):
         if enemy_tower.hp <= 0:
-            print("You win!")
             return False
         if self.hp <= 0:
-            print("You lose!")
             return False
         return True  # Keep the game running
 

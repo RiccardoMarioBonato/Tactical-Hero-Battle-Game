@@ -94,11 +94,11 @@ class LevelSelect:
 
     def handle_events(self):
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-            if event.type == MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
 
                 # Check level selection
@@ -256,7 +256,7 @@ class CharacterSelect:
 
     def handle_events(self):
         for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if Exit_to_menu_surface_rect.collidepoint(pygame.mouse.get_pos()):
                     sys.exit()

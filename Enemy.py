@@ -2,7 +2,6 @@ import pygame
 from fontTools.misc.macRes import Resource
 
 from Customize import *
-from GameManager import Block
 from Unit import Centipede, BigBloated, BigBloatedBoss, CentipedeBoss, BattleTurtle
 import random
 from Player import Resources
@@ -24,7 +23,7 @@ class EnemyLogic:
         #     #     self.stall_timer = 0
         if self.enemy_spawn_timer > 180:
             mobs = [Centipede, BigBloated]
-            mobs = BattleTurtle
+            # mobs = BattleTurtle
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
         if self.boss_timer > 3000:
@@ -40,7 +39,7 @@ class EnemyLogic:
     def add_mobs(self, mob):
         self.mob_list.append(mob)
 
-    def pick_level(self, level, tower, player_resources, mob_list):
+    def pick_level(self, level, tower, player_resources):
         level_list = [Level1, Level2, Level3, Level4, Level5, Level6]
         bg = [Images.day_default, Images.night_default, Images.swamp_default, ]
         self.enemy_spawn_timer_setter(1)
@@ -66,7 +65,7 @@ class EnemyLogic:
 #         Resources.add_energy(player_resources, [2,0.5,0.1])
 class Level1(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 180:
+        if self.enemy_spawn_timer > 10:
             mobs = [Centipede, BigBloated]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
@@ -83,7 +82,7 @@ class Level2(EnemyLogic):
                 EnemyLogic.spawn_unit(CentipedeBoss, tower)
                 self.stall_timer = 0
         if self.enemy_spawn_timer > 100:
-            mobs = [Centipede, BigBloated, BattleTurtle]
+            mobs = [Centipede, BigBloated, ] # BattleTurtle
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
         if self.boss_timer > 3400:

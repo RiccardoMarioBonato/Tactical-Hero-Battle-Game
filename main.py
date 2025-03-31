@@ -7,16 +7,19 @@ from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
 from Enemy import EnemyLogic
 from Player import Controller, Resources
+from GameManager import AssetLoader
 from Unit import BigBloatedBoss
+from GameStats import GameStats
 # Initialize pygame
 pygame.init()
-
+game_stats = GameStats()
 # Load images
 background = pygame.transform.scale(Images.day_default, (Resolution.WIDTH, Resolution.HEIGHT))
 # Tower positions
 PLAYER_TOWER_X = 0
 ENEMY_TOWER_X = Resolution.WIDTH - 200
-
+asset_loader = AssetLoader()
+game_assets = asset_loader.load_all_assets()
 # Initialize screen
 screen = pygame.display.set_mode((Resolution.WIDTH, Resolution.HEIGHT))
 pygame.display.set_caption("Block Battle Game")
@@ -42,6 +45,7 @@ class GameState:
     CHARACTER_SELECT = 0
     MAIN_GAME = 1
     LEVEL_COMPLETE = 2
+    STATS = 3
 
 
 # Initialize game state
@@ -62,7 +66,7 @@ while running:
             current_state = GameState.MAIN_GAME
             # Initialize game with selected team
             player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
-            enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
+            enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Encemy", "img/castle/png/1/Asset 27.png")
 
     elif current_state == GameState.MAIN_GAME:
         player_resources.add_start()
@@ -98,30 +102,49 @@ while running:
             current_state = GameState.LEVEL_COMPLETE
 
     elif current_state == GameState.LEVEL_COMPLETE:
-        # Level complete screen
-        screen.fill((0, 0, 0))
-        player_resources.resources_reset()
-        victory_text = font_large.render("Level Complete!", True, (255, 255, 255))
-        continue_text = font_medium.render("Press SPACE to continue", True, (255, 255, 255))
-
-        screen.blit(victory_text,
-                    (Resolution.WIDTH // 2 - victory_text.get_width() // 2, Resolution.HEIGHT // 2 - 50))
-        screen.blit(continue_text,
-                    (Resolution.WIDTH // 2 - continue_text.get_width() // 2, Resolution.HEIGHT // 2 + 50))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif current_state == GameState.LEVEL_COMPLETE:
-                # Check if player won
-                if enemy_tower.dead_tower(player_tower) <= 0:
-                    # Unlock next level
-                    game_progress.complete_level(level_num)
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                current_state = GameState.CHARACTER_SELECT  # Return to character select
-                cr_select = SelectGame(game_progress)  # Reset the selection screen
-
+        if not player_tower.dead_tower(enemy_tower):
+            game_stats.record_outcome(True)  # Player won
+        else:
+            game_stats.record_outcome(False)  # Player lost
+        if enemy_tower.dead_tower(player_tower) <= 0:
+            # Unlock next level
+            game_progress.complete_level(level_num)
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and current_state == GameState.LEVEL_COMPLETE:
+                    current_state = GameState.CHARACTER_SELECT  # Return to character select
+                    cr_select = SelectGame(game_progress)  # Reset the selection screen
+            game_stats.draw_stats_screen(screen)
+            game_stats.reset_stats()
+            player_resources.resources_reset()
+            pygame.display.flip()
     pygame.display.flip()
+
+        # game_stats.reset_stats()
+        # # Level complete screen
+        # screen.fill((0, 0, 0))
+        # player_resources.resources_reset()
+        # victory_text = font_large.render("Level Complete!", True, (255, 255, 255))
+        # continue_text = font_medium.render("Press SPACE to continue", True, (255, 255, 255))
+        #
+        # screen.blit(victory_text,
+        #             (Resolution.WIDTH // 2 - victory_text.get_width() // 2, Resolution.HEIGHT // 2 - 50))
+        # screen.blit(continue_text,
+        #             (Resolution.WIDTH // 2 - continue_text.get_width() // 2, Resolution.HEIGHT // 2 + 50))
+
+        # for event in pygame.event.get():
+        #     if event.type == pygame.QUIT:
+        #         running = False
+        #     elif current_state == GameState.LEVEL_COMPLETE:
+        #         # Check if player won
+        #         if enemy_tower.dead_tower(player_tower) <= 0:
+        #             # Unlock next level
+        #             game_progress.complete_level(level_num)
+        #
+        #     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+        #         current_state = GameState.CHARACTER_SELECT  # Return to character select
+        #         cr_select = SelectGame(game_progress)  # Reset the selection screen
+
+    # pygame.display.flip()
 
 pygame.quit()
 
