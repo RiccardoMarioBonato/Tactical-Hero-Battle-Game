@@ -1,6 +1,3 @@
-import pygame
-from fontTools.misc.macRes import Resource
-
 from Customize import *
 from Unit import Centipede, BigBloated, BigBloatedBoss, CentipedeBoss, BattleTurtle
 import random

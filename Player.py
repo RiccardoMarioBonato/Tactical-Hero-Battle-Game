@@ -74,13 +74,6 @@ class Controller:
         game_stats.record_resource_used("eclipse", new_unit.cost[2])
 
 
-
-class selected_hero:
-    def __init__(self):
-        self.hero1 = LumberJack
-        self.hero2 = Pantheon
-        self.hero3 = BrownBeard
-
 class Resources:
     __instance = None
 

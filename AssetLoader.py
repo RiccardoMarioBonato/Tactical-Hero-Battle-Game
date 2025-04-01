@@ -1,8 +1,7 @@
-# from Customize import *  # Import constants
-import pygame
 from Customize import Hero, Enemies, Projectile
 import json
 import os
+
 
 class AssetLoader:
     _instance = None
@@ -51,7 +50,8 @@ class UnitConfig:
     def __init__(self):
         self.config = self._load_config()
 
-    def _load_config(self):
+    @staticmethod
+    def _load_config():
         config_path = os.path.join(os.path.dirname(__file__), 'unit_config.json')
         with open(config_path, 'r') as f:
             return json.load(f)

@@ -1,14 +1,10 @@
-from tkinter.constants import UNITS
-
 import pygame
 from Level_select import SelectGame, GameProgress
-import Customize
 from Customize import Color, Images, Resolution, Dimensions
 from Base import Tower
 from Enemy import EnemyLogic
 from Player import Controller, Resources
-from GameManager import AssetLoader
-from Unit import BigBloatedBoss
+from AssetLoader import AssetLoader
 from GameStats import GameStats
 # Initialize pygame
 pygame.init()
@@ -45,14 +41,12 @@ class GameState:
     CHARACTER_SELECT = 0
     MAIN_GAME = 1
     LEVEL_COMPLETE = 2
-    STATS = 3
 
 
 # Initialize game state
 current_state = GameState.CHARACTER_SELECT
 selected_characters = []
 cr_select = SelectGame(game_progress)  # This should be your SelectGame instance, not LevelSelect
-
 
 # Main game loop
 running = True
@@ -66,7 +60,7 @@ while running:
             current_state = GameState.MAIN_GAME
             # Initialize game with selected team
             player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
-            enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Encemy", "img/castle/png/1/Asset 27.png")
+            enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
 
     elif current_state == GameState.MAIN_GAME:
         player_resources.add_start()

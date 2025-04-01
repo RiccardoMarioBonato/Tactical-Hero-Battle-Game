@@ -2,7 +2,6 @@ import csv
 import time
 from datetime import datetime
 import pygame
-import Customize
 from Customize import Resolution
 
 

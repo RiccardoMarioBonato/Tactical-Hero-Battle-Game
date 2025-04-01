@@ -7,23 +7,6 @@ from GameStats import GameStats
 
 game_stats = GameStats()
 
-class UnitConfig:
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance.config = cls._instance._load_config()
-        return cls._instance
-
-    def _load_config(self):
-        config_path = os.path.join(os.path.dirname(__file__), 'unit_config.json')
-        with open(config_path, 'r') as f:
-            return json.load(f)
-
-    def get_unit_config(self, unit_name):
-        return self.config['units'].get(unit_name, None)
-
 
 class UnitConfig:
     _instance = None
