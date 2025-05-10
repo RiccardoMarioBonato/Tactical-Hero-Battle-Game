@@ -19,7 +19,7 @@ background.fill((30, 30, 30))  # Dark gray background
 
 
 # Create a unit for testing
-class TestUnit(SmallViking):
+class TestUnit(LumberJack):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.sprite_sheet = pygame.image.load("Heros/LumberJack/LumberJack/LumberJack_final.png")  # Replace with your sprite sheet
