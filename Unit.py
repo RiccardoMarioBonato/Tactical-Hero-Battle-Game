@@ -120,7 +120,8 @@ class Unit:
         img = pygame.transform.flip(self.image, self.flip, False)
         offset_x, offset_y = self.config['offset']
         screen.blit(img, (self.rect.x + offset_x, self.rect.y + offset_y))
-        pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
+        # hit box
+        # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
 
     def update(self, screen, tower, own_units=[], other_units=[]):
         self.move()

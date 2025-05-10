@@ -45,11 +45,13 @@ class GameState:
     LEVEL_COMPLETE = 2
 
 
+
+
 # Initialize game state
 current_state = GameState.CHARACTER_SELECT
 selected_characters = []
 cr_select = SelectGame(game_progress)  # This should be your SelectGame instance, not LevelSelect
-
+exit_button_rect = Resources.draw_exit_button(screen, font_small)
 # Main game loop
 running = True
 while running:
@@ -68,7 +70,7 @@ while running:
     elif current_state == GameState.MAIN_GAME:
         player_resources.add_start()
 
-        Controller.keyboard(player_tower, player_resources, selected_hero_classes[:3])
+        Controller.keyboard(player_tower, player_resources, selected_hero_classes[:3], exit_button_rect)
         # Rest of your game loop...
         spawn, background = Enemy.pick_level(level_num, enemy_tower, player_resources)
         screen.blit(background, (0, 0))
@@ -80,6 +82,7 @@ while running:
         enemy_tower.draw(screen)
         player_resources.draw(screen)
         player_resources.draw_selected_heroes(screen, selected_hero_classes[:3], font_small)
+        exit_button_rect = Resources.draw_exit_button(screen, font_small)
         # Update and draw player blocks
         # Update and draw player blocks
         for char in player_tower.block[:]:
