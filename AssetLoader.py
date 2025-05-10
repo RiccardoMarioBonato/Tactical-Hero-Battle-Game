@@ -32,13 +32,28 @@ class AssetLoader:
         self.assets['enemies'] = {
             'Centipede': Enemies.Centipede,
             'BigBloated': Enemies.Big_bloated,
-            'BattleTurtle': Enemies.Battle_turtle
+            'BattleTurtle': Enemies.Battle_turtle,
+            'BlueSlime': Enemies.BlueSlime,
+            'RedSlime': Enemies.RedSlime,
+            'GreenSlime': Enemies.GreenSlime,
+            'GreyWerewolf': Enemies.GreyWerewolf,
+            'RedWerewolf': Enemies.RedWerewolf,
+            'WhiteWerewolf': Enemies.WhiteWerewolf,
+            'Gargona1': Enemies.Gargona1,
+            'Gargona2': Enemies.Gargona2,
+            'Gargona3': Enemies.Gargona3,
+            'Homeless1': Enemies.Homeless1,
+            'Homeless2': Enemies.Homeless2,
+            'Homeless3': Enemies.Homeless3,
+            'Destroyer': Enemies.Destroyer,
+            'Infantry': Enemies.Infantry,
+            'Swordsman': Enemies.Swordsman
         }
 
         # Load projectiles
         self.assets['projectiles'] = {
-            'bullet1': Projectile.bullet1,
-            'bullet2': Projectile.bullet2
+            'Bullet1': Projectile.Bullet1,
+            'Bullet2': Projectile.Bullet2
         }
 
         # Load backgrounds (add to Customize.py if needed)

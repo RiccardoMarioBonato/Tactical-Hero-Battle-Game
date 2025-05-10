@@ -83,18 +83,18 @@ class Resources:
         self.lunar_energy = 0
         self.eclipse_energy = 0
         self.game_clock = 0
-        self.clock = None  # Store a timestamp (float) here
-        self.font1 = pygame.font.Font(None, 36)  # Smaller font for resource display
+        self.clock = None
+        self.font1 = pygame.font.Font(None, 36)
         self.font2 = pygame.font.Font(None, 72)
-        self.rect = pygame.Rect(10, 10, 300, 50)  # Position and size of the resource bar
+        self.rect = pygame.Rect(10, 10, 300, 50)
         self.current_time = 0
 
     def add_energy(self, multiplier):
         current_time = time.time()
         time_elapsed = current_time - self.clock
-        self.solar_energy += time_elapsed * multiplier[0]*100
-        self.lunar_energy += time_elapsed * multiplier[1]*100
-        self.eclipse_energy += time_elapsed * multiplier[2]*100
+        self.solar_energy += time_elapsed * multiplier[0]
+        self.lunar_energy += time_elapsed * multiplier[1]
+        self.eclipse_energy += time_elapsed * multiplier[2]
         self.game_clock += time_elapsed
         self.clock = current_time
 
@@ -111,7 +111,6 @@ class Resources:
         self.eclipse_energy -= cost
 
     def add_start(self):
-        # Initialize the clock with the current time
         if self.clock is None:
             self.clock = time.time()
 
@@ -123,16 +122,45 @@ class Resources:
         self.eclipse_energy = 0
 
     def draw(self, screen):
-        # Create a background rectangle for the resource bar
-
-        # Display the resource values
-        solar_text = self.font1.render(f"Solar: {int(self.solar_energy)}", True, (255, 255, 0))  # Yellow
-        lunar_text = self.font1.render(f"Lunar: {int(self.lunar_energy)}", True, (0, 255, 255))  # Cyan
-        eclipse_text = self.font1.render(f"Eclipse: {int(self.eclipse_energy)}", True, (255, 0, 255))  # Magenta
+        # Draw resource texts
+        solar_text = self.font1.render(f"Solar: {int(self.solar_energy)}", True, (255, 255, 0))
+        lunar_text = self.font1.render(f"Lunar: {int(self.lunar_energy)}", True, (0, 255, 255))
+        eclipse_text = self.font1.render(f"Eclipse: {int(self.eclipse_energy)}", True, (255, 0, 255))
         timer_text = self.font1.render(f"TIME: {int(self.game_clock)}", True, (0, 0, 0))
 
-        # Position the text within the resource bar
         screen.blit(timer_text, (self.rect.x + 890, self.rect.y + 10))
         screen.blit(solar_text, (self.rect.x + 770, self.rect.y + 60))
         screen.blit(lunar_text, (self.rect.x + 890, self.rect.y + 60))
         screen.blit(eclipse_text, (self.rect.x + 1010, self.rect.y + 60))
+
+    def draw_selected_heroes(self, screen, selected_hero_classes, font):
+        x_start = self.rect.x + 770  # align with solar/lunar/eclipse text
+        y_start = self.rect.y + 100  # slightly below resource texts
+        spacing = 25
+
+        color_map = {
+            'solar': (255, 255, 0),
+            'lunar': (100, 149, 237),
+            'eclipse': (138, 43, 226)
+        }
+
+        for i, hero_class in enumerate(selected_hero_classes):
+            config = UnitConfig().get_unit_config(hero_class.__name__)
+            cost = config.get('cost', [0, 0, 0])
+
+            keybinds = ['C', 'V', 'B']
+            key_text = font.render(f"[{keybinds[i]}]", True, (255, 255, 255))
+
+            name_text = font.render(f"{hero_class.__name__}", True, (255, 255, 255))
+            solar_text = font.render(f"S:{cost[0]}", True, color_map['solar'])
+            lunar_text = font.render(f"L:{cost[1]}", True, color_map['lunar'])
+            eclipse_text = font.render(f"E:{cost[2]}", True, color_map['eclipse'])
+
+            line_y = y_start + i * spacing
+
+            screen.blit(key_text, (x_start, line_y))
+            screen.blit(name_text, (x_start + 40, line_y))
+            screen.blit(solar_text, (x_start + 190, line_y))
+            screen.blit(lunar_text, (x_start + 270, line_y))
+            screen.blit(eclipse_text, (x_start + 350, line_y))
+

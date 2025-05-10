@@ -42,13 +42,28 @@ class LevelSelect:
              "locked": True},
             {"name": "Swamp", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
              "locked": True},
-            {"name": "Volcano", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
+            {"name": "Castle", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
              "locked": True},
-            {"name": "Sky Temple", "number": 5, "rect": pygame.Rect(800, 600, 300, 200),
+            {"name": "Slums", "number": 5, "rect": pygame.Rect(800, 600, 300, 200),
              "locked": True},
-            {"name": "Final Battle", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
+            {"name": "Future", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
              "locked": True}
         ]
+        # self.levels = [
+        #     {"name": "Forest", "number": 1, "rect": pygame.Rect(400, 300, 300, 200),
+        #      "locked": False},
+        #     {"name": "Dark Forest", "number": 2, "rect": pygame.Rect(800, 300, 300, 200),
+        #      "locked": False},
+        #     {"name": "Swamp", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
+        #      "locked": False},
+        #     {"name": "Castle", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
+        #      "locked": False},
+        #     {"name": "Slums", "number": 5, "rect": pygame.Rect(800, 600, 300, 200),
+        #      "locked": False},
+        #     {"name": "Future", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
+        #      "locked": False}
+        # ]
+
         self.back_button = pygame.Rect(50, 950, 200, 80)
         self.update_locked_status()
 
@@ -115,8 +130,7 @@ class LevelSelect:
 class CharacterSelect:
     all_hero_dict = {"Lumberjack": LumberJack, "Pantheon": Pantheon,
                      "BrownBeard": BrownBeard, "Kitsune": Kitsune,
-                     "KarasuTengu": KarasuTengu, "YamabushiTengu": YamabushiTengu,
-                     "SwordMaster": SwordMaster}
+                     "KarasuTengu": KarasuTengu, "YamabushiTengu": YamabushiTengu}
 
     def __init__(self, game_progress):
         self.game_progress = game_progress
@@ -148,14 +162,13 @@ class CharacterSelect:
             "Kitsune": "Heros/Kitsune/Kitsune_profile_cute.jpg",
             "KarasuTengu": "Heros/KarasuTengu/Karasu_tengu_profile.jpg",
             "YamabushiTengu": "Heros/YamabushiTengu/Yamabushi_tengu_profile.jpg",
-            "SwordMaster": "Heros/SwordMaster/sword_profile.jpg"
             # Add all other characters with their corresponding image paths
         }
 
         class_data = [
             ("Pantheon", "4 lunar 1 eclipse"), ("Lumberjack", "2 solar"), ("BrownBeard", "4 solar"),
             ("Kitsune", "8 sonar 8 lunar 2 eclipse"), ("KarasuTengu", "2 lunar"), ("YamabushiTengu", "12 lunar 1 eclipse"),
-            ("SwordMaster", "20 sonar 5 lunar 2 eclipse"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
+            ("Unknown", "20 sonar 5 lunar 2 eclipse"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
             ("Berserker", "Brawler"), ("Druid", "Shapeshifter"), ("Engineer", "Builder"),
             ("Samurai", "Duelist"), ("Necromancer", "Summoner"), ("Monk", "Martial Artist"),
             ("Bard", "Buffer"), ("Gunslinger", "Marksman"), ("Witch", "Debuffer")
@@ -290,11 +303,11 @@ class CharacterSelect:
              "locked": False},
             {"name": "Swamp", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
              "locked": False},
-            {"name": "Volcano", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
+            {"name": "Castle", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
              "locked": False},
-            {"name": "Sky Temple", "number": 5, "rect": pygame.Rect(800, 600, 300, 200),
+            {"name": "Slums", "number": 5, "rect": pygame.Rect(800, 600, 300, 200),
              "locked": False},
-            {"name": "Final Battle", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
+            {"name": "Future", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
              "locked": False}
         ]
 

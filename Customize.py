@@ -18,6 +18,9 @@ class Images:
     day_default = pygame.image.load("img/backgrounds/w6BZFE.jpg")
     night_default = pygame.image.load("img/backgrounds/night.png")
     swamp_default = pygame.image.load("img/backgrounds/Swamp_map.png")
+    castle_default = pygame.image.load("img/backgrounds/Castle.png")
+    slums_default = pygame.image.load("img/backgrounds/Slums.png")
+    Future_default = pygame.image.load("img/backgrounds/Future.png")
 
 
 class Resolution:
@@ -41,14 +44,38 @@ class Hero:
 
 
 class Enemies:
+    # lvl1
+    GreenSlime = pygame.image.load("Enemies/Greenslime/Green_Slime_Spritelist.png")
+    BlueSlime = pygame.image.load("Enemies/Blueslime/Blue_Slime_Spritelist.png")
+    RedSlime = pygame.image.load("Enemies/Redslime/Red_Slime_Spritelist.png")
+    # lv2
+    RedWerewolf = pygame.image.load("Enemies/RedWerewolf/Red_Werewolf_Spritelist.png")
+    GreyWerewolf = pygame.image.load("Enemies/GreyWerewolf/Grey_Werewolf_Spritelist.png")
+    WhiteWerewolf = pygame.image.load("Enemies/WhiteWerewolf/White_Werewolf_Spritelist.png")
+    # lv3
     Centipede = pygame.image.load("Enemies/Centipede/Centipede_SpriteSheet.png")
     Big_bloated = pygame.image.load("Enemies/Big_bloated/Big_bloated_spritesheet.png")
     Battle_turtle = pygame.image.load("Enemies/Battle_turtle/Battle_turtle_spritesheet.png")
+    # lvl4
+    Gargona1 = pygame.image.load("Enemies/Gargona1/Gargona_1_Spritelist.png")
+    Gargona2 = pygame.image.load("Enemies/Gargona2/Gargona_2_Spritelist.png")
+    Gargona3 = pygame.image.load("Enemies/Gargona3/Gargona_3_Spritelist.png")
+    # lv5
+    Homeless1 = pygame.image.load("Enemies/Homeless1/Homless_1_Spritelist.png")
+    Homeless2 = pygame.image.load("Enemies/Homeless2/Homless_2_Spritelist.png")
+    Homeless3 = pygame.image.load("Enemies/Homeless3/Homless_3_Spritelist.png")
+    # lv6
+    Destroyer = pygame.image.load("Enemies/Destroyer/Destroyer_spritelist.png")
+    Infantry = pygame.image.load("Enemies/Infantry/Infantryman_spritelist.png")
+    Swordsman = pygame.image.load("Enemies/Swordsman/Swordsman_spritelist.png")
+
 
 
 class Projectile:
-    bullet1 = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")
-    bullet2 = pygame.image.load("Enemies/Battle_turtle/Bullet2.png")
+    Bullet = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")  # add this line
+    Bullet1 = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")
+    Bullet2 = pygame.image.load("Enemies/Battle_turtle/Bullet2.png")
+
 
 
 class Fonts:

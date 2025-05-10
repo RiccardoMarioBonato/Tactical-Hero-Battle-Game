@@ -6,7 +6,7 @@ from Enemy import EnemyLogic
 from Player import Controller, Resources
 from AssetLoader import AssetLoader
 from GameStats import game_stats
-
+from Unit import UnitConfig
 from GameStats import GameStats
 # Initialize pygame
 pygame.init()
@@ -60,7 +60,7 @@ while running:
         selection_result = cr_select.selecting()
         if selection_result:
             level_num, selected_hero_classes = selection_result
-            game_stats.level = level_num  # ✅ Tell stats system which level we are on
+            game_stats.level = level_num
             current_state = GameState.MAIN_GAME
             player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
             enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
@@ -79,7 +79,7 @@ while running:
         player_tower.draw(screen)
         enemy_tower.draw(screen)
         player_resources.draw(screen)
-
+        player_resources.draw_selected_heroes(screen, selected_hero_classes[:3], font_small)
         # Update and draw player blocks
         # Update and draw player blocks
         for char in player_tower.block[:]:
