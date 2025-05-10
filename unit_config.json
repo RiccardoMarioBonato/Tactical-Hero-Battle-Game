@@ -24,6 +24,18 @@
             "hitbox": [80, 120],
             "offset": [-50, -150]
         },
+            "Bullet": {
+        "type": "projectile",
+        "health": 1,
+        "attack_power": 10,
+        "speed": -8,
+        "tower_dmg": 0,
+        "animation_steps": [],
+        "measurement": [30, 1, [30, 18]],
+        "scale": 1,
+        "hitbox": [30, 18],
+        "offset": [0, 0]
+        },
         "BigBloated": {
             "type": "enemy",
             "health": 150,

@@ -5,7 +5,7 @@ from Customize import Hero, Enemies, Projectile, Resolution
 from Base import Tower
 from GameStats import GameStats
 
-game_stats = GameStats()
+from GameStats import game_stats
 
 
 class UnitConfig:
@@ -67,7 +67,6 @@ class Unit:
         self.sprite_sheet = None
         self.animation_list = []
         self.image = None
-
 
     def load_images(self, sprite_sheet, animation_steps, scale=2):
         animation_list = []
@@ -148,6 +147,7 @@ class Unit:
                 if self.frame_index >= self.animation_steps[1]:
                     self.frame_index = 0
                 self.action = 1
+
         else:
             for target in targets:
                 if self.rect.colliderect(target.rect):
@@ -156,12 +156,13 @@ class Unit:
                     if self.frame_index >= self.animation_steps[1]:
                         self.frame_index = 0
                     self.action = 1
+
+                    # Apply damage and record it
                     dmg = self.attack_power
                     target.health -= dmg
                     if target.health <= 0:
                         target.unit_die()
                         self.moving()
-        game_stats.record_damage(self.__class__.__name__, self.attack_power)
 
         if not collision_detected:
             self.moving()
@@ -282,6 +283,7 @@ class BattleTurtle(Unit):
         for bullet in self.bullets[:]:
             bullet.move()
             bullet.attack(other_units)
+            bullet.draw(screen)  # ← THIS LINE ADDS VISUALS
             if bullet.dead:
                 self.bullets.remove(bullet)
 

@@ -3,6 +3,7 @@ from Unit import *
 from Customize import Color, Images, Resolution, Dimensions
 import time
 import sys
+from GameStats import game_stats
 
 
 # Correct mapping that matches your units tuple order
@@ -13,15 +14,6 @@ key_unit_mapping = {
     pygame.K_n: 3,   # Kitsune (index 3)
     pygame.K_m: 4    # YamabushiTengu (index 4)
 }
-game_stats = GameStats()
-# # Make sure this matches exactly with the mapping above
-# units = (
-#     LumberJack(0,0),   # index 0 (C)
-#     Pantheon(0,0),     # index 1 (V)
-#     BrownBeard(0,0),    # index 2 (B)
-#     Kitsune(0,0),      # index 3 (N)
-#     YamabushiTengu(0,0) # index 4 (M)
-# )
 
 
 class Controller:
@@ -66,13 +58,17 @@ class Controller:
         spawn_y = Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2
         new_unit = unit_class(spawn_x, spawn_y)
         player_tower.block.append(new_unit)
+
+
+        # Deduct resources
         resources.remove_solar_energy(new_unit.cost[0])
         resources.remove_lunar_energy(new_unit.cost[1])
         resources.remove_eclipse_energy(new_unit.cost[2])
+        # Record unit deployed count
+        game_stats.record_unit_deployed(unit_class.__name__)
         game_stats.record_resource_used("solar", new_unit.cost[0])
         game_stats.record_resource_used("lunar", new_unit.cost[1])
         game_stats.record_resource_used("eclipse", new_unit.cost[2])
-
 
 class Resources:
     __instance = None
@@ -96,9 +92,9 @@ class Resources:
     def add_energy(self, multiplier):
         current_time = time.time()
         time_elapsed = current_time - self.clock
-        self.solar_energy += time_elapsed * multiplier[0] * 100
-        self.lunar_energy += time_elapsed * multiplier[1]* 100
-        self.eclipse_energy += time_elapsed * multiplier[2]* 100
+        self.solar_energy += time_elapsed * multiplier[0]*100
+        self.lunar_energy += time_elapsed * multiplier[1]*100
+        self.eclipse_energy += time_elapsed * multiplier[2]*100
         self.game_clock += time_elapsed
         self.clock = current_time
 

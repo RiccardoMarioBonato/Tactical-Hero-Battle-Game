@@ -50,7 +50,7 @@ class EnemyLogic:
         enemy_tower.block.append(new_unit)
 
 
-#
+
 # class Level1(EnemyLogic):
 #     def spawn_pattern(self, tower, player_resources):
 #         if self.enemy_spawn_timer > 180:
@@ -60,9 +60,10 @@ class EnemyLogic:
 #             EnemyLogic.spawn_unit(CentipedeBoss, tower)
 #             self.boss_timer = random.randint(500, 1000)
 #         Resources.add_energy(player_resources, [2,0.5,0.1])
+
 class Level1(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 10:
+        if self.enemy_spawn_timer > 200:
             mobs = [Centipede, BigBloated]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)

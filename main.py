@@ -5,10 +5,11 @@ from Base import Tower
 from Enemy import EnemyLogic
 from Player import Controller, Resources
 from AssetLoader import AssetLoader
+from GameStats import game_stats
+
 from GameStats import GameStats
 # Initialize pygame
 pygame.init()
-game_stats = GameStats()
 # Load images
 background = pygame.transform.scale(Images.day_default, (Resolution.WIDTH, Resolution.HEIGHT))
 # Tower positions
@@ -54,6 +55,7 @@ while running:
     clock.tick(Resolution.FPS)
 
     if current_state == GameState.CHARACTER_SELECT:
+        game_stats.reset_stats()
         selection_result = cr_select.selecting()
         if selection_result:  # Returns [level_num, selected_hero_classes]
             level_num, selected_hero_classes = selection_result
@@ -61,7 +63,7 @@ while running:
             # Initialize game with selected team
             player_tower = Tower(PLAYER_TOWER_X, Color.BLUE, "Me", "img/castle/png/1/Asset 27.png")
             enemy_tower = Tower(ENEMY_TOWER_X, Color.RED, "Enemy", "img/castle/png/1/Asset 27.png")
-
+        pygame.display.flip()
     elif current_state == GameState.MAIN_GAME:
         player_resources.add_start()
 
@@ -78,10 +80,18 @@ while running:
         player_resources.draw(screen)
 
         # Update and draw player blocks
+        # Update and draw player blocks
         for char in player_tower.block[:]:
             char.update(screen, player_tower, player_tower.block, enemy_tower.block)
             if char.dead:
                 player_tower.block.remove(char)
+            else:
+                # ✅ Check collision with enemy units and record damage
+                for enemy_unit in enemy_tower.block[:]:
+                    if char.rect.colliderect(enemy_unit.rect):
+                        from GameStats import game_stats
+
+                        game_stats.record_unit_damage(char.__class__.__name__, char.attack_power)
 
         # Update and draw enemy blocks
         for unit in enemy_tower.block[:]:
@@ -94,24 +104,22 @@ while running:
             current_state = GameState.LEVEL_COMPLETE
         elif enemy_tower.dead_tower(player_tower) <= 0:
             current_state = GameState.LEVEL_COMPLETE
-
+        pygame.display.flip()
     elif current_state == GameState.LEVEL_COMPLETE:
-        if not player_tower.dead_tower(enemy_tower):
-            game_stats.record_outcome(True)  # Player won
-        else:
-            game_stats.record_outcome(False)  # Player lost
-        if enemy_tower.dead_tower(player_tower) <= 0:
-            # Unlock next level
-            game_progress.complete_level(level_num)
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and current_state == GameState.LEVEL_COMPLETE:
-                    current_state = GameState.CHARACTER_SELECT  # Return to character select
-                    cr_select = SelectGame(game_progress)  # Reset the selection screen
-            game_stats.draw_stats_screen(screen)
-            game_stats.reset_stats()
-            player_resources.resources_reset()
-            pygame.display.flip()
-    pygame.display.flip()
+        if game_stats.battle_outcome is None:
+            if not player_tower.dead_tower(enemy_tower):
+                game_stats.record_outcome(True)
+            else:
+                game_stats.record_outcome(False)
+        game_stats.draw_stats_screen(screen)
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                # Reset stats only when leaving stats screen
+                game_stats.reset_stats()
+                player_resources.resources_reset()
+                current_state = GameState.CHARACTER_SELECT
+                cr_select = SelectGame(game_progress)
 
         # game_stats.reset_stats()
         # # Level complete screen
