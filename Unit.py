@@ -283,6 +283,7 @@ class WhiteWerewolf(Unit):
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
 
+
 class Centipede(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Centipede")
@@ -361,7 +362,6 @@ class Bullet(Unit):
                 if target.health <= 0:
                     target.unit_die()
                 break
-
 
 
 class BattleTurtle(Unit):

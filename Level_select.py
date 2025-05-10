@@ -143,18 +143,11 @@ class CharacterSelect:
     def create_character_list(self):
         characters = []
         positions = [
-            # Row 1
-            (235, 180), (485, 180), (735, 180), (985, 180), (1235, 180),
-            (1485, 180),
-            # Row 2
-            (235, 430), (485, 430), (735, 430), (985, 430), (1235, 430),
-            (1485, 430),
-            # Row 3
-            (235, 680), (485, 680), (735, 680), (985, 680), (1235, 680),
-            (1485, 680)
+            (235, 180), (485, 180), (735, 180), (985, 180), (1235, 180), (1485, 180),
+            (235, 430), (485, 430), (735, 430), (985, 430), (1235, 430), (1485, 430),
+            (235, 680), (485, 680), (735, 680), (985, 680), (1235, 680), (1485, 680)
         ]
 
-        # Character image mapping - replace with your actual image paths
         character_images = {
             "Lumberjack": "Heros/LumberJack/lumberjack_select_photo.webp",
             "Pantheon": "Heros/Pantheon/Pantheon_profile.webp",
@@ -162,39 +155,48 @@ class CharacterSelect:
             "Kitsune": "Heros/Kitsune/Kitsune_profile_cute.jpg",
             "KarasuTengu": "Heros/KarasuTengu/Karasu_tengu_profile.jpg",
             "YamabushiTengu": "Heros/YamabushiTengu/Yamabushi_tengu_profile.jpg",
-            # Add all other characters with their corresponding image paths
         }
 
         class_data = [
             ("Pantheon", "4 lunar 1 eclipse"), ("Lumberjack", "2 solar"), ("BrownBeard", "4 solar"),
-            ("Kitsune", "8 sonar 8 lunar 2 eclipse"), ("KarasuTengu", "2 lunar"), ("YamabushiTengu", "12 lunar 1 eclipse"),
-            ("Unknown", "20 sonar 5 lunar 2 eclipse"), ("Ninja", "Stealth"), ("Alchemist", "Support"),
+            ("KarasuTengu", "2 lunar"), ("YamabushiTengu", "12 lunar 1 eclipse"),
+            ("Kitsune", "8 solar 8 lunar 2 eclipse"),
+            ("Unknown", "20 solar 5 lunar 2 eclipse"), ("Ninja", "Stealth"),
+            ("Alchemist", "Support"),
             ("Berserker", "Brawler"), ("Druid", "Shapeshifter"), ("Engineer", "Builder"),
             ("Samurai", "Duelist"), ("Necromancer", "Summoner"), ("Monk", "Martial Artist"),
             ("Bard", "Buffer"), ("Gunslinger", "Marksman"), ("Witch", "Debuffer")
         ]
 
+        # Everything except Pantheon, Lumberjack, BrownBeard is locked before level 2
+        always_unlocked = ["Pantheon", "Lumberjack", "BrownBeard", "KarasuTengu"]
+
         for i, ((x, y), (name, char_class)) in enumerate(zip(positions, class_data)):
-            # Load character image
             try:
-                image = pygame.image.load(character_images[name]).convert_alpha()
+                image = pygame.image.load(character_images.get(name, "")).convert_alpha()
                 image = pygame.transform.scale(image, (180, 220))
             except:
-                # Fallback to colored rectangle if image fails to load
                 image = pygame.Surface((180, 220))
-                color = (200, 200, 200)  # Default gray
-                image.fill(color)
-                # Add character number as fallback
+                image.fill((200, 200, 200))
                 char_num = font_tiny.render(f"#{i + 1}", True, Color.BLACK)
                 image.blit(char_num, (5, 5))
+
+            # Lock if not in always_unlocked and player is below level 2
+            is_locked = name not in always_unlocked and self.game_progress.unlocked_levels < 2
+
+            # ✅ Apply grey overlay if locked
+            if is_locked:
+                grey_overlay = pygame.Surface(image.get_size(), pygame.SRCALPHA)
+                grey_overlay.fill((100, 100, 100, 150))  # semi-transparent gray
+                image.blit(grey_overlay, (0, 0))
 
             characters.append({
                 "name": name,
                 "class": char_class,
-                "image": image,  # Now using actual image instead of colored surface
+                "image": image,
                 "selected": False,
                 "rect": pygame.Rect(x, y, 200, 250),
-                "locked": i >= 7 and self.game_progress.unlocked_levels < 2
+                "locked": is_locked
             })
 
         return characters

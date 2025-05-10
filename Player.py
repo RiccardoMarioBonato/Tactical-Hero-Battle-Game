@@ -52,9 +52,6 @@ class Controller:
                         Controller.spawn_unit(unit_class, player_tower, resources)
 
 
-
-
-
     @staticmethod
     def spawn_unit(unit_class, player_tower, resources):
         spawn_x = player_tower.rect.right
@@ -72,6 +69,7 @@ class Controller:
         game_stats.record_resource_used("solar", new_unit.cost[0])
         game_stats.record_resource_used("lunar", new_unit.cost[1])
         game_stats.record_resource_used("eclipse", new_unit.cost[2])
+
 
 class Resources:
     __instance = None

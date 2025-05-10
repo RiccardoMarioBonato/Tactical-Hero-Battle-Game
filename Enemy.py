@@ -53,8 +53,6 @@ class EnemyLogic:
         enemy_tower.block.append(new_unit)
 
 
-
-
 class Level1(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
         if self.enemy_spawn_timer > 200:
