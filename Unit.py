@@ -27,11 +27,13 @@ class UnitConfig:
 
 
 class Unit:
+    loaded_sprites = {}
+
     def __init__(self, x=0, y=0, unit_type=None):
         self.config = UnitConfig().get_unit_config(unit_type)
         if not self.config:
             raise ValueError(f"Unit type {unit_type} not found in config")
-
+        self.unit_type = unit_type
         # Base stats
         self.health = self.config['health']
         self.attack_power = self.config['attack_power']
@@ -63,10 +65,14 @@ class Unit:
         self._load_sprite()
 
     def _load_sprite(self):
-        # To be overridden by child classes
-        self.sprite_sheet = None
-        self.animation_list = []
-        self.image = None
+        if self.unit_type not in Unit.loaded_sprites:
+            # Load and cache animation list
+            sprite_sheet = getattr(Enemies if self.unit_type in Enemies.__dict__ else Hero, self.unit_type)
+            scale = self.config['scale']
+            animation_list = self.load_images(sprite_sheet, self.animation_steps, scale)
+            Unit.loaded_sprites[self.unit_type] = animation_list
+        self.animation_list = Unit.loaded_sprites[self.unit_type]
+        self.image = self.animation_list[self.action][self.frame_index]
 
     def load_images(self, sprite_sheet, animation_steps, scale=2):
         animation_list = []

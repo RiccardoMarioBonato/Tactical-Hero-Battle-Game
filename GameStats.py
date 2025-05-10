@@ -6,7 +6,7 @@ from Customize import Resolution
 
 class GameStats:
     def __init__(self):
-        self.filename = "game_stats.csv"
+        self.filename = "Graphs/game_stats.csv"
         self._create_csv_if_not_exists()
         self.reset_stats()
         self.last_battle_duration = 0

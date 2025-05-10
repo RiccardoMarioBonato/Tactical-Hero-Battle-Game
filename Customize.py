@@ -49,3 +49,13 @@ class Enemies:
 class Projectile:
     bullet1 = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")
     bullet2 = pygame.image.load("Enemies/Battle_turtle/Bullet2.png")
+
+
+class Fonts:
+    pygame.font.init()
+    ARIAL_16 = pygame.font.SysFont('Arial', 16)
+    ARIAL_24 = pygame.font.SysFont('Arial', 24)
+    ARIAL_32 = pygame.font.SysFont('Arial', 32)
+    ARIAL_36 = pygame.font.SysFont('Arial', 36)
+    ARIAL_48 = pygame.font.SysFont('Arial', 48)
+    ARIAL_72 = pygame.font.SysFont('Arial', 72)

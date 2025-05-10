@@ -63,7 +63,7 @@ class EnemyLogic:
 
 class Level1(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 200:
+        if self.enemy_spawn_timer > 20:
             mobs = [Centipede, BigBloated]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
