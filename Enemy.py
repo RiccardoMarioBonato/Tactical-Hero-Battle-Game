@@ -72,7 +72,7 @@ class Level2(EnemyLogic):
                 EnemyLogic.spawn_unit(GreyWerewolf, tower)
                 self.stall_timer = 0
         if self.enemy_spawn_timer > 150:
-            mobs = [RedWerewolf]
+            mobs = [RedWerewolf, GreyWerewolf]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
         if self.boss_timer > 3400:
@@ -116,7 +116,7 @@ class Level5(EnemyLogic):
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
         if self.boss_timer > 3000:
-            EnemyLogic.spawn_unit(CentipedeBoss, tower)
+            EnemyLogic.spawn_unit(Homeless3, tower)
             self.boss_timer = random.randint(500, 1000)
         Resources.add_energy(player_resources, [1, 0.5, 0.1])
 
@@ -125,13 +125,13 @@ class Level6(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
         if player_resources.solar_energy >= 20:
             if self.stall_timer > 370:
-                EnemyLogic.spawn_unit(CentipedeBoss, tower)
+                EnemyLogic.spawn_unit(Destroyer, tower)
                 self.stall_timer = 0
         if self.enemy_spawn_timer > 200:
-            mobs = [Destroyer, Infantry, Swordsman]
+            mobs = [Infantry, Swordsman]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
         if self.boss_timer > 3400:
-            EnemyLogic.spawn_unit(BigBloatedBoss, tower)
+            EnemyLogic.spawn_unit(Destroyer, tower)
             self.boss_timer = random.randint(500, 1000)
         Resources.add_energy(player_resources, [1, 0.5, 0.1])
