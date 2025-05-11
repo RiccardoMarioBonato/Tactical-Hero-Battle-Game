@@ -93,9 +93,9 @@ class Resources:
     def add_energy(self, multiplier):
         current_time = time.time()
         time_elapsed = current_time - self.clock
-        self.solar_energy += time_elapsed * multiplier[0]
-        self.lunar_energy += time_elapsed * multiplier[1]
-        self.eclipse_energy += time_elapsed * multiplier[2]
+        self.solar_energy += time_elapsed * multiplier[0]*100
+        self.lunar_energy += time_elapsed * multiplier[1]*100
+        self.eclipse_energy += time_elapsed * multiplier[2]*100
         self.game_clock += time_elapsed
         self.clock = current_time
 

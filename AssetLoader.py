@@ -25,7 +25,19 @@ class AssetLoader:
             'Kitsune': Hero.Kitsune,
             'YamabushiTengu': Hero.Yamabushi_tengu,
             'KarasuTengu': Hero.Karasu_tengu,
-            'SwordMaster': Hero.SwordMaster
+            'SwordMaster': Hero.SwordMaster,
+            'Convert': Hero.Convert,
+            'Countess': Hero.Countess,
+            'VampireGirl': Hero.VampireGirl,
+            'Wanderer': Hero.Wanderer,
+            'LightMage': Hero.LightMage,
+            'FireMage': Hero.FireMage,
+            'Gangster1': Hero.Gangster1,
+            'Gangster2': Hero.Gangster2,
+            'Gangster3': Hero.Gangster3,
+            'Monk': Hero.Monk,
+            'Peasant': Hero.Peasant,
+            'Kunoichi': Hero.Kunoichi,
         }
 
         # Load enemy sprites
@@ -53,7 +65,8 @@ class AssetLoader:
         # Load projectiles
         self.assets['projectiles'] = {
             'Bullet1': Projectile.Bullet1,
-            'Bullet2': Projectile.Bullet2
+            'Bullet2': Projectile.Bullet2,
+            'FireBullet': Projectile.Bullet2
         }
 
         # Load backgrounds (add to Customize.py if needed)

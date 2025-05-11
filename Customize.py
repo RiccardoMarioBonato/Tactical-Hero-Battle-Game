@@ -41,6 +41,18 @@ class Hero:
     Yamabushi_tengu = pygame.image.load("Heros/YamabushiTengu/Yamabushi_tengu_spritesheet.png")
     Karasu_tengu = pygame.image.load("Heros/KarasuTengu/Karasu_tengu_Spritesheet.png")
     SwordMaster = pygame.image.load("Heros/SwordMaster/Sword_Master_spritesheet.png")
+    Convert = pygame.image.load("Heros/Converted/Converted_Vampire_Spritelist.png")
+    Countess = pygame.image.load("Heros/Countess/Countess_Vampire_Spritelist.png")
+    VampireGirl = pygame.image.load("Heros/VampireGirl/Vampire_Girl_Spritelist.png")
+    Wanderer = pygame.image.load("Heros/Wanderer_Magican/Wanderer_Magican_Spritelist.png")
+    LightMage = pygame.image.load("Heros/Light_Magican/Light_Mage_Spritelist.png")
+    FireMage = pygame.image.load("Heros/Fire_magican/Fire_Mage_Spritelist.png")
+    Gangster1 = pygame.image.load("Heros/Gangster1/Gangsters_1_Spritelist.png")
+    Gangster2 = pygame.image.load("Heros/Gangster2/Gangsters_2_Spritelist.png")
+    Gangster3 = pygame.image.load("Heros/Gangster3/Gangsters_3_Spritelist.png")
+    Monk = pygame.image.load("Heros/Monk/Ninja_Monk_spritelist.png")
+    Peasant = pygame.image.load("Heros/Ninja_Peasant/Ninja_Peasant_spritelist.png")
+    Kunoichi = pygame.image.load("Heros/Kunoichi/Kunoichi_spritelist.png")
 
 
 class Enemies:
@@ -75,6 +87,7 @@ class Projectile:
     Bullet = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")  # add this line
     Bullet1 = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")
     Bullet2 = pygame.image.load("Enemies/Battle_turtle/Bullet2.png")
+    FireBullet = pygame.image.load("Heros/Countess/Blood_Charge_1.png")
 
 
 

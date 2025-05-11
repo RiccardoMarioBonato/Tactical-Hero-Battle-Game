@@ -431,7 +431,6 @@ class BattleTurtle(Unit):
 
 
 
-# Update Unit class draw() to support hitbox toggle
 def draw(self, screen, show_hitbox=False):
     if not self.image:
         return
@@ -445,7 +444,6 @@ def draw(self, screen, show_hitbox=False):
         pygame.draw.rect(screen, (255, 0, 0), self.attack_rect, 2)  # red attack range
 
 
-# Update Unit class update() to pass show_hitbox
 def update(self, screen, tower, own_units=[], other_units=[], show_hitbox=False):
     self.move()
     if self.action == 2:
@@ -668,6 +666,239 @@ class SwordMaster(Unit):
 
     def _load_sprite(self):
         self.sprite_sheet = Hero.SwordMaster
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Convert(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Convert")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Convert
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Countess(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Countess")
+        self._load_sprite()
+        self.last_attack_time = 0
+        self.attack_cooldown = self.config.get('attack_cooldown', 2000)
+        self.bullets = []
+        # Define attack range box (attack_rect)
+        self.attack_rect = pygame.Rect(self.rect.right, self.rect.y, 300, self.rect.height)
+
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Countess
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+    def update(self, screen, tower, own_units=[], other_units=[]):
+        super().update(screen, tower, own_units, other_units)
+        for bullet in self.bullets[:]:
+            bullet.move()
+            bullet.attack(other_units)
+            bullet.draw(screen)
+            if bullet.dead:
+                self.bullets.remove(bullet)
+
+    def attack(self, targets):
+        current_time = pygame.time.get_ticks()
+        collision_detected = False
+
+        if isinstance(targets, Tower):
+            if self.rect.colliderect(targets.rect):
+                collision_detected = True
+                self.speed = 0
+                if self.frame_index >= self.animation_steps[1]:
+                    self.frame_index = 0
+                self.action = 1
+        else:
+            for target in targets:
+                if self.attack_rect.colliderect(target.rect):
+                    collision_detected = True
+                    self.speed = 0
+                    if self.frame_index >= self.animation_steps[1]:
+                        self.frame_index = 0
+                    self.action = 1
+
+                    if current_time - self.last_attack_time > self.attack_cooldown:
+                        self.spawn_bullet()
+                        self.last_attack_time = current_time
+
+                    if target.health <= 0:
+                        target.unit_die()
+                        self.moving()
+
+        if not collision_detected:
+            self.moving()
+            self.animation_cooldown = 100
+
+    def spawn_bullet(self):
+        bullet = CrimsonBullet(self.rect.right, self.rect.centery)
+        bullet.flip = self.flip
+        bullet.speed = 6 if not self.flip else -6
+        self.bullets.append(bullet)
+
+
+class CrimsonBullet(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Bullet")  # Reuse bullet config
+        self.sprite_sheet = pygame.image.load("Heros/Countess/Blood_Charge_1.png").convert_alpha()
+        self.lifetime = 2000  # milliseconds
+        self.spawn_time = pygame.time.get_ticks()
+        self.speed = 6  # or use from config
+        self.dead = False
+
+        self.frame_width = self.sprite_sheet.get_width() // 3
+        self.frame_height = self.sprite_sheet.get_height()
+        self.frame_index = 0
+        self.frame_time = 100  # ms per frame
+        self.last_frame_update = pygame.time.get_ticks()
+
+        hitbox_w, hitbox_h = self.config['hitbox']
+        self.rect = pygame.Rect(x, y, 60, 60)
+        self.attack_power = self.attack_power  # from config
+
+    def draw(self, screen):
+        frame_rect = pygame.Rect(self.frame_index * self.frame_width, 0, self.frame_width, self.frame_height)
+        img = self.sprite_sheet.subsurface(frame_rect)
+        img = pygame.transform.scale(img, (self.rect.width, self.rect.height))
+        screen.blit(img, (self.rect.x, self.rect.y))
+
+    def move(self):
+        self.rect.x += self.speed
+
+    def attack(self, targets):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.spawn_time > self.lifetime:
+            self.dead = True
+            return
+
+        # Animate bullet
+        if current_time - self.last_frame_update >= self.frame_time:
+            self.frame_index = (self.frame_index + 1) % 3
+            self.last_frame_update = current_time
+
+        for target in targets:
+            if self.rect.colliderect(target.rect):
+                target.health -= self.attack_power
+                self.dead = True
+                if target.health <= 0:
+                    target.unit_die()
+                break
+
+
+class VampireGirl(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "VampireGirl")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.VampireGirl
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Wanderer(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Wanderer")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Wanderer
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class LightMage(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "LightMage")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.LightMage
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class FireMage(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "FireMage")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.FireMage
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Gangster1(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Gangster1")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Gangster1
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Gangster2(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Gangster2")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Gangster2
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Gangster3(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Gangster3")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Gangster3
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Monk(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Monk")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Monk
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Peasant(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Peasant")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Peasant
+        scale = self.config['scale']
+        self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
+        self.image = self.animation_list[self.action][self.frame_index]
+
+
+class Kunoichi(Unit):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Kunoichi")
+        self._load_sprite()
+    def _load_sprite(self):
+        self.sprite_sheet = Hero.Kunoichi
         scale = self.config['scale']
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
