@@ -1,5 +1,6 @@
 import pygame
 from Customize import Color, Resolution
+from GameStats import game_stats
 
 
 class Tower:
@@ -39,4 +40,8 @@ class Tower:
             block.move()
             if block.rect.colliderect(enemy_tower.rect):
                 enemy_tower.hp -= block.tower_dmg
+
+                # ✅ Record damage done to tower
+                from GameStats import game_stats
+                game_stats.record_tower_damage(block.__class__.__name__, block.tower_dmg)
                 self.block.remove(block)

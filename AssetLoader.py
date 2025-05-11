@@ -25,20 +25,48 @@ class AssetLoader:
             'Kitsune': Hero.Kitsune,
             'YamabushiTengu': Hero.Yamabushi_tengu,
             'KarasuTengu': Hero.Karasu_tengu,
-            'SwordMaster': Hero.SwordMaster
+            'SwordMaster': Hero.SwordMaster,
+            'Convert': Hero.Convert,
+            'Countess': Hero.Countess,
+            'VampireGirl': Hero.VampireGirl,
+            'Wanderer': Hero.Wanderer,
+            'LightMage': Hero.LightMage,
+            'FireMage': Hero.FireMage,
+            'Gangster1': Hero.Gangster1,
+            'Gangster2': Hero.Gangster2,
+            'Gangster3': Hero.Gangster3,
+            'Monk': Hero.Monk,
+            'Peasant': Hero.Peasant,
+            'Kunoichi': Hero.Kunoichi,
         }
 
         # Load enemy sprites
         self.assets['enemies'] = {
             'Centipede': Enemies.Centipede,
             'BigBloated': Enemies.Big_bloated,
-            'BattleTurtle': Enemies.Battle_turtle
+            'BattleTurtle': Enemies.Battle_turtle,
+            'BlueSlime': Enemies.BlueSlime,
+            'RedSlime': Enemies.RedSlime,
+            'GreenSlime': Enemies.GreenSlime,
+            'GreyWerewolf': Enemies.GreyWerewolf,
+            'RedWerewolf': Enemies.RedWerewolf,
+            'WhiteWerewolf': Enemies.WhiteWerewolf,
+            'Gargona1': Enemies.Gargona1,
+            'Gargona2': Enemies.Gargona2,
+            'Gargona3': Enemies.Gargona3,
+            'Homeless1': Enemies.Homeless1,
+            'Homeless2': Enemies.Homeless2,
+            'Homeless3': Enemies.Homeless3,
+            'Destroyer': Enemies.Destroyer,
+            'Infantry': Enemies.Infantry,
+            'Swordsman': Enemies.Swordsman
         }
 
         # Load projectiles
         self.assets['projectiles'] = {
-            'bullet1': Projectile.bullet1,
-            'bullet2': Projectile.bullet2
+            'Bullet1': Projectile.Bullet1,
+            'Bullet2': Projectile.Bullet2,
+            'FireBullet': Projectile.Bullet2
         }
 
         # Load backgrounds (add to Customize.py if needed)
@@ -58,24 +86,3 @@ class UnitConfig:
 
     def get_unit_config(self, unit_name):
         return self.config['units'].get(unit_name, None)
-# import pygame
-# import sys
-#
-#
-# class GameManager:
-#     def __init__(self):
-#         pass
-#
-#
-# class Block:
-#     def __init__(self, x, y, speed):
-#         self.rect = pygame.Rect(x, y, Dimensions.BLOCK_SIZE1, Dimensions.BLOCK_SIZE1)
-#         self.speed = speed
-#
-#     def move(self):
-#         self.rect.x += self.speed
-#
-#     def draw(self, screen):
-#         pygame.draw.rect(screen, Color.WHITE, self.rect)
-#
-#

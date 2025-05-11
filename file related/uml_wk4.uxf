@@ -1,0 +1,232 @@
+<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><element><id>UMLClass</id><coordinates><x>476</x><y>364</y><w>147</w><h>133</h></coordinates><panel_attributes>
+AssetLoader 
+
+--
+- instance: AssetLoader  
+- assets: dict
+- _loaded: bool
+--
++ __new__(): AssetLoader  
++ load_all_assets(): dict </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>406</x><y>63</y><w>252</w><h>210</h></coordinates><panel_attributes>
+Tower
+
+--
+ - font1: pygame.font.Font      
+ - width: int                    
+ - height: int                   
+ - rect: pygame.Rect             
+ - hp: int                       
+ - color: Any                    
+ - team_text: pygame.Surface    
+ - block: list                   
+ - image: pygame.Surface         
+ - available_units: list         
+--
++ __init__(x: int, color: Any, team: str, tower: str) 
++ add_available_units(units: Any)                     
++ draw(screen: pygame.Surface)                        
++ dead_tower(enemy_tower: Tower): bool             
++ take_dmg(enemy_tower: Tower)                        </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>721</x><y>56</y><w>147</w><h>56</h></coordinates><panel_attributes>
+Color
+
+--
+COLORS: tuple</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>721</x><y>119</y><w>147</w><h>56</h></coordinates><panel_attributes>
+Images
+
+--
+Backgrounds: pygame.Surface</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>721</x><y>189</y><w>147</w><h>56</h></coordinates><panel_attributes>
+Resolution 
+
+--
+Measurement: int   </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>714</x><y>259</y><w>147</w><h>56</h></coordinates><panel_attributes>
+Dimensions
+
+--
+Object_Measurements: int   </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>714</x><y>399</y><w>147</w><h>56</h></coordinates><panel_attributes>
+Enemies
+
+--
+Enemies:   pygame.Surface</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>714</x><y>469</y><w>147</w><h>56</h></coordinates><panel_attributes>
+Projectile
+
+--
+Projectiles:   pygame.Surface</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>70</y><w>147</w><h>112</h></coordinates><panel_attributes>
+DataAnalyzer
+
+--
+- filename: str 
+--
++ __init__(filename: str = "game_stats.csv")                  
++ load_data() -&gt; list          
++ generate_reports() 
+- _create_bar_chart(data: dict, title: str, xlabel: str, ylabel: str)
+- _create_win_loss_chart(data: dict)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>980</x><y>91</y><w>252</w><h>210</h></coordinates><panel_attributes>
+EnemyLogic
+
+--
+ - enemy_spawn_timer: int    
+ - boss_timer: int               
+ - stall_timer: int                
+ - mob_list: list                                  
+--
++ __init__()
++ spawn_pattern(tower, player_resources)                  
++ enemy_spawn_timer_setter(add_value: int)                    
++ add_mobs(mob)          
++ pick_level(level: int, tower, player_resources) 
++ spawn_unit(unit_class, enemy_tower)                   </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1099</x><y>350</y><w>210</w><h>77</h></coordinates><panel_attributes>
+Level1 - Level6 
+
+--
+(inherits from EnemyLogic)
+--
++ spawn_pattern(tower, player_resources)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>182</x><y>14</y><w>70</w><h>21</h></coordinates><panel_attributes>game_stats.csv</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1015</x><y>714</y><w>252</w><h>238</h></coordinates><panel_attributes>
+GameStats
+
+--
+ - start_time: float      
+ - units_deployed: dict            
+ - damage_dealt: dict               
+ - resources_used: dict             
+ - battle_outcome: str              
+ - level: int               
+ - filename: str    
+--
++ __init__()
++ reset_stats()                  
++ _create_csv_if_not_exists()                  
++ record_unit_deployed(unit_type: str)           
++ record_damage(unit_type: str, amount: int)        
++ record_resource_used(resource_type: str, amount: int)  
++ record_outcome(won: bool)           
++ _save_to_csv() 
++ draw_stats_screen(screen)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>77</x><y>539</y><w>252</w><h>91</h></coordinates><panel_attributes>
+GameProgress
+
+--
+- unlocked_levels: int  
+- selected_team: list                                     
+--
++ __init__()
++ unlock_all()          
+               </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>665</y><w>252</w><h>133</h></coordinates><panel_attributes>
+SelectGame
+
+--
+- game_progress: GameProgress  
+- current_screen: str   
+- character_select: CharacterSelect  
+- level_select: LevelSelect                         
+--
++ __init__(game_progress)
++ selecting(): [int, list]         
+               </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>833</y><w>252</w><h>175</h></coordinates><panel_attributes>
+CharacterSelect
+
+--
+- game_progress: GameProgress       
+- characters: list[dict]           
+- selected_characters: list[str]    
+- max_selection: int = 3            
+- back_button: pygame.Rect          
+- start_button: pygame.Rect                     
+--
++ __init__(game_progress)           
++ create_character_list(): list[dict
++ draw(screen)                      
++ handle_events(): str              
++ unlock_all()                      
+               </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>175</x><y>301</y><w>252</w><h>217</h></coordinates><panel_attributes>
+LevelSelect 
+
+--
+- game_progress: GameProgress       
+- levels: list[dict]               
+- back_button: pygame.Rect                          
+--
++ __init__(game_progress)           
++ update_locked_status()            
++ draw(screen)                      
++ handle_events(): str                                
+               </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>497</x><y>826</y><w>147</w><h>126</h></coordinates><panel_attributes>
+Main Game
+
+--
+- clock: pygame.Clock               
+- current_state: GameState          
+- game_progress: GameProgress       
+- game_stats: GameStats             
+- player_resources: Resources       
+- asset_loader: AssetLoader         
+--
++ main_loop()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>833</y><w>147</w><h>77</h></coordinates><panel_attributes>
+GameState Enum
+
+--
+CHARACTER_SELECT = 0                
+MAIN_GAME = 1                       
+LEVEL_COMPLETE = 2                  
+                      </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1036</x><y>483</y><w>238</w><h>203</h></coordinates><panel_attributes>
+Resources
+
+--
+ - __instance: Resources            
+ - solar_energy: float              
+ - lunar_energy: float             
+ - eclipse_energy: float            
+ - game_clock: float               
+ - clock: float                     
+ - font1: pygame.Font               
+ - font2: pygame.Font               
+ - rect: pygame.Rect                        
+--
++ __new__(): Resources             
++ __init__()                       
++ add_energy(multiplier)           
++ remove_solar_energy(cost)        
++ remove_lunar_energy(cost)        
++ remove_eclipse_energy(cost)      
++ add_start()                      
++ resources_reset()                
++ draw(screen)                      </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>441</x><y>553</y><w>238</w><h>98</h></coordinates><panel_attributes>
+UnitConfig
+
+--
+- _instance: UnitConfig             
+- config: dict                            
+--
++ __new__(): UnitConfig             
++ _load_config(): dict              
++ get_unit_config(name): dict                  </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>805</x><y>553</y><w>196</w><h>217</h></coordinates><panel_attributes>
+Unit 
+
+--
+- config: dict                     
+- health: int                       
+- attack_power: float               
+- speed: float                      
+- rect: pygame.Rect                 
+- sprite_sheet: Surface             
+- animation_list: list              
+- action: int                       
+- frame_index: int                  
+--
++ __init__(x, y, unit_type)         
++ load_images(): list               
++ update()                          
++ draw()                            
++ move()                            
++ attack()                          
++ unit_die()                        </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>721</y><w>196</w><h>70</h></coordinates><panel_attributes>
+Child Units(Units)
+
+--
+Enemy Units        
+--
+Hero Units             </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>469</x><y>721</y><w>70</w><h>21</h></coordinates><panel_attributes>Unit_config.json</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>749</x><y>749</y><w>70</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>616</x><y>420</y><w>112</w><h>28</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>140;10;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>616</x><y>350</y><w>112</w><h>56</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>140;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>651</x><y>70</y><w>84</w><h>28</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>100;20;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>651</x><y>203</y><w>84</w><h>21</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>28</y><w>21</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>854</x><y>294</y><w>147</w><h>147</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;190;190;190;190;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1085</x><y>294</y><w>21</w><h>203</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;270;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>994</x><y>294</y><w>21</w><h>273</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;370</additional_attributes></element><element><id>Relation</id><coordinates><x>1169</x><y>294</y><w>21</w><h>63</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>616</x><y>476</y><w>112</w><h>28</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>140;20;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>861</x><y>224</y><w>175</w><h>504</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>230;700;230;160;90;160;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>287</x><y>0</y><w>518</w><h>315</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>720;80;720;10;10;10;10;430</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>217</y><w>315</w><h>140</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>430;10;380;10;380;180;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>672</x><y>581</y><w>147</w><h>21</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;190;10</additional_attributes></element><element><id>Relation</id><coordinates><x>434</x><y>266</y><w>385</w><h>308</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;10;360;310;360;390;420;530;420</additional_attributes></element><element><id>Relation</id><coordinates><x>861</x><y>196</y><w>119</w><h>371</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;150;10;150;510</additional_attributes></element><element><id>Relation</id><coordinates><x>854</x><y>273</y><w>126</w><h>294</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;160;10;160;400</additional_attributes></element><element><id>Relation</id><coordinates><x>854</x><y>350</y><w>126</w><h>210</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;160;10;160;280</additional_attributes></element><element><id>Relation</id><coordinates><x>854</x><y>406</y><w>126</w><h>154</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;160;10;160;200</additional_attributes></element><element><id>Relation</id><coordinates><x>854</x><y>476</y><w>126</w><h>84</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;160;10;160;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>714</x><y>329</y><w>147</w><h>56</h></coordinates><panel_attributes>
+Hero 
+
+--
+Heros:   pygame.Surface</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>910</x><y>763</y><w>119</w><h>56</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>150;60;10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>273</x><y>791</y><w>21</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>357</x><y>511</y><w>21</w><h>168</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;220;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>91</x><y>623</y><w>63</w><h>273</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;10;10;370;70;370</additional_attributes></element><element><id>Relation</id><coordinates><x>126</x><y>455</y><w>63</w><h>98</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;120;10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>385</x><y>679</y><w>434</w><h>252</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>600;10;80;10;80;340;10;340</additional_attributes></element><element><id>Relation</id><coordinates><x>490</x><y>644</y><w>21</w><h>91</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>637</x><y>847</y><w>77</w><h>35</h></coordinates><panel_attributes>lt=-
+
+State &gt;</panel_attributes><additional_attributes>10;20;90;20</additional_attributes></element><element><id>Relation</id><coordinates><x>385</x><y>756</y><w>161</w><h>84</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;210;10;210;100</additional_attributes></element><element><id>Relation</id><coordinates><x>315</x><y>574</y><w>196</w><h>266</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;150;10;150;360;260;360</additional_attributes></element><element><id>Relation</id><coordinates><x>637</x><y>924</y><w>392</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>540;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>609</x><y>161</y><w>763</w><h>833</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>890;10;1070;10;1070;1160;10;1170;10;1130</additional_attributes></element><element><id>Relation</id><coordinates><x>637</x><y>763</y><w>238</w><h>91</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>320;10;320;60;10;60;10;110</additional_attributes></element></diagram>

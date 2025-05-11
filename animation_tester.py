@@ -1,5 +1,3 @@
-import pygame
-from Customize import Resolution, Dimensions  # Import necessary constants
 from Unit import *
 # Initialize Pygame
 pygame.init()
