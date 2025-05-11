@@ -82,13 +82,11 @@ class Enemies:
     Swordsman = pygame.image.load("Enemies/Swordsman/Swordsman_spritelist.png")
 
 
-
 class Projectile:
     Bullet = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")  # add this line
     Bullet1 = pygame.image.load("Enemies/Battle_turtle/Bullet1.png")
     Bullet2 = pygame.image.load("Enemies/Battle_turtle/Bullet2.png")
     FireBullet = pygame.image.load("Heros/Countess/Blood_Charge_1.png")
-
 
 
 class Fonts:

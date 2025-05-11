@@ -13,17 +13,10 @@ class EnemyLogic:
         self.boss_timer = 0
         self.stall_timer = 0
         self.mob_list = []
-        # tower.block.append(BigBloatedBoss(tower.rect.left - Dimensions.BLOCK_SIZE1,
-        #                                   Resolution.HEIGHT - 250 - Dimensions.BLOCK_SIZE1 // 2))
 
     def spawn_pattern(self, tower, player_resources):
-        # if player_resources.solar_energy >= 18:
-        #     # if self.stall_timer > 370:
-        #     #     EnemyLogic.spawn_unit(CentipedeBoss, tower)
-        #     #     self.stall_timer = 0
         if self.enemy_spawn_timer > 180:
             mobs = [Centipede, BigBloated]
-            # mobs = BattleTurtle
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(0, 30)
         if self.boss_timer > 3000:
@@ -55,83 +48,89 @@ class EnemyLogic:
 
 class Level1(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 200:
-            mobs = [BlueSlime, GreenSlime, ]
+        if self.enemy_spawn_timer > 220:
+            mobs = [BlueSlime, GreenSlime]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(0, 30)
-        if self.boss_timer > 3000:
+            self.enemy_spawn_timer = random.randint(60, 90)
+        if self.boss_timer > 4000:
             EnemyLogic.spawn_unit(RedSlime, tower)
-            self.boss_timer = random.randint(500, 1000)
-        Resources.add_energy(player_resources, [1, 0.5, 0.1])
+            self.boss_timer = random.randint(800, 1200)
+        Resources.add_energy(player_resources, [1.2, 0.3, 0.0])
 
 
 class Level2(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if player_resources.solar_energy >= 20:
-            if self.stall_timer > 370:
-                EnemyLogic.spawn_unit(GreyWerewolf, tower)
-                self.stall_timer = 0
-        if self.enemy_spawn_timer > 150:
+        if self.enemy_spawn_timer > 180:
             mobs = [RedWerewolf, GreyWerewolf]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(0, 30)
-        if self.boss_timer > 3400:
+            self.enemy_spawn_timer = random.randint(50, 70)
+        if self.stall_timer > 300 and player_resources.solar_energy >= 15:
+            EnemyLogic.spawn_unit(GreyWerewolf, tower)
+            self.stall_timer = 0
+        if self.boss_timer > 3600:
             EnemyLogic.spawn_unit(WhiteWerewolf, tower)
-            self.boss_timer = random.randint(500, 1000)
-        Resources.add_energy(player_resources, [0.25, 1.5, 0.2])
+            self.boss_timer = random.randint(600, 1000)
+        Resources.add_energy(player_resources, [0.7, 1.2, 0.3])
 
 
 class Level3(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 180:
-            mobs = [Centipede, BigBloated]
-            EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(0, 30)
+        if self.enemy_spawn_timer > 150:
+            mobs = [Centipede, BigBloated, BlueSlime]
+            for _ in range(random.randint(1, 2)):  # Occasionally spawn 2 at once
+                EnemyLogic.spawn_unit(random.choice(mobs), tower)
+            self.enemy_spawn_timer = random.randint(40, 60)
         if self.boss_timer > 3000:
             EnemyLogic.spawn_unit(CentipedeBoss, tower)
-            self.boss_timer = random.randint(500, 1000)
-        Resources.add_energy(player_resources, [0.25, 1.5, 0.2])
+            self.boss_timer = random.randint(600, 900)
+        Resources.add_energy(player_resources, [1, 1, 0.3])
 
 
 class Level4(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if player_resources.solar_energy >= 20:
-            if self.stall_timer > 370:
-                EnemyLogic.spawn_unit(CentipedeBoss, tower)
-                self.stall_timer = 0
-        if self.enemy_spawn_timer > 200:
+        if self.enemy_spawn_timer > 120:
             mobs = [Gargona1, Gargona2, Gargona3]
-            EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(0, 30)
+            for _ in range(2):  # Burst wave
+                EnemyLogic.spawn_unit(random.choice(mobs), tower)
+            self.enemy_spawn_timer = random.randint(30, 60)
+        if self.stall_timer > 300 and player_resources.lunar_energy > 15:
+            EnemyLogic.spawn_unit(CentipedeBoss, tower)
+            self.stall_timer = 0
         if self.boss_timer > 3400:
             EnemyLogic.spawn_unit(BigBloatedBoss, tower)
-            self.boss_timer = random.randint(500, 1000)
-        Resources.add_energy(player_resources, [1, 0.5, 0.1])
+            self.boss_timer = random.randint(500, 900)
+        Resources.add_energy(player_resources, [1, 0.5, 0.3])
 
 
 class Level5(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 180:
+        if self.enemy_spawn_timer > 100:
             mobs = [Homeless1, Homeless2, Homeless3]
-            EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(0, 30)
+            for _ in range(random.randint(2, 3)):
+                EnemyLogic.spawn_unit(random.choice(mobs), tower)
+            self.enemy_spawn_timer = random.randint(20, 50)
         if self.boss_timer > 3000:
             EnemyLogic.spawn_unit(Homeless3, tower)
-            self.boss_timer = random.randint(500, 1000)
-        Resources.add_energy(player_resources, [1, 0.5, 0.1])
+            EnemyLogic.spawn_unit(Gargona2, tower)  # dual boss type
+            self.boss_timer = random.randint(400, 700)
+        Resources.add_energy(player_resources, [0.8, 0.8, 0.5])
 
 
 class Level6(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if player_resources.solar_energy >= 20:
-            if self.stall_timer > 370:
-                EnemyLogic.spawn_unit(Destroyer, tower)
-                self.stall_timer = 0
-        if self.enemy_spawn_timer > 200:
-            mobs = [Infantry, Swordsman]
-            EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(0, 30)
+        if self.enemy_spawn_timer > 90:
+            mobs = [Infantry, Swordsman, Homeless2]
+            for _ in range(random.randint(2, 4)):
+                EnemyLogic.spawn_unit(random.choice(mobs), tower)
+            self.enemy_spawn_timer = random.randint(15, 30)
+
+        if self.stall_timer > 250 and player_resources.solar_energy >= 15:
+            EnemyLogic.spawn_unit(Destroyer, tower)
+            self.stall_timer = 0
+
         if self.boss_timer > 3400:
             EnemyLogic.spawn_unit(Destroyer, tower)
-            self.boss_timer = random.randint(500, 1000)
-        Resources.add_energy(player_resources, [1, 0.5, 0.1])
+            EnemyLogic.spawn_unit(CentipedeBoss, tower)
+            self.boss_timer = random.randint(400, 800)
+
+        Resources.add_energy(player_resources, [0.8, 1, 1])

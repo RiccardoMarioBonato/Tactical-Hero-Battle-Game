@@ -1,12 +1,9 @@
-import tkinter as tk
-from tkinter import ttk
 import sys
-import os
 import threading
-import pygame
 from Unit import *
 from Customize import Color, Resolution
 from analytics_window import open_window
+import random
 
 
 def launch_analytics_window():
@@ -32,7 +29,7 @@ font_large = pygame.font.SysFont('Arial', 48)
 font_medium = pygame.font.SysFont('Arial', 32)
 font_small = pygame.font.SysFont('Arial', 24)
 font_tiny = pygame.font.SysFont('Arial', 16)
-Exit_to_menu_surface = font_large.render("Exit", True, "black")
+Exit_to_menu_surface = font_large.render("Exit", True, "white")
 Exit_to_menu_surface_rect = Exit_to_menu_surface.get_rect(midbottom=(1840, 80))
 
 
@@ -40,13 +37,31 @@ class GameProgress:
     def __init__(self):
         self.unlocked_levels = 1
         self.selected_team = []
+        self.unlocked_heroes = ["Lumberjack", "KarasuTengu", "Peasant", "Convert"]  # Always available
+        # self.unlocked_heroes = [
+        #     "Lumberjack", "KarasuTengu", "Peasant", "Convert", "Gangster1", "Gangster2", "Wanderer",
+        #     "BrownBeard", "Pantheon", "Countess", "Monk", "Kunoichi", "Gangster3", "LightMage",
+        #     "YamabushiTengu", "Kitsune", "FireMage", "VampireGirl"
+        # ]
 
     def complete_level(self, level_num):
         if level_num >= self.unlocked_levels:
             self.unlocked_levels = level_num + 1
+        self.unlock_new_characters(level_num)
 
-    def unlock_all(self):
-        self.unlocked_levels = 6
+    def unlock_new_characters(self, level_num):
+        all_heroes = [
+            "Lumberjack", "KarasuTengu", "Peasant", "Convert", "Gangster1", "Gangster2", "Wanderer",
+            "BrownBeard", "Pantheon", "Countess", "Monk", "Kunoichi", "Gangster3", "LightMage",
+            "YamabushiTengu", "Kitsune", "FireMage", "VampireGirl"
+        ]
+
+        if level_num >= 5:
+            self.unlocked_heroes = all_heroes
+        else:
+            locked = list(set(all_heroes) - set(self.unlocked_heroes))
+            new_unlocks = random.sample(locked, min(5, len(locked)))
+            self.unlocked_heroes += new_unlocks
 
 
 class LevelSelect:
@@ -69,28 +84,41 @@ class LevelSelect:
             level["locked"] = level["number"] > self.game_progress.unlocked_levels
 
     def draw(self, game_screen):
-        screen.fill(Color.WHITE)
-        title = font_large.render("SELECT LEVEL", True, Color.BLACK)
+        self.bg2 = pygame.image.load("img/backgrounds/Cartoon_Forest_BG_02.png").convert()
+        self.bg2 = pygame.transform.scale(self.bg2, (Resolution.WIDTH, Resolution.HEIGHT))
+        screen.blit(self.bg2, (0, 0))
+
+        title = font_large.render("SELECT LEVEL", True, Color.WHITE)
         game_screen.blit(title, (Resolution.WIDTH // 2 - title.get_width() // 2, 100))
 
         for level in self.levels:
             color = Color.BLUE if not level["locked"] else Color.LOCKED_COLOR
             pygame.draw.rect(screen, color, level["rect"])
             name = font_medium.render(level["name"], True, Color.WHITE)
-            game_screen.blit(name, (level["rect"].x + level["rect"].width // 2 - name.get_width() // 2, level["rect"].y + 40))
+            game_screen.blit(name, (
+            level["rect"].x + level["rect"].width // 2 - name.get_width() // 2,
+            level["rect"].y + 40))
             num = font_large.render(f"Level {level['number']}", True, Color.WHITE)
-            game_screen.blit(num, (level["rect"].x + level["rect"].width // 2 - num.get_width() // 2, level["rect"].y + 80))
+            game_screen.blit(num, (
+            level["rect"].x + level["rect"].width // 2 - num.get_width() // 2,
+            level["rect"].y + 80))
             if level["locked"]:
                 lock = font_large.render("🔒", True, Color.WHITE)
-                game_screen.blit(lock, (level["rect"].x + level["rect"].width // 2 - lock.get_width() // 2, level["rect"].y + 120))
+                game_screen.blit(lock, (
+                level["rect"].x + level["rect"].width // 2 - lock.get_width() // 2,
+                level["rect"].y + 120))
 
         pygame.draw.rect(game_screen, Color.GRAY, self.back_button)
-        back_text = font_medium.render("Back", True, Color.BLACK)
-        game_screen.blit(back_text, (self.back_button.x + self.back_button.width // 2 - back_text.get_width() // 2, self.back_button.y + self.back_button.height // 2 - back_text.get_height() // 2))
+        back_text = font_medium.render("Back", True, Color.WHITE)
+        game_screen.blit(back_text, (
+        self.back_button.x + self.back_button.width // 2 - back_text.get_width() // 2,
+        self.back_button.y + self.back_button.height // 2 - back_text.get_height() // 2))
 
-        pygame.draw.rect(game_screen, Color.ORANGE, self.analytics_button)
-        stat_text = font_small.render("Data Analysis", True, Color.BLACK)
-        game_screen.blit(stat_text, (self.analytics_button.x + self.analytics_button.width // 2 - stat_text.get_width() // 2, self.analytics_button.y + self.analytics_button.height // 2 - stat_text.get_height() // 2))
+        pygame.draw.rect(game_screen, Color.GRAY, self.analytics_button)
+        stat_text = font_small.render("Data Analysis", True, Color.WHITE)
+        game_screen.blit(stat_text, (
+        self.analytics_button.x + self.analytics_button.width // 2 - stat_text.get_width() // 2,
+        self.analytics_button.y + self.analytics_button.height // 2 - stat_text.get_height() // 2))
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -107,9 +135,6 @@ class LevelSelect:
                 if self.analytics_button.collidepoint(mouse_pos):
                     launch_analytics_window()
         return None
-
-
-
 
 
 class CharacterSelect:
@@ -160,16 +185,16 @@ class CharacterSelect:
             "YamabushiTengu": "Heros/YamabushiTengu/Yamabushi_tengu_profile.jpg",
             "Convert": "Heros/Converted/convert_profile.png",
             "Countess": "Heros/Countess/Countess_profile.png",
-            "VampireGirl": "Heros/VampireGirl/vampiregirl_profile.jpg",
-            "Wanderer": "Heros/Wanderer/wanderer_profile.jpg",
+            "VampireGirl": "Heros/VampireGirl/vampire_girl_profile.png",
+            "Wanderer": "Heros/Wanderer_Magican/wanderer_profile.png",
             "LightMage": "Heros/Light_Magican/Light_Mage_profile.png",
             "FireMage": "Heros/Fire_magican/fire_mage_profile.png",
             "Gangster1": "Heros/Gangster1/496421d1-c2aa-43f2-bb7e-6e39f2f2b5a9.png",
             "Gangster2": "Heros/Gangster2/Gangsters_2_profile.png",
             "Gangster3": "Heros/Gangster3/Gangsters_3_profile.png",
             "Monk": "Heros/Monk/monk_profile.png",
-            "Peasant": "Heros/Peasant/peasant_profile.jpg",
-            "Kunoichi": "Heros/Kunoichi/kunoichi_profile.jpg"
+            "Peasant": "Heros/Ninja_Peasant/peasant_profile.png",
+            "Kunoichi": "Heros/Kunoichi/Kunoichi_profile.png"
         }
 
         class_data = [
@@ -194,13 +219,15 @@ class CharacterSelect:
         ]
 
         # Everything except Pantheon, Lumberjack, BrownBeard is locked before level 2
-        # always_unlocked = ["Pantheon", "Lumberjack", "BrownBeard", "KarasuTengu"]
         always_unlocked = [
-            "Pantheon", "Lumberjack", "BrownBeard", "KarasuTengu",
-            "Kitsune", "YamabushiTengu", "Convert", "Countess", "VampireGirl",
-            "Wanderer", "LightMage", "FireMage", "Gangster1", "Gangster2",
-            "Gangster3", "Monk", "Peasant", "Kunoichi"
+            "Lumberjack", "KarasuTengu", "Peasant", "Convert"
         ]
+        # always_unlocked = [
+        #     "Pantheon", "Lumberjack", "BrownBeard", "KarasuTengu",
+        #     "Kitsune", "YamabushiTengu", "Convert", "Countess", "VampireGirl",
+        #     "Wanderer", "LightMage", "FireMage", "Gangster1", "Gangster2",
+        #     "Gangster3", "Monk", "Peasant", "Kunoichi"
+        # ]
         for i, ((x, y), (name, char_class)) in enumerate(zip(positions, class_data)):
             try:
                 image = pygame.image.load(character_images.get(name, "")).convert_alpha()
@@ -212,14 +239,11 @@ class CharacterSelect:
                 image.blit(char_num, (5, 5))
 
             # Lock if not in always_unlocked and player is below level 2
-            is_locked = name not in always_unlocked and self.game_progress.unlocked_levels < 2
-
-            # ✅ Apply grey overlay if locked
+            is_locked = name not in self.game_progress.unlocked_heroes
             if is_locked:
                 grey_overlay = pygame.Surface(image.get_size(), pygame.SRCALPHA)
                 grey_overlay.fill((100, 100, 100, 150))  # semi-transparent gray
                 image.blit(grey_overlay, (0, 0))
-
             characters.append({
                 "name": name,
                 "class": char_class,
@@ -231,94 +255,76 @@ class CharacterSelect:
 
         return characters
 
-
     def draw(self, screen):
-        screen.fill(Color.WHITE)
+        self.bgs = pygame.image.load("img/backgrounds/Cartoon_Forest_BG_02.png").convert()
+        self.bgs = pygame.transform.scale(self.bgs, (Resolution.WIDTH, Resolution.HEIGHT))
+        screen.blit(self.bgs, (0, 0))
 
-        # Draw title
-        title = font_large.render("SELECT YOUR TEAM (MAX 3 HEROES)", True, Color.BLACK)
-
+        title = font_large.render("SELECT YOUR TEAM (MAX 3 HEROES)", True, Color.WHITE)
         screen.blit(title, (Resolution.WIDTH // 2 - title.get_width() // 2, 50))
         screen.blit(Exit_to_menu_surface, Exit_to_menu_surface_rect)
 
-        # Draw selection counter
         counter = font_medium.render(
-            f"Selected: {len(self.selected_characters)}/{self.max_selection}", True, Color.BLACK)
+            f"Selected: {len(self.selected_characters)}/{self.max_selection}", True, Color.WHITE)
         screen.blit(counter, (Resolution.WIDTH // 2 - counter.get_width() // 2, 120))
 
-        # Draw characters
         for char in self.characters:
-            # Draw character image (darker if locked)
             char_image = char["image"].copy()
             if char["locked"]:
                 char_image.fill((100, 100, 100, 0), special_flags=pygame.BLEND_RGBA_MULT)
             screen.blit(char_image, (char["rect"].x + 10, char["rect"].y + 10))
 
-            # Draw character name and class
             name = font_medium.render(char["name"], True, Color.WHITE)
             screen.blit(name, (char["rect"].x + char["rect"].width // 2 - name.get_width() // 2,
                                char["rect"].y + char["rect"].height - 50))
 
-            char_class = font_small.render(char["class"], True, Color.BLACK)
+            char_class = font_small.render(char["class"], True, Color.WHITE)
             screen.blit(char_class,
                         (char["rect"].x + char["rect"].width // 2 - char_class.get_width() // 2,
                          char["rect"].y + char["rect"].height - 25))
 
-            # Draw selection border or lock status
             if char["locked"]:
-                pygame.draw.rect(screen, Color.LOCKED_COLOR, char["rect"], 3)
-                lock = font_medium.render("🔒", True, Color.BLACK)
+                pygame.draw.rect(screen, Color.LOCKED_COLOR, char["rect"], 4)
+                lock = font_medium.render("🔒", True, Color.WHITE)
                 screen.blit(lock, (char["rect"].x + char["rect"].width // 2 - lock.get_width() // 2,
                                    char["rect"].y + char[
                                        "rect"].height // 2 - lock.get_height() // 2))
             elif char["selected"]:
-                pygame.draw.rect(screen, Color.GREEN, char["rect"], 3)
+                pygame.draw.rect(screen, Color.GREEN, char["rect"], 4)
             else:
-                pygame.draw.rect(screen, Color.BLACK, char["rect"], 1)
+                pygame.draw.rect(screen, Color.WHITE, char["rect"], 2)
 
-        # Draw buttons
         pygame.draw.rect(screen, Color.GRAY, self.back_button)
-        back_text = font_medium.render("Back", True, Color.BLACK)
+        back_text = font_medium.render("Back", True, Color.WHITE)
         screen.blit(back_text,
                     (self.back_button.x + self.back_button.width // 2 - back_text.get_width() // 2,
                      self.back_button.y + self.back_button.height // 2 - back_text.get_height() // 2))
 
-        # Start button (only enabled with selections)
         start_btn_color = Color.GREEN if self.selected_characters else Color.DARK_GRAY
         pygame.draw.rect(screen, start_btn_color, self.start_button)
-        start_text = font_medium.render("Start", True, Color.BLACK)
+        start_text = font_medium.render("Start", True, Color.WHITE)
         screen.blit(start_text, (
-            self.start_button.x + self.start_button.width // 2 - start_text.get_width() // 2,
-            self.start_button.y + self.start_button.height // 2 - start_text.get_height() // 2))
+        self.start_button.x + self.start_button.width // 2 - start_text.get_width() // 2,
+        self.start_button.y + self.start_button.height // 2 - start_text.get_height() // 2))
 
-        pygame.draw.rect(screen, Color.ORANGE, self.analytics_button)
-        analytics_text = font_small.render("View Analytics", True, Color.BLACK)
+        pygame.draw.rect(screen, Color.GRAY, self.analytics_button)
+        analytics_text = font_small.render("View Analytics", True, Color.WHITE)
         screen.blit(analytics_text, (
-            self.analytics_button.x + self.analytics_button.width // 2 - analytics_text.get_width() // 2,
-            self.analytics_button.y + self.analytics_button.height // 2 - analytics_text.get_height() // 2))
-        # Draw selected team preview
-        if self.selected_characters:
-            team_text = font_medium.render("Your Team:", True, Color.BLACK)
-            screen.blit(team_text, (850, 950))
+        self.analytics_button.x + self.analytics_button.width // 2 - analytics_text.get_width() // 2,
+        self.analytics_button.y + self.analytics_button.height // 2 - analytics_text.get_height() // 2))
 
+        if self.selected_characters:
+            team_text = font_medium.render("Your Team:", True, Color.WHITE)
+            screen.blit(team_text, (850, 950))
             for i, char_name in enumerate(self.selected_characters):
-                char_info = font_medium.render(f"{i + 1}. {char_name}", True, Color.BLACK)
+                char_info = font_medium.render(f"{i + 1}. {char_name}", True, Color.WHITE)
                 screen.blit(char_info, (550 + i * 300, 1030))
 
-        # Add support for character selection screen analytics
-        CharacterSelect.launch_analytics_window = staticmethod(launch_analytics_window)
-        CharacterSelect.analytics_button = pygame.Rect(50, 50, 220, 60)
-        CharacterSelect.draw_analytics_button = lambda self, screen: (
-            pygame.draw.rect(screen, Color.ORANGE, self.analytics_button),
-            screen.blit(font_small.render("Data Analysis", True, Color.BLACK),
-                        (self.analytics_button.x + self.analytics_button.width // 2 -
-                         font_small.size("Data Analysis")[0] // 2,
-                         self.analytics_button.y + self.analytics_button.height // 2 -
-                         font_small.size("Data Analysis")[1] // 2))
-        )
-        CharacterSelect.handle_analytics_event = lambda self, event: (
-            launch_analytics_window() if event.type == pygame.MOUSEBUTTONDOWN and self.analytics_button.collidepoint(
-                event.pos) else None)
+    def launch_analytics_window(self):
+        try:
+            launch_analytics_window()
+        except Exception as e:
+            print("Failed to open analytics window from CharacterSelect:", e)
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -366,14 +372,6 @@ class CharacterSelect:
             {"name": "Future", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
              "locked": False}
         ]
-
-
-    def launch_analytics_window(self):
-        try:
-            process = multiprocessing.Process(target=analytics_window.open_window)
-            process.start()
-        except Exception as e:
-            print("Failed to open analytics window:", e)
 
 
 class SelectGame:

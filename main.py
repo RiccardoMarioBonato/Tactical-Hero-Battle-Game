@@ -1,14 +1,13 @@
 import pygame
 from Level_select import SelectGame, GameProgress
-from Customize import Color, Images, Resolution, Dimensions, Fonts
+from Customize import Color, Images, Resolution, Fonts
 from Base import Tower
 from Enemy import EnemyLogic
 from Player import Controller, Resources
 from AssetLoader import AssetLoader
 from GameStats import game_stats
 import multiprocessing
-from Unit import UnitConfig
-from GameStats import GameStats
+
 multiprocessing.set_start_method('spawn', force=True)
 # Initialize pygame
 pygame.init()
@@ -36,8 +35,6 @@ level_num = 1
 selected_hero_classes = []
 game_progress = GameProgress()
 
-# game_progress.unlock_all() # for testing
-
 
 # Game states
 class GameState:
@@ -45,10 +42,11 @@ class GameState:
     MAIN_GAME = 1
     LEVEL_COMPLETE = 2
 
+
 # Initialize game state
 current_state = GameState.CHARACTER_SELECT
 selected_characters = []
-cr_select = SelectGame(game_progress)  # This should be your SelectGame instance, not LevelSelect
+cr_select = SelectGame(game_progress)
 exit_button_rect = Resources.draw_exit_button(screen, font_small)
 # Main game loop
 running = True
@@ -73,10 +71,8 @@ while running:
         Controller.keyboard(player_tower, player_resources, selected_hero_classes[:3], exit_button_rect)
         spawn, background = Enemy.pick_level(level_num, enemy_tower, player_resources)
         screen.blit(background, (0, 0))
-
         player_tower.take_dmg(enemy_tower)
         enemy_tower.take_dmg(player_tower)
-
         player_tower.draw(screen)
         enemy_tower.draw(screen)
         player_resources.draw(screen)

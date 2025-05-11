@@ -44,8 +44,4 @@ class Tower:
                 # ✅ Record damage done to tower
                 from GameStats import game_stats
                 game_stats.record_tower_damage(block.__class__.__name__, block.tower_dmg)
-
-
-
                 self.block.remove(block)
-

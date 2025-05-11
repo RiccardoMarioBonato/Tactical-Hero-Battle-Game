@@ -3,9 +3,6 @@ import json
 import os
 from Customize import Hero, Enemies, Projectile, Resolution
 from Base import Tower
-from GameStats import GameStats
-
-from GameStats import game_stats
 
 
 class UnitConfig:
@@ -798,6 +795,7 @@ class VampireGirl(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "VampireGirl")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.VampireGirl
         scale = self.config['scale']
@@ -809,6 +807,7 @@ class Wanderer(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Wanderer")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.Wanderer
         scale = self.config['scale']
@@ -820,6 +819,7 @@ class LightMage(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "LightMage")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.LightMage
         scale = self.config['scale']
@@ -831,6 +831,7 @@ class FireMage(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "FireMage")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.FireMage
         scale = self.config['scale']
@@ -842,6 +843,7 @@ class Gangster1(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Gangster1")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.Gangster1
         scale = self.config['scale']
@@ -853,6 +855,7 @@ class Gangster2(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Gangster2")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.Gangster2
         scale = self.config['scale']
@@ -864,6 +867,7 @@ class Gangster3(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Gangster3")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.Gangster3
         scale = self.config['scale']
@@ -875,6 +879,7 @@ class Monk(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Monk")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.Monk
         scale = self.config['scale']
@@ -886,6 +891,7 @@ class Peasant(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Peasant")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.Peasant
         scale = self.config['scale']
@@ -897,6 +903,7 @@ class Kunoichi(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Kunoichi")
         self._load_sprite()
+
     def _load_sprite(self):
         self.sprite_sheet = Hero.Kunoichi
         scale = self.config['scale']

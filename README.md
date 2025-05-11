@@ -77,32 +77,30 @@ Requires **Python >= 3.10**
     python main.py
     ```
 
-7. To run the jupyther notebook:
+7. View analytics dashboard (after battles) without the game engine for weaker rigs:
     ```bash
-     jupyther notebook
-    ```
-8.pick file:
-    ```
-    choose graphs/level1 - graphs/level6
+     python analytics_window.py
     ```
 ---
 
-The project includes a Jupyter Notebook (`level1.ipynb` ) till (`level6.ipynb`)that generates the following charts from the recorded battle statistics:
+## 📊 Data Visualization
 
-1. **Units Deployed** → Bar Chart  
-   Compare the frequency of unit deployment across all battles.
+Recorded battle stats are saved in `game_stats.csv`. You can view them with:
 
-2. **Damage Dealt** → Stacked Bar Chart  
-   Show total damage to units and towers, stacked per unit type.
+- 📈 `analytics_window.py` — GUI-based dashboard for full analytics
 
-3. **Battle Duration** → Histogram  
-   Display the distribution of battle durations.
+### 🔑 Key Graphs
 
-4. **Player Resource Usage** → Pie Chart  
-   Visualize the percentage use of Solar, Lunar, and Eclipse resources.
-
-5. **Win/Loss Ratio** → Pie Chart  
-   Show overall player success rate.
+| **Graph**                    | **Description**                                                   |
+|-----------------------------|-------------------------------------------------------------------|
+| **Win/Loss Ratio**          | Bar Chart comparing number of wins and losses                     |
+| **Battle Duration**         | Boxplot showing duration distribution across outcomes             |
+| **Units Deployed**          | Bar Chart of total unit deployments                               |
+| **Unit Damage Output**      | Bar Chart showing average damage dealt by each unit               |
+| **Unit Win Rate**           | Bar Chart comparing how often each unit contributed to a victory  |
+| **Resource Usage**          | Pie Chart of Solar, Lunar, and Eclipse usage + outcome breakdown  |
+| **Total Damage vs Duration**| Dual Line Chart comparing total damage with battle duration       |
+| **Correlation Heatmap**     | Correlation matrix for duration, damage, and win outcome          |
 
 
 
@@ -129,4 +127,4 @@ This project uses the [MIT License](LICENSE).
 ## YouTube Presentation
 
 Watch the 5-minute project presentation video:  
-[YouTube Presentation Link](https://www.youtube.com/watch?v=YOUR_VIDEO_LINK)
+[YouTube Presentation Link](https://www.youtube.com/watch?v=_GoVpilOQjs)
