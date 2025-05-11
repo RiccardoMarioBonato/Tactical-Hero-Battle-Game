@@ -102,9 +102,13 @@ Recorded battle stats are saved in `game_stats.csv`. You can view them with:
 | **Total Damage vs Duration**| Dual Line Chart comparing total damage with battle duration       |
 | **Correlation Heatmap**     | Correlation matrix for duration, damage, and win outcome          |
 
+## 🧩 UML Class Diagram
 
+Below is the UML diagram illustrating key classes, patterns, and relationships:
 
+![UML Diagram](file%20related/UML_updated.JPG)
 
+---
 
 Gameplay screenshots:
 - Available in `/screenshots/gameplay/`
@@ -124,3 +128,5 @@ This project uses the [MIT License](LICENSE).
 
 Watch the 5-minute project presentation video:  
 [YouTube Presentation Link](https://www.youtube.com/watch?v=_GoVpilOQjs)
+
+
