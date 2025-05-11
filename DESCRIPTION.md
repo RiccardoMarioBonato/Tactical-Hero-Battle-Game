@@ -128,6 +128,13 @@ Data can be viewed in two formats:
 
 ---
 
+## 📄 Original Project Proposal
+
+The initial vision and goals of the game, including early gameplay ideas and technical planning, are outlined in the original proposal submitted at the beginning of the project.
+
+📁 [Original Proposal PDF (GitHub Link)](file%20related/Proposal%204.pdf)
+
+📎 This document served as the foundation for the game’s mechanics, design direction, and integration of data analytics components.
 ## 🪪 License
 
 This project is licensed under the [MIT License](LICENSE).
