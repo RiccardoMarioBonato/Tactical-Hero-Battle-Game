@@ -106,10 +106,6 @@ Recorded battle stats are saved in `game_stats.csv`. You can view them with:
 
 
 
-
-jupyter notebook visualization.ipynb
-## Project Screenshots
-
 Gameplay screenshots:
 - Available in `/screenshots/gameplay/`
 
