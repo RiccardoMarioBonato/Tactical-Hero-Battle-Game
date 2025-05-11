@@ -24,6 +24,18 @@
             "hitbox": [80, 120],
             "offset": [-50, -150]
         },
+            "Bullet": {
+        "type": "projectile",
+        "health": 1,
+        "attack_power": 10,
+        "speed": -8,
+        "tower_dmg": 0,
+        "animation_steps": [],
+        "measurement": [30, 1, [30, 18]],
+        "scale": 1,
+        "hitbox": [30, 18],
+        "offset": [0, 0]
+        },
         "BigBloated": {
             "type": "enemy",
             "health": 150,
@@ -61,6 +73,186 @@
             "offset": [-50, 0],
             "attack_cooldown": 2000
         },
+        "GreenSlime": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [10, 5, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 1, [100, 200]],
+            "scale": 1.5,
+            "hitbox": [80, 150],
+            "offset": [-70, -50]
+        },
+        "BlueSlime": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [10, 5, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 1, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -110]
+        },
+        "RedSlime": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [10, 4, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 1, [100, 200]],
+            "scale": 4.0,
+            "hitbox": [80, 150],
+            "offset": [-120, -350]
+        },
+        "RedWerewolf": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -3,
+            "tower_dmg": 10,
+            "animation_steps": [9, 4, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+        "GreyWerewolf": {
+            "type": "enemy",
+            "health": 200,
+            "attack_power": 0.6,
+            "speed": -6,
+            "tower_dmg": 10,
+            "animation_steps": [10, 4, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+        "WhiteWerewolf": {
+            "type": "enemy",
+            "health": 400,
+            "attack_power": 0.7,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [10, 4, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 4.0,
+            "hitbox": [80, 150],
+            "offset": [-120, -365]
+        },
+        "Gargona1": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [13, 16, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+        "Gargona2": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -3,
+            "tower_dmg": 10,
+            "animation_steps": [13, 7, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+        "Gargona3": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -2,
+            "tower_dmg": 10,
+            "animation_steps": [7, 10, 3, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+        "Homeless1": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [8, 5, 4, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+        "Homeless2": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -3,
+            "tower_dmg": 10,
+            "animation_steps": [8, 10, 4, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+        "Homeless3": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -2,
+            "tower_dmg": 10,
+            "animation_steps": [8, 3, 4, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+            "Infantry": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [6, 11, 4, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+            "Swordsman": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [8, 4, 4, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
+            "Destroyer": {
+            "type": "enemy",
+            "health": 100,
+            "attack_power": 0.25,
+            "speed": -1,
+            "tower_dmg": 10,
+            "animation_steps": [8, 3, 7, 6, 4, 2, 4, 4, 6],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2.0,
+            "hitbox": [80, 150],
+            "offset": [-70, -120]
+        },
         "LumberJack": {
             "type": "hero",
             "health": 90,
@@ -72,7 +264,7 @@
             "measurement": [96, 2, [50, 150]],
             "scale": 2.0,
             "hitbox": [60, 136],
-            "offset": [0, 0]
+            "offset": [-50, 0]
         },
         "Pantheon": {
             "type": "hero",
@@ -85,7 +277,7 @@
             "measurement": [96, 2, [50, 150]],
             "scale": 2.0,
             "hitbox": [60, 136],
-            "offset": [0, 0]
+            "offset": [-50, 0]
         },
         "BrownBeard": {
             "type": "hero",
@@ -98,20 +290,20 @@
             "measurement": [96, 2, [100, 200]],
             "scale": 2.0,
             "hitbox": [60, 136],
-            "offset": [0, 0]
+            "offset": [-50, 0]
         },
         "Kitsune": {
             "type": "hero",
             "health": 450,
             "attack_power": 1.175,
             "speed": 1,
-            "cost": [8, 8, 2],
+            "cost": [6, 6, 2],
             "tower_dmg": 30,
             "animation_steps": [8, 10, 9, 10, 10, 10, 7, 6, 2, 9],
             "measurement": [128, 1.5, [100, 200]],
             "scale": 1.75,
             "hitbox": [60, 136],
-            "offset": [0, 0]
+            "offset": [-50, -35]
         },
         "YamabushiTengu": {
             "type": "hero",
@@ -124,11 +316,11 @@
             "measurement": [128, 2, [100, 200]],
             "scale": 1.5,
             "hitbox": [60, 136],
-            "offset": [0, 0]
+            "offset": [-50, 0]
         },
         "KarasuTengu": {
             "type": "hero",
-            "health": 100,
+            "health": 200,
             "attack_power": 0.25,
             "speed": 6,
             "cost": [0, 2, 0],
@@ -137,20 +329,163 @@
             "measurement": [128, 2, [100, 200]],
             "scale": 1.5,
             "hitbox": [60, 136],
-            "offset": [0, 0]
+            "offset": [-50, 0]
         },
-        "SwordMaster": {
+        "Convert": {
+            "type": "hero",
+            "health": 400,
+            "attack_power": 1,
+            "speed": 6,
+            "cost": [0, 3, 0],
+            "tower_dmg": 5,
+            "animation_steps": [8, 3, 8, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [80, 136],
+            "offset": [-90, -50]
+        },
+        "Countess": {
+            "type": "hero",
+            "health": 400,
+            "attack_power": 0.25,
+            "speed": 6,
+            "cost": [2, 2, 2],
+            "tower_dmg": 5,
+            "animation_steps": [6, 6, 8, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [80, 136],
+            "offset": [-50, -50]
+        },
+        "VampireGirl": {
             "type": "hero",
             "health": 500,
             "attack_power": 1,
-            "speed": 7,
-            "cost": [20, 5, 2],
-            "tower_dmg": 30,
-            "animation_steps": [16, 7, 4],
+            "speed": 6,
+            "cost": [2, 6, 0],
+            "tower_dmg": 5,
+            "animation_steps": [6, 5, 10, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [80, 136],
+            "offset": [-50, -60]
+        },
+        "Wanderer": {
+            "type": "hero",
+            "health": 400,
+            "attack_power": 1,
+            "speed": 6,
+            "cost": [2, 1, 0],
+            "tower_dmg": 5,
+            "animation_steps": [7, 9, 4, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [80, 136],
+            "offset": [-50, -60]
+        },
+        "LightMage": {
+            "type": "hero",
+            "health": 340,
+            "attack_power": 0.7,
+            "speed": 6,
+            "cost": [3, 1, 0],
+            "tower_dmg": 5,
+            "animation_steps": [8, 13, 5, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [80, 136],
+            "offset": [-50, -60]
+        },
+        "FireMage": {
+            "type": "hero",
+            "health": 800,
+            "attack_power": 0.9,
+            "speed": 6,
+            "cost": [5, 2, 0],
+            "tower_dmg": 5,
+            "animation_steps": [8, 14, 6, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [80, 136],
+            "offset": [-50, -60]
+        },
+        "Gangster1": {
+            "type": "hero",
+            "health": 750,
+            "attack_power": 0.8,
+            "speed": 6,
+            "cost": [3, 0, 0],
+            "tower_dmg": 5,
+            "animation_steps": [10, 4, 5, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [120, 136],
+            "offset": [-50, -60]
+        },
+        "Gangster2": {
+            "type": "hero",
+            "health": 600,
+            "attack_power": 0.95,
+            "speed": 6,
+            "cost": [2, 1, 0],
+            "tower_dmg": 5,
+            "animation_steps": [10, 6, 5, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [120, 136],
+            "offset": [-50, -60]
+        },
+        "Gangster3": {
+            "type": "hero",
+            "health": 900,
+            "attack_power": 0.85,
+            "speed": 6,
+            "cost": [3, 2, 0],
+            "tower_dmg": 5,
+            "animation_steps": [10, 5, 5, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [120, 136],
+            "offset": [-50, -60]
+        },
+        "Monk": {
+            "type": "hero",
+            "health": 400,
+            "attack_power": 0.6,
+            "speed": 6,
+            "cost": [3, 2, 0],
+            "tower_dmg": 5,
+            "animation_steps": [8, 5, 5, 4, 4, 4, 4, 5, 2, 4],
             "measurement": [96, 2, [100, 200]],
-            "scale": 4.0,
-            "hitbox": [60, 136],
-            "offset": [0, 0]
+            "scale": 2.5,
+            "hitbox": [120, 136],
+            "offset": [-50, -50]
+        },
+        "Peasant": {
+            "type": "hero",
+            "health": 140,
+            "attack_power": 0.35,
+            "speed": 6,
+            "cost": [1, 0, 0],
+            "tower_dmg": 5,
+            "animation_steps": [8, 6, 4, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [96, 2, [100, 200]],
+            "scale": 2.5,
+            "hitbox": [120, 136],
+            "offset": [-50, -50]
+        },
+        "Kunoichi": {
+            "type": "hero",
+            "health": 500,
+            "attack_power": 0.45,
+            "speed": 6,
+            "cost": [3, 1, 0],
+            "tower_dmg": 5,
+            "animation_steps": [8, 6, 5, 4, 4, 4, 4, 5, 2, 4],
+            "measurement": [128, 2, [100, 200]],
+            "scale": 2,
+            "hitbox": [120, 136],
+            "offset": [-50, -50]
         }
     }
 }
