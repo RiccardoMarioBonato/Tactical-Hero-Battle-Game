@@ -4,8 +4,7 @@ import time
 from datetime import datetime
 import pygame
 from Customize import Resolution
-import matplotlib.pyplot as plt
-import io
+
 
 class GameStats:
     def __init__(self):

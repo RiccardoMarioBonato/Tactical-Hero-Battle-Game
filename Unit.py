@@ -427,7 +427,6 @@ class BattleTurtle(Unit):
         self.bullets.append(bullet)
 
 
-
 def draw(self, screen, show_hitbox=False):
     if not self.image:
         return
@@ -463,6 +462,7 @@ def update(self, screen, tower, own_units=[], other_units=[], show_hitbox=False)
 
     self.attack(other_units)
     self.draw(screen, show_hitbox)
+
 
 
 class Gargona1(Unit):
@@ -581,6 +581,7 @@ class Swordsman(Unit):
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
 
+
 # Hero Units
 class LumberJack(Unit):
     def __init__(self, x, y):
@@ -594,7 +595,6 @@ class LumberJack(Unit):
         self.image = self.animation_list[self.action][self.frame_index]
 
 
-
 class Pantheon(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Pantheon")
@@ -605,7 +605,6 @@ class Pantheon(Unit):
         scale = self.config['scale']
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
-
 
 
 class BrownBeard(Unit):
@@ -630,7 +629,39 @@ class Kitsune(Unit):
         scale = self.config['scale']
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
+        self.attack_rect = pygame.Rect(self.rect.right - 200, self.rect.y, 300, self.rect.height)
 
+
+    def attack(self, targets):
+        collision_detected = False
+
+        if isinstance(targets, Tower):
+            if self.rect.colliderect(targets.rect):
+                collision_detected = True
+                self.speed = 0
+                if self.frame_index >= self.animation_steps[1]:
+                    self.frame_index = 0
+                self.action = 1
+
+        else:
+            for target in targets:
+                if self.attack_rect.colliderect(target.rect):
+                    collision_detected = True
+                    self.speed = 0
+                    if self.frame_index >= self.animation_steps[1]:
+                        self.frame_index = 0
+                    self.action = 1
+
+                    # Apply damage and record it
+                    dmg = self.attack_power
+                    target.health -= dmg
+                    if target.health <= 0:
+                        target.unit_die()
+                        self.moving()
+
+        if not collision_detected:
+            self.moving()
+            self.animation_cooldown = 100
 
 class YamabushiTengu(Unit):
     def __init__(self, x, y):
@@ -758,14 +789,13 @@ class CrimsonBullet(Unit):
         self.frame_time = 100  # ms per frame
         self.last_frame_update = pygame.time.get_ticks()
 
-        hitbox_w, hitbox_h = self.config['hitbox']
         self.rect = pygame.Rect(x, y, 60, 60)
         self.attack_power = self.attack_power  # from config
 
     def draw(self, screen):
         frame_rect = pygame.Rect(self.frame_index * self.frame_width, 0, self.frame_width, self.frame_height)
         img = self.sprite_sheet.subsurface(frame_rect)
-        img = pygame.transform.scale(img, (self.rect.width, self.rect.height))
+        img = pygame.transform.scale(img, (self.rect.width*2, self.rect.height*2))
         screen.blit(img, (self.rect.x, self.rect.y))
 
     def move(self):
@@ -813,6 +843,38 @@ class Wanderer(Unit):
         scale = self.config['scale']
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
+        self.attack_rect = pygame.Rect(self.rect.x-20, self.rect.y, 300, self.rect.height)
+
+    def attack(self, targets):
+        collision_detected = False
+
+        if isinstance(targets, Tower):
+            if self.rect.colliderect(targets.rect):
+                collision_detected = True
+                self.speed = 0
+                if self.frame_index >= self.animation_steps[1]:
+                    self.frame_index = 0
+                self.action = 1
+
+        else:
+            for target in targets:
+                if self.attack_rect.colliderect(target.rect):
+                    collision_detected = True
+                    self.speed = 0
+                    if self.frame_index >= self.animation_steps[1]:
+                        self.frame_index = 0
+                    self.action = 1
+
+                    # Apply damage and record it
+                    dmg = self.attack_power
+                    target.health -= dmg
+                    if target.health <= 0:
+                        target.unit_die()
+                        self.moving()
+
+        if not collision_detected:
+            self.moving()
+            self.animation_cooldown = 100
 
 
 class LightMage(Unit):
@@ -825,6 +887,38 @@ class LightMage(Unit):
         scale = self.config['scale']
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
+        self.attack_rect = pygame.Rect(self.rect.right - 150, self.rect.y, 300, self.rect.height)
+
+    def attack(self, targets):
+        collision_detected = False
+
+        if isinstance(targets, Tower):
+            if self.rect.colliderect(targets.rect):
+                collision_detected = True
+                self.speed = 0
+                if self.frame_index >= self.animation_steps[1]:
+                    self.frame_index = 0
+                self.action = 1
+
+        else:
+            for target in targets:
+                if self.attack_rect.colliderect(target.rect):
+                    collision_detected = True
+                    self.speed = 0
+                    if self.frame_index >= self.animation_steps[1]:
+                        self.frame_index = 0
+                    self.action = 1
+
+                    # Apply damage and record it
+                    dmg = self.attack_power
+                    target.health -= dmg
+                    if target.health <= 0:
+                        target.unit_die()
+                        self.moving()
+
+        if not collision_detected:
+            self.moving()
+            self.animation_cooldown = 100
 
 
 class FireMage(Unit):
@@ -837,6 +931,38 @@ class FireMage(Unit):
         scale = self.config['scale']
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
+        self.attack_rect = pygame.Rect(self.rect.right - 150, self.rect.y, 300, self.rect.height)
+
+    def attack(self, targets):
+        collision_detected = False
+
+        if isinstance(targets, Tower):
+            if self.rect.colliderect(targets.rect):
+                collision_detected = True
+                self.speed = 0
+                if self.frame_index >= self.animation_steps[1]:
+                    self.frame_index = 0
+                self.action = 1
+
+        else:
+            for target in targets:
+                if self.attack_rect.colliderect(target.rect):
+                    collision_detected = True
+                    self.speed = 0
+                    if self.frame_index >= self.animation_steps[1]:
+                        self.frame_index = 0
+                    self.action = 1
+
+                    # Apply damage and record it
+                    dmg = self.attack_power
+                    target.health -= dmg
+                    if target.health <= 0:
+                        target.unit_die()
+                        self.moving()
+
+        if not collision_detected:
+            self.moving()
+            self.animation_cooldown = 100
 
 
 class Gangster1(Unit):
@@ -849,6 +975,50 @@ class Gangster1(Unit):
         scale = self.config['scale']
         self.animation_list = self.load_images(self.sprite_sheet, self.animation_steps, scale)
         self.image = self.animation_list[self.action][self.frame_index]
+
+        self.attack_rect = pygame.Rect(self.rect.x + 20, self.rect.y, 300, self.rect.height)
+
+    def draw(self, screen):
+        if not self.image:
+            return
+
+        img = pygame.transform.flip(self.image, self.flip, False)
+        offset_x, offset_y = self.config['offset']
+        screen.blit(img, (self.rect.x + offset_x, self.rect.y + offset_y))
+
+        pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)
+        pygame.draw.rect(screen, (255, 0, 0), self.attack_rect, 2)
+
+    def attack(self, targets):
+        collision_detected = False
+
+        if isinstance(targets, Tower):
+            if self.rect.colliderect(targets.rect):
+                collision_detected = True
+                self.speed = 0
+                if self.frame_index >= self.animation_steps[1]:
+                    self.frame_index = 0
+                self.action = 1
+
+        else:
+            for target in targets:
+                if self.attack_rect.colliderect(target.rect):
+                    collision_detected = True
+                    self.speed = 0
+                    if self.frame_index >= self.animation_steps[1]:
+                        self.frame_index = 0
+                    self.action = 1
+
+                    # Apply damage and record it
+                    dmg = self.attack_power
+                    target.health -= dmg
+                    if target.health <= 0:
+                        target.unit_die()
+                        self.moving()
+
+        if not collision_detected:
+            self.moving()
+            self.animation_cooldown = 100
 
 
 class Gangster2(Unit):

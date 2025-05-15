@@ -48,18 +48,19 @@ class EnemyLogic:
 
 class Level1(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 220:
+        if self.enemy_spawn_timer > 0:
             mobs = [BlueSlime, GreenSlime]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(60, 90)
+            self.enemy_spawn_timer = -100
         if self.boss_timer > 4000:
             EnemyLogic.spawn_unit(RedSlime, tower)
             self.boss_timer = random.randint(800, 1200)
-        Resources.add_energy(player_resources, [1.2, 0.3, 0.0])
+        Resources.add_energy(player_resources, [1.2, 0.3, 1])
 
 
 class Level2(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
+
         if self.enemy_spawn_timer > 180:
             mobs = [RedWerewolf, GreyWerewolf]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)

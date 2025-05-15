@@ -75,7 +75,7 @@
         },
         "GreenSlime": {
             "type": "enemy",
-            "health": 100,
+            "health": 1000,
             "attack_power": 0.25,
             "speed": -1,
             "tower_dmg": 10,
@@ -457,9 +457,9 @@
             "tower_dmg": 5,
             "animation_steps": [8, 5, 5, 4, 4, 4, 4, 5, 2, 4],
             "measurement": [96, 2, [100, 200]],
-            "scale": 2.5,
+            "scale": 2,
             "hitbox": [120, 136],
-            "offset": [-50, -50]
+            "offset": [-50, -0]
         },
         "Peasant": {
             "type": "hero",
@@ -470,9 +470,9 @@
             "tower_dmg": 5,
             "animation_steps": [8, 6, 4, 4, 4, 4, 4, 5, 2, 4],
             "measurement": [96, 2, [100, 200]],
-            "scale": 2.5,
+            "scale": 2,
             "hitbox": [120, 136],
-            "offset": [-50, -50]
+            "offset": [-50, 0]
         },
         "Kunoichi": {
             "type": "hero",

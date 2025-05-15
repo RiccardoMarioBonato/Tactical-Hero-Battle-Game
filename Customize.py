@@ -97,3 +97,6 @@ class Fonts:
     ARIAL_36 = pygame.font.SysFont('Arial', 36)
     ARIAL_48 = pygame.font.SysFont('Arial', 48)
     ARIAL_72 = pygame.font.SysFont('Arial', 72)
+
+class Sound:
+    background_music = pygame.mixer.music.load("Sounds/Background_music.mp3")

@@ -37,12 +37,12 @@ class GameProgress:
     def __init__(self):
         self.unlocked_levels = 1
         self.selected_team = []
-        self.unlocked_heroes = ["Lumberjack", "KarasuTengu", "Peasant", "Convert"]  # Always available
-        # self.unlocked_heroes = [
-        #     "Lumberjack", "KarasuTengu", "Peasant", "Convert", "Gangster1", "Gangster2", "Wanderer",
-        #     "BrownBeard", "Pantheon", "Countess", "Monk", "Kunoichi", "Gangster3", "LightMage",
-        #     "YamabushiTengu", "Kitsune", "FireMage", "VampireGirl"
-        # ]
+        # self.unlocked_heroes = ["Lumberjack", "KarasuTengu", "Peasant", "Convert"]  # Always available
+        self.unlocked_heroes = [
+            "Lumberjack", "KarasuTengu", "Peasant", "Convert", "Gangster1", "Gangster2", "Wanderer",
+            "BrownBeard", "Pantheon", "Countess", "Monk", "Kunoichi", "Gangster3", "LightMage",
+            "YamabushiTengu", "Kitsune", "FireMage", "VampireGirl"
+        ]
 
     def complete_level(self, level_num):
         if level_num >= self.unlocked_levels:

@@ -1,6 +1,5 @@
 import pygame
 from Customize import Color, Resolution
-from GameStats import game_stats
 
 
 class Tower:
