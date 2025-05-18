@@ -98,5 +98,39 @@ class Fonts:
     ARIAL_48 = pygame.font.SysFont('Arial', 48)
     ARIAL_72 = pygame.font.SysFont('Arial', 72)
 
-class Sound:
-    background_music = pygame.mixer.music.load("Sounds/Background_music.mp3")
+
+class SoundManager:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(SoundManager, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
+    def __init__(self):
+        if self._initialized:
+            return
+        pygame.mixer.init()
+        self.sounds = {
+            "select": pygame.mixer.Sound("Sounds/select_sound.mp3"),
+            "lvl1": pygame.mixer.Sound("Sounds/Level1.mp3"),
+            "bg_music": pygame.mixer.Sound("Sounds/Background_music.mp3"),
+            "spawn_sound": pygame.mixer.Sound("Sounds/spawn_sound.mp3"),
+            "level_sound": pygame.mixer.Sound("Sounds/Gamplay_level.mp3")
+        }
+        self._initialized = True
+
+    def play(self, sound_key):
+        if sound_key in self.sounds:
+            self.sounds[sound_key].play()
+
+    def set_sound(self, sound_key, volume=1.0):
+        try:
+            sound = pygame.mixer.Sound(self.sounds[sound_key])
+            sound.set_volume(volume)
+            print(f"[SoundManager] Sound '{sound_key}' set to '{self.sounds[sound_key]}'")
+        except pygame.error as e:
+            print(f"[SoundManager] Failed to load sound: {self.sounds[sound_key]}\nError: {e}")
+
+

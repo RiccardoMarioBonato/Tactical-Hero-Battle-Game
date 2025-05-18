@@ -5,6 +5,7 @@ from Unit import Centipede, BigBloated, BigBloatedBoss, CentipedeBoss, BattleTur
     Homeless1, Destroyer, Infantry, Swordsman
 import random
 from Player import Resources
+sound_manager = SoundManager()
 
 
 class EnemyLogic:
@@ -13,6 +14,7 @@ class EnemyLogic:
         self.boss_timer = 0
         self.stall_timer = 0
         self.mob_list = []
+        self.running = True
 
     def spawn_pattern(self, tower, player_resources):
         if self.enemy_spawn_timer > 180:
@@ -25,9 +27,10 @@ class EnemyLogic:
         Resources.add_energy(player_resources, [2,0.5,0.1])
 
     def enemy_spawn_timer_setter(self, add_value):
-        self.enemy_spawn_timer += add_value
-        self.boss_timer += add_value
-        self.stall_timer += add_value
+        if self.running:
+            self.enemy_spawn_timer += add_value
+            self.boss_timer += add_value
+            self.stall_timer += add_value
 
     def add_mobs(self, mob):
         self.mob_list.append(mob)
@@ -47,48 +50,76 @@ class EnemyLogic:
 
 
 class Level1(EnemyLogic):
+    boss_trigger = True
+
     def spawn_pattern(self, tower, player_resources):
-        if self.enemy_spawn_timer > 0:
+        if tower.hp > 0:
+            self.running = True
+        if self.enemy_spawn_timer > 150:
             mobs = [BlueSlime, GreenSlime]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = -100
-        if self.boss_timer > 4000:
+            self.enemy_spawn_timer = random.randint(50, 70)
+        if tower.hp <= 50 and Level1.boss_trigger:
             EnemyLogic.spawn_unit(RedSlime, tower)
-            self.boss_timer = random.randint(800, 1200)
-        Resources.add_energy(player_resources, [1.2, 0.3, 1])
+            Level1.boss_trigger = False
+        Resources.add_energy(player_resources, [1, 0.5, 0.1])
+        if tower.hp <= 0:
+            self.enemy_spawn_timer = 0
+            self.boss_timer = 0
+            self.stall_timer = 0
 
 
 class Level2(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
-
-        if self.enemy_spawn_timer > 180:
+        if tower.hp > 0:
+            self.running = True
+        if self.enemy_spawn_timer > 200:
             mobs = [RedWerewolf, GreyWerewolf]
             EnemyLogic.spawn_unit(random.choice(mobs), tower)
-            self.enemy_spawn_timer = random.randint(50, 70)
-        if self.stall_timer > 300 and player_resources.solar_energy >= 15:
+            self.enemy_spawn_timer = random.randint(30, 50)
+        if self.stall_timer > 300 and player_resources.solar_energy >= 9:
+            EnemyLogic.spawn_unit(GreyWerewolf, tower)
+            EnemyLogic.spawn_unit(GreyWerewolf, tower)
+            EnemyLogic.spawn_unit(GreyWerewolf, tower)
             EnemyLogic.spawn_unit(GreyWerewolf, tower)
             self.stall_timer = 0
         if self.boss_timer > 3600:
             EnemyLogic.spawn_unit(WhiteWerewolf, tower)
             self.boss_timer = random.randint(600, 1000)
-        Resources.add_energy(player_resources, [0.7, 1.2, 0.3])
+        Resources.add_energy(player_resources, [0.4, 1.2, 0.4])
+        if tower.hp <= 0:
+            self.enemy_spawn_timer = 0
+            self.boss_timer = 0
+            self.stall_timer = 0
+            self.running = False
 
 
 class Level3(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
+        if tower.hp > 0:
+            self.running = True
         if self.enemy_spawn_timer > 150:
-            mobs = [Centipede, BigBloated, BlueSlime]
+            mobs = [Centipede, BigBloated, BattleTurtle]
             for _ in range(random.randint(1, 2)):  # Occasionally spawn 2 at once
                 EnemyLogic.spawn_unit(random.choice(mobs), tower)
             self.enemy_spawn_timer = random.randint(40, 60)
         if self.boss_timer > 3000:
             EnemyLogic.spawn_unit(CentipedeBoss, tower)
             self.boss_timer = random.randint(600, 900)
+        if self.boss_timer > 3000:
+            EnemyLogic.spawn_unit(BigBloatedBoss, tower)
+            self.boss_timer = random.randint(600, 900)
         Resources.add_energy(player_resources, [1, 1, 0.3])
+        if tower.hp <= 0:
+            self.enemy_spawn_timer = 0
+            self.boss_timer = 0
+            self.stall_timer = 0
 
 
 class Level4(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
+        if tower.hp > 0:
+            self.running = True
         if self.enemy_spawn_timer > 120:
             mobs = [Gargona1, Gargona2, Gargona3]
             for _ in range(2):  # Burst wave
@@ -101,10 +132,16 @@ class Level4(EnemyLogic):
             EnemyLogic.spawn_unit(BigBloatedBoss, tower)
             self.boss_timer = random.randint(500, 900)
         Resources.add_energy(player_resources, [1, 0.5, 0.3])
+        if tower.hp <= 0:
+            self.enemy_spawn_timer = 0
+            self.boss_timer = 0
+            self.stall_timer = 0
 
 
 class Level5(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
+        if tower.hp > 0:
+            self.running = True
         if self.enemy_spawn_timer > 100:
             mobs = [Homeless1, Homeless2, Homeless3]
             for _ in range(random.randint(2, 3)):
@@ -115,10 +152,16 @@ class Level5(EnemyLogic):
             EnemyLogic.spawn_unit(Gargona2, tower)  # dual boss type
             self.boss_timer = random.randint(400, 700)
         Resources.add_energy(player_resources, [0.8, 0.8, 0.5])
+        if tower.hp <= 0:
+            self.enemy_spawn_timer = 0
+            self.boss_timer = 0
+            self.stall_timer = 0
 
 
 class Level6(EnemyLogic):
     def spawn_pattern(self, tower, player_resources):
+        if tower.hp > 0:
+            self.running = True
         if self.enemy_spawn_timer > 90:
             mobs = [Infantry, Swordsman, Homeless2]
             for _ in range(random.randint(2, 4)):
@@ -135,3 +178,7 @@ class Level6(EnemyLogic):
             self.boss_timer = random.randint(400, 800)
 
         Resources.add_energy(player_resources, [0.8, 1, 1])
+        if tower.hp <= 0:
+            self.enemy_spawn_timer = 0
+            self.boss_timer = 0
+            self.stall_timer = 0

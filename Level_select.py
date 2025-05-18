@@ -1,9 +1,13 @@
 import sys
 import threading
+
+import pygame.mixer
+
 from Unit import *
-from Customize import Color, Resolution
+from Customize import Color, Resolution, SoundManager
 from analytics_window import open_window
 import random
+sound_manager = SoundManager()
 
 
 def launch_analytics_window():
@@ -37,12 +41,12 @@ class GameProgress:
     def __init__(self):
         self.unlocked_levels = 1
         self.selected_team = []
-        # self.unlocked_heroes = ["Lumberjack", "KarasuTengu", "Peasant", "Convert"]  # Always available
-        self.unlocked_heroes = [
-            "Lumberjack", "KarasuTengu", "Peasant", "Convert", "Gangster1", "Gangster2", "Wanderer",
-            "BrownBeard", "Pantheon", "Countess", "Monk", "Kunoichi", "Gangster3", "LightMage",
-            "YamabushiTengu", "Kitsune", "FireMage", "VampireGirl"
-        ]
+        self.unlocked_heroes = ["Lumberjack", "KarasuTengu", "Peasant", "Convert", "Gangster1"]  # Always available
+        # self.unlocked_heroes = [
+        #     "Lumberjack", "KarasuTengu", "Peasant", "Convert", "Gangster1", "Gangster2", "Wanderer",
+        #     "BrownBeard", "Pantheon", "Countess", "Monk", "Kunoichi", "Gangster3", "LightMage",
+        #     "YamabushiTengu", "Kitsune", "FireMage", "VampireGirl"
+        # ]
 
     def complete_level(self, level_num):
         if level_num >= self.unlocked_levels:
@@ -129,10 +133,13 @@ class LevelSelect:
                 mouse_pos = event.pos
                 for level in self.levels:
                     if level["rect"].collidepoint(mouse_pos) and not level["locked"]:
+                        SoundManager.play(sound_manager, "select")
                         return f"level{level['number']}"
                 if self.back_button.collidepoint(mouse_pos):
+                    SoundManager.play(sound_manager, "select")
                     return "back"
                 if self.analytics_button.collidepoint(mouse_pos):
+                    SoundManager.play(sound_manager, "select")
                     launch_analytics_window()
         return None
 
@@ -198,7 +205,7 @@ class CharacterSelect:
         }
 
         class_data = [
-            ("Lumberjack", "2 solar"),
+            ("Lumberjack", f"solar"),
             ("KarasuTengu", "2 lunar"),
             ("Peasant", "1 solar"),
             ("Convert", "3 lunar"),
@@ -332,13 +339,13 @@ class CharacterSelect:
                 mouse_pos = event.pos
                 if Exit_to_menu_surface_rect.collidepoint(pygame.mouse.get_pos()):
                     sys.exit()
-
                 # Check if analytics button was clicked
                 if self.analytics_button.collidepoint(mouse_pos):
                     self.launch_analytics_window()  # Now properly called as an instance method
                 # Check character selection
                 for char in self.characters:
                     if char["rect"].collidepoint(mouse_pos) and not char["locked"]:
+                        SoundManager.play(sound_manager, "select")
                         if char["selected"]:
                             char["selected"] = False
                             self.selected_characters.remove(char["name"])
@@ -356,22 +363,6 @@ class CharacterSelect:
                     ]
                     return "level_select"
         return None
-
-    def unlock_all(self):
-        self.levels = [
-            {"name": "Forest", "number": 1, "rect": pygame.Rect(400, 300, 300, 200),
-             "locked": False},
-            {"name": "Dark Forest", "number": 2, "rect": pygame.Rect(800, 300, 300, 200),
-             "locked": False},
-            {"name": "Swamp", "number": 3, "rect": pygame.Rect(1200, 300, 300, 200),
-             "locked": False},
-            {"name": "Castle", "number": 4, "rect": pygame.Rect(400, 600, 300, 200),
-             "locked": False},
-            {"name": "Slums", "number": 5, "rect": pygame.Rect(800, 600, 300, 200),
-             "locked": False},
-            {"name": "Future", "number": 6, "rect": pygame.Rect(1200, 600, 300, 200),
-             "locked": False}
-        ]
 
 
 class SelectGame:

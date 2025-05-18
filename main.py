@@ -1,13 +1,13 @@
 import pygame
 from Level_select import SelectGame, GameProgress
-from Customize import Color, Images, Resolution, Fonts
+from Customize import Color, Images, Resolution, Fonts, SoundManager
 from Base import Tower
 from Enemy import EnemyLogic
 from Player import Controller, Resources
 from AssetLoader import AssetLoader
 from GameStats import game_stats
 import multiprocessing
-
+sound_manager = SoundManager()
 multiprocessing.set_start_method('spawn', force=True)
 # Initialize pygame
 pygame.init()
@@ -34,6 +34,9 @@ clock = pygame.time.Clock()
 level_num = 1
 selected_hero_classes = []
 game_progress = GameProgress()
+pygame.init()
+pygame.mixer.init()
+SM = SoundManager()
 
 
 # Game states
@@ -49,15 +52,22 @@ selected_characters = []
 cr_select = SelectGame(game_progress)
 exit_button_rect = Resources.draw_exit_button(screen, font_small)
 # Main game loop
+play_music = True
 running = True
 while running:
     clock.tick(Resolution.FPS)
 
     if current_state == GameState.CHARACTER_SELECT:
+        if play_music:
+            SM.sounds["bg_music"].stop()
+            SoundManager.play(sound_manager, "bg_music")
+            SoundManager.set_sound(sound_manager, "bg_music", 0.25)
+            play_music = False
         # Character selection
         game_stats.reset_stats()
         selection_result = cr_select.selecting()
         if selection_result:
+            play_music = True
             level_num, selected_hero_classes = selection_result
             game_stats.level = level_num
             current_state = GameState.MAIN_GAME
@@ -67,6 +77,11 @@ while running:
 
     elif current_state == GameState.MAIN_GAME:
         # Gameplay
+        if play_music:
+            SM.sounds["bg_music"].stop()
+            SoundManager.play(sound_manager, "level_sound")
+            SoundManager.set_sound(sound_manager, "level_sound", 0.5)
+            play_music = False
         player_resources.add_start()
         Controller.keyboard(player_tower, player_resources, selected_hero_classes[:3], exit_button_rect)
         spawn, background = Enemy.pick_level(level_num, enemy_tower, player_resources)
@@ -95,22 +110,31 @@ while running:
 
         # Transition logic
         if enemy_tower.hp <= 0:
+            play_music = True
             current_state = GameState.LEVEL_COMPLETE
             game_stats.record_outcome(True)
             game_progress.complete_level(level_num)
         elif player_tower.hp <= 0:
+            play_music = True
             current_state = GameState.LEVEL_COMPLETE
             game_stats.record_outcome(False)
 
         pygame.display.flip()
 
     elif current_state == GameState.LEVEL_COMPLETE:
+        if play_music:
+            SM.sounds["level_sound"].stop()
+            SoundManager.play(sound_manager, "bg_music")
+            SoundManager.set_sound(sound_manager, "bg_music", 0.1)
+            play_music = False
         # Show results screen and wait for next round
         game_stats.draw_stats_screen(screen)
         pygame.display.flip()
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                SoundManager.play(sound_manager, "select")
+                play_music = True
                 game_stats.reset_stats()
                 player_resources.resources_reset()
                 current_state = GameState.CHARACTER_SELECT

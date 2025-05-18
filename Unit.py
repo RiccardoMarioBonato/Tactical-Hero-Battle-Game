@@ -1,8 +1,9 @@
 import pygame
 import json
 import os
-from Customize import Hero, Enemies, Projectile, Resolution
+from Customize import Hero, Enemies, Projectile, Resolution, SoundManager
 from Base import Tower
+sound_manager = SoundManager()
 
 
 class UnitConfig:
@@ -427,44 +428,6 @@ class BattleTurtle(Unit):
         self.bullets.append(bullet)
 
 
-def draw(self, screen, show_hitbox=False):
-    if not self.image:
-        return
-
-    img = pygame.transform.flip(self.image, self.flip, False)
-    offset_x, offset_y = self.config['offset']
-    screen.blit(img, (self.rect.x + offset_x, self.rect.y + offset_y))
-
-    if show_hitbox:
-        pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)  # blue hitbox
-        pygame.draw.rect(screen, (255, 0, 0), self.attack_rect, 2)  # red attack range
-
-
-def update(self, screen, tower, own_units=[], other_units=[], show_hitbox=False):
-    self.move()
-    if self.action == 2:
-        animation_cooldown = self.dying_cooldown
-    else:
-        animation_cooldown = self.animation_cooldown
-
-    self.image = self.animation_list[self.action][self.frame_index]
-
-    if pygame.time.get_ticks() - self.update_time > animation_cooldown:
-        self.frame_index += 1
-        self.update_time = pygame.time.get_ticks()
-
-        if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
-            if self.action == 2:
-                self.unit_die()
-                self.dead = True
-                self.health = 0
-
-    self.attack(other_units)
-    self.draw(screen, show_hitbox)
-
-
-
 class Gargona1(Unit):
     def __init__(self, x, y):
         super().__init__(x, y, "Gargona1")
@@ -631,7 +594,6 @@ class Kitsune(Unit):
         self.image = self.animation_list[self.action][self.frame_index]
         self.attack_rect = pygame.Rect(self.rect.right - 200, self.rect.y, 300, self.rect.height)
 
-
     def attack(self, targets):
         collision_detected = False
 
@@ -662,6 +624,7 @@ class Kitsune(Unit):
         if not collision_detected:
             self.moving()
             self.animation_cooldown = 100
+
 
 class YamabushiTengu(Unit):
     def __init__(self, x, y):
@@ -986,8 +949,6 @@ class Gangster1(Unit):
         offset_x, offset_y = self.config['offset']
         screen.blit(img, (self.rect.x + offset_x, self.rect.y + offset_y))
 
-        pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)
-        pygame.draw.rect(screen, (255, 0, 0), self.attack_rect, 2)
 
     def attack(self, targets):
         collision_detected = False

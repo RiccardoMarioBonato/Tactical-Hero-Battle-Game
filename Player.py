@@ -23,6 +23,7 @@ class Controller:
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if exit_button_rect.collidepoint(event.pos):
+                    SoundManager.play(sound_manager, "select")
                     sys.exit()
 
             if event.type == pygame.KEYDOWN:
@@ -53,6 +54,7 @@ class Controller:
 
     @staticmethod
     def spawn_unit(unit_class, player_tower, resources):
+        SoundManager.play(sound_manager, "spawn_sound")
         spawn_x = player_tower.rect.right
         spawn_y = Resolution.HEIGHT - 300 - Dimensions.BLOCK_SIZE1 // 2
         new_unit = unit_class(spawn_x, spawn_y)
@@ -90,9 +92,9 @@ class Resources:
     def add_energy(self, multiplier):
         current_time = time.time()
         time_elapsed = current_time - self.clock
-        self.solar_energy += time_elapsed * multiplier[0]*100
-        self.lunar_energy += time_elapsed * multiplier[1]*100
-        self.eclipse_energy += time_elapsed * multiplier[2]*100
+        self.solar_energy += time_elapsed * multiplier[0]
+        self.lunar_energy += time_elapsed * multiplier[1]
+        self.eclipse_energy += time_elapsed * multiplier[2]
         self.game_clock += time_elapsed
         self.clock = current_time
 
